@@ -4,33 +4,17 @@ import TodoItem from "./TodoItem";
 const LOCAL_STORAGE_KEY = "todoApp.tasks";
 
 function TodoList() {
-  // const [tasks, setTasks] = useState([
-  //   {
-  //     id: 1,
-  //     text: "Doctor appointment",
-  //     completed: true,
-  //   },
-  //   {
-  //     id: 2,
-  //     text: "Meeting at school",
-  //     completed: false,
-  //   },
-  // ]);
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+    const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
+  });
 
   const [text, setText] = useState("");
-
-  // Load tasks from localStorage when the component mounts
-  useEffect(() => {
-    const storedTasks = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-    if (storedTasks) {
-      setTasks(storedTasks);
-    }
-  }, []);
 
   // Save tasks to localStorage whenever the tasks array changes
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
+    console.log("Saved tasks to localStorage:", tasks);
   }, [tasks]);
 
   function addTask(text) {
