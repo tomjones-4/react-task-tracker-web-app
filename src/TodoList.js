@@ -1,21 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TodoItem from "./TodoItem";
 
+const LOCAL_STORAGE_KEY = "todoApp.tasks";
+
 function TodoList() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      text: "Doctor appointment",
-      completed: true,
-    },
-    {
-      id: 2,
-      text: "Meeting at school",
-      completed: false,
-    },
-  ]);
+  // const [tasks, setTasks] = useState([
+  //   {
+  //     id: 1,
+  //     text: "Doctor appointment",
+  //     completed: true,
+  //   },
+  //   {
+  //     id: 2,
+  //     text: "Meeting at school",
+  //     completed: false,
+  //   },
+  // ]);
+  const [tasks, setTasks] = useState([]);
 
   const [text, setText] = useState("");
+
+  // Load tasks from localStorage when the component mounts
+  useEffect(() => {
+    const storedTasks = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+    if (storedTasks) {
+      setTasks(storedTasks);
+    }
+  }, []);
+
+  // Save tasks to localStorage whenever the tasks array changes
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
+  }, [tasks]);
 
   function addTask(text) {
     const newTask = {
