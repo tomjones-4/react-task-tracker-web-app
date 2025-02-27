@@ -43,10 +43,13 @@ function TodoList() {
     );
   }
 
+  // Sort tasks: incomplete ones first, then completed ones
+  const sortedTasks = tasks.sort((a, b) => a.completed - b.completed);
+
   return (
     <div className="todo-list-container">
       <div className="todo-list">
-        {tasks.map((task) => (
+        {sortedTasks.map((task) => (
           <TodoItem
             key={task.id}
             task={task}
