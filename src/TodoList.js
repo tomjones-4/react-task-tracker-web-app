@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TodoItem from "./TodoItem";
 
+const LOCAL_STORAGE_KEY = "todoApp.tasks";
+
 function TodoList() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      text: "Doctor appointment",
-      completed: true,
-    },
-    {
-      id: 2,
-      text: "Meeting at school",
-      completed: false,
-    },
-  ]);
+  const [tasks, setTasks] = useState(() => {
+    const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
+  });
 
   const [text, setText] = useState("");
+
+  // Save tasks to localStorage whenever the tasks array changes
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
+    console.log("Saved tasks to localStorage:", tasks);
+  }, [tasks]);
 
   function addTask(text) {
     const newTask = {
@@ -43,18 +43,23 @@ function TodoList() {
     );
   }
 
+  // Sort tasks: incomplete ones first, then completed ones
+  const sortedTasks = tasks.sort((a, b) => a.completed - b.completed);
+
   return (
-    <div className="todo-list">
-      {tasks.map((task) => (
-        <TodoItem
-          key={task.id}
-          task={task}
-          deleteTask={deleteTask}
-          toggleCompleted={toggleCompleted}
-        />
-      ))}
-      <input value={text} onChange={(e) => setText(e.target.value)} />
-      <button onClick={() => addTask(text)}>Add</button>
+    <div className="todo-list-container">
+      <div className="todo-list">
+        {sortedTasks.map((task) => (
+          <TodoItem
+            key={task.id}
+            task={task}
+            deleteTask={deleteTask}
+            toggleCompleted={toggleCompleted}
+          />
+        ))}
+        <input value={text} onChange={(e) => setText(e.target.value)} />
+        <button onClick={() => addTask(text)}>Add</button>
+      </div>
     </div>
   );
 }
