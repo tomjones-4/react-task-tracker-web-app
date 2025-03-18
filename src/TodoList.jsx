@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import TodoItem from "./TodoItem";
+import TodoItem from "./TodoItem.jsx";
 
 const LOCAL_STORAGE_KEY = "todoApp.tasks";
 
