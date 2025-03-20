@@ -12,5 +12,12 @@ You may also see any lint errors in the console.
 
 ## Possible Improvements
 
-* Keep track of ongoing tasks.\
-* Add authentication.\
+* Keep track of ongoing tasks
+* Add authentication
+* Lists
+* Tasks
+* Subtasks
+
+
+![image](https://github.com/user-attachments/assets/55cf7980-e05c-4b5e-a1ca-1a9d01754dde)
+
