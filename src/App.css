@@ -163,3 +163,97 @@ input[type="text"] {
 .add-button:active {
   transform: translateX(-50%) scale(0.95); /* Click effect */
 }
+
+.search-container {
+  position: relative;
+  width: 250px; /* Adjust width as needed */
+  display: flex;
+  align-items: center;
+  border-radius: 20px; /* Rounded edges */
+  padding: 5px;
+  background-color: white;
+}
+
+.search-icon {
+  padding-left: 10px;
+  padding-right: 5px;
+  display: flex;
+  align-items: center;
+  color: #888;
+}
+
+.search-input {
+  flex: 1; /* Take remaining space */
+  padding: 10px 12px 10px 8px; /* Adjust left padding for icon */
+  border: none;
+  font-size: 16px;
+  outline: none;
+  background: transparent;
+}
+
+.search-container:focus-within {
+  border-color: #007bff; /* Highlight when input is focused */
+}
+
+.list-item-square {
+  display: flex;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 4px; /* Slight rounding */
+}
+
+.list-item-label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.list-item-count {
+  display: inline-block;
+  align-items: right;
+}
+
+.sidebar {
+  width: 250px; /* Adjust width */
+  background-color: #f7f7f7; /* Light background */
+  padding: 10px;
+  height: 100vh; /* Full height */
+  overflow-y: auto; /* Scroll if needed */
+  border-right: 1px solid #ddd;
+}
+
+.task-list {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.task-list:hover {
+  background-color: #eaeaea; /* Light hover effect */
+}
+
+.color-block {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+.list-name {
+  flex-grow: 1; /* Pushes item count to the right */
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.item-count {
+  font-size: 14px;
+  color: #666;
+  background: #ddd;
+  padding: 2px 6px;
+  border-radius: 12px;
+  min-width: 20px;
+  text-align: center;
+}
