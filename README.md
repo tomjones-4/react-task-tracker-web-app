@@ -21,3 +21,6 @@ You may also see any lint errors in the console.
 
 ![image](https://github.com/user-attachments/assets/55cf7980-e05c-4b5e-a1ca-1a9d01754dde)
 
+* Start out with different lists (don't worry about calendar / dates yet)
+* Each list should show up like the "Today" section in the above image
+* Each clicked task should bring up the task pane on the right side with any associated subtasks
