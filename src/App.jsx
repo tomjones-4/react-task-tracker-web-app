@@ -9,7 +9,6 @@ function App() {
     <div className="App">
       <Menu />
       <TodoList />
-      <AddTodo />
     </div>
   );
 }

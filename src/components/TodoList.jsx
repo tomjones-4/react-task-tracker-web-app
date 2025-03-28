@@ -48,6 +48,10 @@ function TodoList() {
 
   return (
     <div className="todo-list-container">
+      <input value={text} onChange={(e) => setText(e.target.value)} />
+      <button className="add-button" onClick={() => addTask(text)}>
+        Add Task
+      </button>
       <div className="todo-list">
         {sortedTasks.map((task) => (
           <TodoItem
@@ -57,8 +61,6 @@ function TodoList() {
             toggleCompleted={toggleCompleted}
           />
         ))}
-        <input value={text} onChange={(e) => setText(e.target.value)} />
-        <button onClick={() => addTask(text)}>Add</button>
       </div>
     </div>
   );

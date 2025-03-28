@@ -133,6 +133,7 @@ input[type="text"] {
 } */
 
 .todo-list-container {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -141,7 +142,7 @@ input[type="text"] {
 
 .add-button {
   position: fixed; /* Sticks to the bottom */
-  bottom: 20px; /* Distance from the bottom */
+  bottom: 200px; /* Distance from the bottom */
   left: 50%; /* Center horizontally */
   transform: translateX(-50%); /* Adjust to center properly */
 
