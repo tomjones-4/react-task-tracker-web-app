@@ -8,7 +8,7 @@ const Menu = () => {
   ];
 
   return (
-    <div>
+    <div className="menu-container">
       <h2>Menu</h2>
       <div class="search-container">
         <span class="search-icon">

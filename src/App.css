@@ -2,17 +2,6 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -24,18 +13,6 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 /* Center the todo list on the page */
 .todo-list-container {
   display: flex;
@@ -114,24 +91,6 @@ input[type="text"] {
   border-radius: 4px;
 }
 
-/* Style the add button */
-/* .add-button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  background-color: #61dafb;
-  border: none;
-  border-radius: 4px;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-} */
-
-/* Style the add button on hover */
-/* .add-button:hover {
-  background-color: #21a1f1;
-} */
-
 .todo-list-container {
   position: relative;
   display: flex;
@@ -165,6 +124,45 @@ input[type="text"] {
   transform: translateX(-50%) scale(0.95); /* Click effect */
 }
 
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 30%;
+  height: 100vh; /* Full height */
+  background-color: #f7f7f7; /* Light background */
+  position: relative;
+}
+
+.menu-container h2 {
+  margin: 0;
+  padding: 20px;
+  font-size: 24px;
+  color: #333; /* Darker text */
+}
+
+.menu-lists-container {
+  width: 250px; /* Adjust width */
+  padding: 10px;
+  height: 100vh; /* Full height */
+  overflow-y: auto; /* Scroll if needed */
+  border-right: 1px solid #ddd;
+}
+
+.menu-lists-container h3 {
+  text-align: left;
+}
+
+.menu-task-list {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
 .search-container {
   position: relative;
   width: 250px; /* Adjust width as needed */
@@ -172,7 +170,6 @@ input[type="text"] {
   align-items: center;
   border-radius: 20px; /* Rounded edges */
   padding: 5px;
-  background-color: white;
 }
 
 .search-icon {
@@ -189,7 +186,6 @@ input[type="text"] {
   border: none;
   font-size: 16px;
   outline: none;
-  background: transparent;
 }
 
 .search-container:focus-within {
@@ -212,24 +208,6 @@ input[type="text"] {
 .list-item-count {
   display: inline-block;
   align-items: right;
-}
-
-.sidebar {
-  width: 250px; /* Adjust width */
-  background-color: #f7f7f7; /* Light background */
-  padding: 10px;
-  height: 100vh; /* Full height */
-  overflow-y: auto; /* Scroll if needed */
-  border-right: 1px solid #ddd;
-}
-
-.task-list {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s;
 }
 
 .task-list:hover {
