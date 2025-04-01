@@ -1,42 +1,154 @@
 .App {
+  display: flex;
   text-align: center;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+.menu-container {
+  position: relative;
+  width: 15%; /* Adjust width as needed */
+  min-width: 250px; /* Minimum width */
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  border-radius: 20px; /* Rounded edges */
+  padding: 5px;
+  background-color: #f7f7f7; /* Light background */
 }
 
-/* Center the todo list on the page */
-.todo-list-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f5f5f5;
+.menu-container h2 {
   margin: 0;
+  padding: 20px;
+  font-size: 24px;
+  color: #333; /* Darker text */
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.search-container:focus-within {
+  border-color: #007bff; /* Highlight when input is focused */
+}
+
+.search-icon {
+  padding-left: 5px;
+  padding-right: 5px;
+  display: flex;
+  align-items: center;
+  color: #888;
+}
+
+.search-input {
+  flex: 1; /* Take remaining space */
+  padding: 10px; /* Adjust left padding for icon */
+  border: none;
+  font-size: 18px;
+}
+
+.menu-lists-container {
+  padding: 10px;
+  height: auto;
+  overflow-y: auto; /* Scroll if needed */
+}
+
+.menu-lists-container h3 {
+  text-align: left;
+}
+
+.menu-list {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.menu-list:hover {
+  background-color: #eaeaea; /* Light hover effect */
+}
+
+.menu-list-color-block {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+.menu-list-name {
+  flex-grow: 1; /* Pushes item count to the right */
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.menu-list-item-count {
+  font-size: 14px;
+  color: #666;
+  background: #ddd;
+  padding: 2px 6px;
+  border-radius: 12px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.main-view {
+  width: 50%; /* Adjust width as needed */
+  padding: 20px;
 }
 
 /* Style the todo list */
 .todo-list {
   width: 90%;
-  max-width: 500px;
-  background: #fff;
+  max-width: auto;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-size: larger;
+}
+
+.add-todo-item {
+  background-color: #f9f9f9; /* Light gray background */
+  padding: 12px 16px; /* Inner spacing */
+  margin: 10px 0; /* Space between items */
+  border-radius: 8px; /* Rounded corners */
+  border: 1px solid #ddd; /* Light border for definition */
+  display: flex; /* Aligns children (text, buttons) in a row */
+  justify-content: space-between; /* Ensures spacing between text & actions */
+  align-items: center; /* Centers items vertically */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: background 0.2s ease-in-out;
+}
+
+.add-todo-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background 0.3s ease;
+}
+
+.add-todo-btn:hover {
+  background: #0056b3;
+}
+
+.todo-input {
+  flex-grow: 1;
+  border: none;
+  font-size: 16px;
+  padding: 5px;
+  outline: none;
+  background: transparent;
 }
 
 .todo-item {
   background-color: #f9f9f9; /* Light gray background */
   padding: 12px 16px; /* Inner spacing */
-  margin: 8px 0; /* Space between items */
+  margin: 10px 0; /* Space between items */
   border-radius: 8px; /* Rounded corners */
   border: 1px solid #ddd; /* Light border for definition */
   display: flex; /* Aligns children (text, buttons) in a row */
@@ -48,11 +160,6 @@
 
 .todo-item:hover {
   background-color: #f0f0f0; /* Slight hover effect */
-}
-
-/* Style for the last item to remove the border */
-.todo-item:last-child {
-  border-bottom: none;
 }
 
 /* Style the text of the todo item */
@@ -68,6 +175,7 @@
   color: #888;
 }
 
+/* Need to change the button to expand the task */
 /* Style the delete button */
 .todo-item button {
   background: transparent;
@@ -79,7 +187,7 @@
 
 /* Style the delete button on hover */
 .todo-item button:hover {
-  color: #ff4b4b;
+  color: black;
 }
 
 /* Style the input field for new tasks */
@@ -91,16 +199,7 @@ input[type="text"] {
   border-radius: 4px;
 }
 
-.todo-list-container {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-
 .add-button {
-  position: fixed; /* Sticks to the bottom */
   bottom: 200px; /* Distance from the bottom */
   left: 50%; /* Center horizontally */
   transform: translateX(-50%); /* Adjust to center properly */
@@ -124,133 +223,6 @@ input[type="text"] {
   transform: translateX(-50%) scale(0.95); /* Click effect */
 }
 
-.menu-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  width: 30%;
-  height: 100vh; /* Full height */
-  background-color: #f7f7f7; /* Light background */
-  position: relative;
-}
-
-.menu-container h2 {
-  margin: 0;
-  padding: 20px;
-  font-size: 24px;
-  color: #333; /* Darker text */
-}
-
-.menu-lists-container {
-  width: 250px; /* Adjust width */
-  padding: 10px;
-  height: 100vh; /* Full height */
-  overflow-y: auto; /* Scroll if needed */
-  border-right: 1px solid #ddd;
-}
-
-.menu-lists-container h3 {
-  text-align: left;
-}
-
-.menu-task-list {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.menu {
-  position: relative;
-  width: 250px; /* Adjust width as needed */
-  align-items: center;
-  border-radius: 20px; /* Rounded edges */
-  padding: 5px;
-  background-color: #f7f7f7; /* Light background */
-}
-
-.menu-title {
-  padding: 10px 20px; /* Padding for title */
-  margin-bottom: 5px; /* Space between title and items */
-  width: 50px;
-  position: relative;
-  font-size: 30px;
-  font-weight: 500;
-  color: #333;
-}
-
-.search-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  border-radius: 20px; /* Rounded edges */
-  padding: 5px;
-}
-
-.search-icon {
-  padding-left: 10px;
-  padding-right: 5px;
-  display: flex;
-  align-items: center;
-  color: #888;
-}
-
-.search-input {
-  flex: 1; /* Take remaining space */
-  padding: 10px 12px 10px 8px; /* Adjust left padding for icon */
-  border: none;
-  font-size: 16px;
-  outline: none;
-}
-
-.search-container:focus-within {
-  border-color: #007bff; /* Highlight when input is focused */
-}
-
-.list-item-square {
-  display: flex;
-  align-items: center;
-  width: 25px;
-  height: 25px;
-  border-radius: 4px; /* Slight rounding */
-}
-
-.list-item-label {
-  display: inline-flex;
-  align-items: center;
-}
-
-.list-item-count {
-  display: inline-block;
-  align-items: right;
-}
-
 .task-list:hover {
   background-color: #eaeaea; /* Light hover effect */
-}
-
-.color-block {
-  width: 12px;
-  height: 12px;
-  border-radius: 3px;
-  margin-right: 10px;
-}
-
-.list-name {
-  flex-grow: 1; /* Pushes item count to the right */
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.item-count {
-  font-size: 14px;
-  color: #666;
-  background: #ddd;
-  padding: 2px 6px;
-  border-radius: 12px;
-  min-width: 20px;
-  text-align: center;
 }

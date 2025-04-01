@@ -3,17 +3,17 @@ import React from "react";
 // const MenuLists = ({ lists }) => {
 const MenuLists = ({ lists }) => {
   return (
-    <div className="menu-lists-container">
+    <div>
       <h3>Lists</h3>
       {lists.map((list, index) => {
         return (
-          <div className="menu-task-list" key={index}>
+          <div className="menu-list" key={index}>
             <span
-              className="color-block"
+              className="menu-list-color-block"
               style={{ backgroundColor: list.color }}
             ></span>
-            <span className="list-name">{list.name}</span>
-            <span className="item-count">{list.length}</span>
+            <span className="menu-list-name">{list.name}</span>
+            <span className="menu-list-item-count">{list.length}</span>
           </div>
         );
       })}

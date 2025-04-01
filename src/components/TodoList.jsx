@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TodoItem from "./TodoItem.jsx";
+import AddTodoItem from "./AddTodoItem.jsx";
 
 const LOCAL_STORAGE_KEY = "todoApp.tasks";
 
@@ -53,6 +54,7 @@ function TodoList() {
         Add Task
       </button>
       <div className="todo-list">
+        <AddTodoItem />
         {sortedTasks.map((task) => (
           <TodoItem
             key={task.id}

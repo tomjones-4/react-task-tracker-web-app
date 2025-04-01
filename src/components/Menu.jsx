@@ -8,8 +8,8 @@ const Menu = () => {
   ];
 
   return (
-    <div className="menu">
-      <h2 className="menu-title">Menu</h2>
+    <div className="menu-container">
+      <h2>Menu</h2>
       <div className="search-container">
         <span className="search-icon">
           <svg
