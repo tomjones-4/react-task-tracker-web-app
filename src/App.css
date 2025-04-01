@@ -163,9 +163,27 @@ input[type="text"] {
   transition: background 0.2s;
 }
 
-.search-container {
+.menu {
   position: relative;
   width: 250px; /* Adjust width as needed */
+  align-items: center;
+  border-radius: 20px; /* Rounded edges */
+  padding: 5px;
+  background-color: #f7f7f7; /* Light background */
+}
+
+.menu-title {
+  padding: 10px 20px; /* Padding for title */
+  margin-bottom: 5px; /* Space between title and items */
+  width: 50px;
+  position: relative;
+  font-size: 30px;
+  font-weight: 500;
+  color: #333;
+}
+
+.search-container {
+  position: relative;
   display: flex;
   align-items: center;
   border-radius: 20px; /* Rounded edges */

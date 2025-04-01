@@ -4,14 +4,14 @@ import MenuLists from "./MenuLists";
 const Menu = () => {
   const fakeLists = [
     { id: 1, name: "List 1", color: "blue", length: 3 },
-    { id: 2, name: "List 2", color: "red", length: 5 },
+    { id: 2, name: "List 2", color: "red", length: 6 },
   ];
 
   return (
-    <div className="menu-container">
-      <h2>Menu</h2>
-      <div class="search-container">
-        <span class="search-icon">
+    <div className="menu">
+      <h2 className="menu-title">Menu</h2>
+      <div className="search-container">
+        <span className="search-icon">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -27,7 +27,11 @@ const Menu = () => {
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
         </span>
-        <input type="text" class="search-input" placeholder="Search"></input>
+        <input
+          type="text"
+          className="search-input"
+          placeholder="Search"
+        ></input>
       </div>
       <MenuLists lists={fakeLists} />
     </div>
