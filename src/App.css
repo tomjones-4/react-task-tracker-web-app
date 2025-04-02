@@ -226,3 +226,20 @@ input[type="text"] {
 .task-list:hover {
   background-color: #eaeaea; /* Light hover effect */
 }
+
+.todo-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.todo-form-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+}

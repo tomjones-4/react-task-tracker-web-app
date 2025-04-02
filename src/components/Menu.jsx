@@ -1,12 +1,7 @@
 import React from "react";
 import MenuLists from "./MenuLists";
 
-const Menu = () => {
-  const fakeLists = [
-    { id: 1, name: "List 1", color: "blue", length: 3 },
-    { id: 2, name: "List 2", color: "red", length: 6 },
-  ];
-
+const Menu = ({ lists }) => {
   return (
     <div className="menu-container">
       <h2>Menu</h2>
@@ -33,7 +28,7 @@ const Menu = () => {
           placeholder="Search"
         ></input>
       </div>
-      <MenuLists lists={fakeLists} />
+      <MenuLists lists={lists} />
     </div>
   );
 };

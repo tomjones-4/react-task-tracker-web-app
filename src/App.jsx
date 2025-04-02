@@ -12,6 +12,11 @@ function App() {
     return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
   });
 
+  const fakeLists = [
+    { id: 1, name: "List 1", color: "blue", length: 3 },
+    { id: 2, name: "List 2", color: "red", length: 6 },
+  ];
+
   // Save tasks to localStorage whenever the tasks array changes
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
@@ -24,13 +29,13 @@ function App() {
 
   return (
     <div className="App">
-      <Menu />
+      <Menu lists={fakeLists} />
       <MainView
         tasks={tasks}
         setTasks={setTasks}
         setSelectedTask={setSelectedTask}
       />
-      <TaskView selectedTask={selectedTask} />
+      <TaskView selectedTask={selectedTask} lists={fakeLists} />
     </div>
   );
 }
