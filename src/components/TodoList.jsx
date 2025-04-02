@@ -2,20 +2,7 @@ import React, { useState, useEffect } from "react";
 import TodoItem from "./TodoItem.jsx";
 import AddTodoItem from "./AddTodoItem.jsx";
 
-const LOCAL_STORAGE_KEY = "todoApp.tasks";
-
-function TodoList() {
-  const [tasks, setTasks] = useState(() => {
-    const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY);
-    return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
-  });
-
-  // Save tasks to localStorage whenever the tasks array changes
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
-    console.log("Saved tasks to localStorage:", tasks);
-  }, [tasks]);
-
+function TodoList({ tasks, setTasks, setSelectedTask }) {
   function deleteTask(id) {
     setTasks(tasks.filter((task) => task.id !== id));
   }
@@ -45,6 +32,7 @@ function TodoList() {
             task={task}
             deleteTask={deleteTask}
             toggleCompleted={toggleCompleted}
+            setSelectedTask={setSelectedTask}
           />
         ))}
       </div>
