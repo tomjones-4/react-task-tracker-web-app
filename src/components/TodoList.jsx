@@ -9,7 +9,7 @@ const TodoList = ({
   addTask,
   toggleCompleted,
   text,
-  setText,
+  setTaskText,
 }) => {
   // Sort tasks: incomplete ones first, then completed ones
   const sortedTasks = tasks.sort((a, b) => a.completed - b.completed);
@@ -17,7 +17,7 @@ const TodoList = ({
   return (
     <div className="todo-list-container">
       <div className="todo-list">
-        <AddTodoItem addTask={addTask} text={text} setText={setText} />
+        <AddTodoItem addTask={addTask} text={text} setTaskText={setTaskText} />
         {sortedTasks.map((task) => (
           <TodoItem
             key={task.id}

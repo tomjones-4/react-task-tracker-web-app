@@ -4,6 +4,10 @@ import MainView from "./components/MainView.jsx";
 import TaskView from "./components/TaskView.jsx";
 import { useState, useEffect } from "react";
 
+// TODO
+// Text should be reset and managed when clicking on the "Add New Task" button
+// Tasks should be added from the right side task view
+
 const App = () => {
   const LOCAL_STORAGE_KEY = "todoApp.tasks";
 
@@ -12,20 +16,19 @@ const App = () => {
     { id: 2, name: "List 2", color: "red", length: 6 },
   ];
 
-  const [text, setText] = useState("");
   const [tasks, setTasks] = useState(() => {
     const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY);
     return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
   });
+  const [selectedTask, setSelectedTask] = useState(
+    tasks.length > 0 ? tasks[0] : null
+  );
+  const [taskText, setTaskText] = useState(selectedTask.text);
 
   // Save tasks to localStorage whenever the tasks array changes
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
   }, [tasks]);
-
-  const [selectedTask, setSelectedTask] = useState(
-    tasks.length > 0 ? tasks[0] : null
-  );
 
   const deleteTask = (id) => {
     setTasks(tasks.filter((task) => task.id !== id));
@@ -43,7 +46,7 @@ const App = () => {
       completed: false,
     };
     setTasks([...tasks, newTask]);
-    setText("");
+    setTaskText("");
   };
 
   const toggleCompleted = (id) => {
@@ -68,8 +71,7 @@ const App = () => {
         deleteTask={deleteTask}
         addTask={addTask}
         toggleCompleted={toggleCompleted}
-        text={text}
-        setText={setText}
+        setTaskText={setTaskText}
       />
       <TaskView
         selectedTask={selectedTask}

@@ -7,8 +7,7 @@ const MainView = ({
   deleteTask,
   addTask,
   toggleCompleted,
-  text,
-  setText,
+  setTaskText,
 }) => {
   return (
     <div className="main-view">
@@ -21,8 +20,7 @@ const MainView = ({
         deleteTask={deleteTask}
         addTask={addTask}
         toggleCompleted={toggleCompleted}
-        text={text}
-        setText={setText}
+        setTaskText={setTaskText}
       />
     </div>
   );
