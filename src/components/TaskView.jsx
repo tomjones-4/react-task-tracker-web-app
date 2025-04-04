@@ -18,7 +18,8 @@ const TaskView = ({
         <h3>Task Details</h3>
         <p>{selectedTask.completed ? "Completed" : "Not Completed"}</p>
         <button onClick={() => deleteTask(selectedTask.id)}>Delete task</button>
-        <button onClick={() => addTask(taskText)}>Save changes</button>
+        {/* <button onClick={() => addTask(taskText)}>Save changes</button> */}
+        <button onClick={() => addTask("fake task")}>Save changes</button>
       </div>
     </div>
   );
