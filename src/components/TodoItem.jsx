@@ -1,8 +1,13 @@
 import React from "react";
 
-const TodoItem = ({ task, deleteTask, toggleCompleted, setSelectedTask }) => {
+const TodoItem = ({
+  task,
+  deleteTask,
+  toggleCompleted,
+  changeSelectedTask,
+}) => {
   const handleClick = () => {
-    setSelectedTask(task);
+    changeSelectedTask(task);
   };
 
   const handleChange = () => {

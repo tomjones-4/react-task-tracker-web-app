@@ -4,12 +4,10 @@ import AddTodoItem from "./AddTodoItem.jsx";
 
 const TodoList = ({
   tasks,
-  setSelectedTask,
   deleteTask,
-  addTask,
   toggleCompleted,
-  text,
-  setTaskText,
+  changeSelectedTask,
+  resetTask,
 }) => {
   // Sort tasks: incomplete ones first, then completed ones
   const sortedTasks = tasks.sort((a, b) => a.completed - b.completed);
@@ -17,14 +15,14 @@ const TodoList = ({
   return (
     <div className="todo-list-container">
       <div className="todo-list">
-        <AddTodoItem addTask={addTask} text={text} setTaskText={setTaskText} />
+        <AddTodoItem resetTask={resetTask} />
         {sortedTasks.map((task) => (
           <TodoItem
             key={task.id}
             task={task}
             deleteTask={deleteTask}
             toggleCompleted={toggleCompleted}
-            setSelectedTask={setSelectedTask}
+            changeSelectedTask={changeSelectedTask}
           />
         ))}
       </div>

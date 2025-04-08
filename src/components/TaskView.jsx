@@ -1,25 +1,22 @@
 import TodoForm from "./TodoForm";
-import { useState } from "react";
 
-const TaskView = ({
-  selectedTask,
-  lists,
-  deleteTask,
-  addTask,
-  taskText,
-  setTaskText,
-}) => {
+const TaskView = ({ selectedTask, lists, deleteTask, addTask, editTask }) => {
+  const testAddTask = (taskTitle) => {
+    console.log(`OK - taskTitle =  ${taskTitle.toString()}`);
+  };
+
   return (
     <div>
       <h1>Task</h1>
-      <h2>{selectedTask.text}</h2>
-      <TodoForm lists={lists} taskText={taskText} setTaskText={setTaskText} />
+      <TodoForm lists={lists} selectedTask={selectedTask} />
       <div className="task-buttons">
         <h3>Task Details</h3>
         <p>{selectedTask.completed ? "Completed" : "Not Completed"}</p>
         <button onClick={() => deleteTask(selectedTask.id)}>Delete task</button>
-        {/* <button onClick={() => addTask(taskText)}>Save changes</button> */}
-        <button onClick={() => addTask("fake task")}>Save changes</button>
+        {/* <button onClick={() => addTask(selectedTask.text)}>Save changes</button> */}
+        <button onClick={() => testAddTask(selectedTask.text)}>
+          Save changes
+        </button>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const TodoForm = ({ lists, taskText, setTaskText }) => {
+const TodoForm = ({ lists, selectedTask, taskText, setTaskText }) => {
   const [dueDateEnabled, setDueDateEnabled] = useState(false);
 
   return (
@@ -8,11 +8,12 @@ const TodoForm = ({ lists, taskText, setTaskText }) => {
       <input
         type="text"
         name="title"
-        value={taskText}
+        value={selectedTask.title}
         placeholder="Title"
         required
         className="todo-form-item"
-        onChange={(e) => setTaskText(e.target.value)}
+        // onChange={(e) => setTaskText(e.target.value)}
+        // onChange={(e) => editTask(e.target.value)}
       />
 
       <textarea

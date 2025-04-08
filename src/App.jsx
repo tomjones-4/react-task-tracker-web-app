@@ -20,10 +20,18 @@ const App = () => {
     const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY);
     return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
   });
+
   const [selectedTask, setSelectedTask] = useState(
     tasks.length > 0 ? tasks[0] : null
   );
-  const [taskText, setTaskText] = useState(selectedTask.text);
+
+  const [taskTitle, setTaskTitle] = useState(selectedTask.text);
+  const [taskDescription, setTaskDescription] = useState(
+    selectedTask.description
+  );
+  const [taskList, setTaskList] = useState(selectedTask.list);
+  const [taskDueDate, setTaskDueDate] = useState(selectedTask.dueDate);
+  const [taskTags, setTaskTags] = useState(selectedTask.tags);
 
   // Save tasks to localStorage whenever the tasks array changes
   useEffect(() => {
@@ -46,7 +54,38 @@ const App = () => {
       completed: false,
     };
     setTasks([...tasks, newTask]);
-    setTaskText("");
+    changeSelectedTask(newTask); // Select the newly added task
+  };
+
+  const editTask = (id) => {
+    const updatedTasks = tasks.map((task) => {
+      if (task.id === id) {
+        return {
+          ...task,
+          text: taskTitle,
+          description: taskDescription,
+          list: taskList,
+          dueDate: taskDueDate,
+          tags: taskTags,
+        };
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
+    setSelectedTask(updatedTasks.find((task) => task.id === id));
+  };
+
+  const changeSelectedTask = (task) => {
+    setSelectedTask(task);
+    setTaskTitle(task.text);
+    setTaskDescription(task.description);
+    setTaskList(task.list);
+    setTaskDueDate(task.dueDate);
+    setTaskTags(task.tags);
+  };
+
+  const resetTask = () => {
+    setTaskTitle("");
   };
 
   const toggleCompleted = (id) => {
@@ -66,18 +105,17 @@ const App = () => {
       <Menu lists={fakeLists} />
       <MainView
         tasks={tasks}
-        setTasks={setTasks}
-        setSelectedTask={setSelectedTask}
         deleteTask={deleteTask}
-        addTask={addTask}
         toggleCompleted={toggleCompleted}
-        setTaskText={setTaskText}
+        changeSelectedTask={changeSelectedTask}
+        resetTask={resetTask}
       />
       <TaskView
         selectedTask={selectedTask}
         lists={fakeLists}
         deleteTask={deleteTask}
         addTask={addTask}
+        editTask={editTask}
       />
     </div>
   );

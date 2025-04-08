@@ -2,12 +2,10 @@ import TodoList from "./TodoList";
 
 const MainView = ({
   tasks,
-  setTasks,
-  setSelectedTask,
   deleteTask,
-  addTask,
   toggleCompleted,
-  setTaskText,
+  changeSelectedTask,
+  resetTask,
 }) => {
   return (
     <div className="main-view">
@@ -15,12 +13,10 @@ const MainView = ({
 
       <TodoList
         tasks={tasks}
-        setTasks={setTasks}
-        setSelectedTask={setSelectedTask}
         deleteTask={deleteTask}
-        addTask={addTask}
         toggleCompleted={toggleCompleted}
-        setTaskText={setTaskText}
+        changeSelectedTask={changeSelectedTask}
+        resetTask={resetTask}
       />
     </div>
   );
