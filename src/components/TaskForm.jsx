@@ -14,6 +14,14 @@ const TaskForm = ({
   setTaskTags,
 }) => {
   const [dueDateEnabled, setDueDateEnabled] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newTag, setNewTag] = useState("");
+
+  const fakeTags = [
+    { id: 1, name: "Tag 1" },
+    { id: 2, name: "Tag 2" },
+    { id: 3, name: "Tag 3" },
+  ];
 
   return (
     <form id="task-form" className="task-form">
