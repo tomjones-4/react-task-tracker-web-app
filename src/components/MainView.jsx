@@ -7,6 +7,7 @@ const MainView = ({
   setSelectedTask,
   resetTask,
   selectedTaskForDebug,
+  setIsAddMode,
 }) => {
   return (
     <div className="main-view">
@@ -18,6 +19,7 @@ const MainView = ({
         toggleCompleted={toggleCompleted}
         setSelectedTask={setSelectedTask}
         resetTask={resetTask}
+        setIsAddMode={setIsAddMode}
       />
 
       <div

@@ -1,8 +1,15 @@
 import React from "react";
 
-const TaskItem = ({ task, deleteTask, toggleCompleted, setSelectedTask }) => {
+const TaskItem = ({
+  task,
+  deleteTask,
+  toggleCompleted,
+  setSelectedTask,
+  setIsAddMode,
+}) => {
   const handleClick = () => {
     setSelectedTask(task);
+    setIsAddMode(false);
   };
 
   const handleChange = () => {

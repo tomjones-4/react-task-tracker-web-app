@@ -24,6 +24,8 @@ const App = () => {
     tasks.length > 0 ? tasks[0] : null
   );
 
+  const [isAddMode, setIsAddMode] = useState(true);
+
   // const [taskTitle, setTaskTitle] = useState(selectedTask.text);
   // const [taskDescription, setTaskDescription] = useState(
   //   selectedTask.description
@@ -59,25 +61,25 @@ const App = () => {
   const addTask = (newTask) => {
     if (!newTask) return; // Prevent adding empty tasks
     setTasks([...tasks, newTask]);
-    //setSelectedTask(taskToAdd); // Select the newly added task
+    setSelectedTask(newTask); // Select the newly added task
   };
 
-  const editTask = (id) => {
+  const editTask = (editedTask) => {
     const updatedTasks = tasks.map((task) => {
-      if (task.id === id) {
+      if (task.id === editedTask.id) {
         return {
           ...task,
-          text: taskTitle,
-          description: taskDescription,
-          list: taskList,
-          dueDate: taskDueDate,
-          tags: taskTags,
+          title: editedTask.title,
+          description: editedTask.description,
+          list: editedTask.list,
+          dueDate: editedTask.dueDate,
+          tags: editedTask.tags,
         };
       }
       return task;
     });
     setTasks(updatedTasks);
-    setSelectedTask(updatedTasks.find((task) => task.id === id));
+    setSelectedTask(updatedTasks.find((task) => task.id === editedTask.id));
   };
 
   const resetTask = () => {
@@ -91,11 +93,7 @@ const App = () => {
       tags: "",
     };
     setSelectedTask(newTask);
-    // setTaskTitle("");
-    // setTaskDescription("");
-    // setTaskList("");
-    // setTaskDueDate("");
-    // setTaskTags("");
+    setIsAddMode(true);
   };
 
   const toggleCompleted = (id) => {
@@ -126,6 +124,7 @@ const App = () => {
         setSelectedTask={setSelectedTask}
         resetTask={resetTask}
         selectedTaskForDebug={selectedTask}
+        setIsAddMode={setIsAddMode}
       />
       <TaskView
         selectedTask={selectedTask}
@@ -133,6 +132,7 @@ const App = () => {
         deleteTask={deleteTask}
         addTask={addTask}
         editTask={editTask}
+        isAddMode={isAddMode}
       />
     </div>
   );

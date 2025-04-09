@@ -8,6 +8,7 @@ const TaskList = ({
   toggleCompleted,
   setSelectedTask,
   resetTask,
+  setIsAddMode,
 }) => {
   // Sort tasks: incomplete ones first, then completed ones
   const sortedTasks = tasks.sort((a, b) => a.completed - b.completed);
@@ -23,6 +24,7 @@ const TaskList = ({
             deleteTask={deleteTask}
             toggleCompleted={toggleCompleted}
             setSelectedTask={setSelectedTask}
+            setIsAddMode={setIsAddMode}
           />
         ))}
       </div>
