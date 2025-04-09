@@ -24,3 +24,7 @@ You may also see any lint errors in the console.
 * Start out with different lists (don't worry about calendar / dates yet)
 * Each list should show up like the "Today" section in the above image
 * Each clicked task should bring up the task pane on the right side with any associated subtasks
+
+## TODOs
+* Rename Todo to Task in code
+* Think about best way to manage state - one variable per task or multiple for each field within the task?
