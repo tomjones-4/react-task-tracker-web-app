@@ -1,4 +1,4 @@
-import TodoList from "./TodoList";
+import TaskList from "./TaskList";
 
 const MainView = ({
   tasks,
@@ -12,7 +12,7 @@ const MainView = ({
     <div className="main-view">
       <h1>MainView</h1>
 
-      <TodoList
+      <TaskList
         tasks={tasks}
         deleteTask={deleteTask}
         toggleCompleted={toggleCompleted}

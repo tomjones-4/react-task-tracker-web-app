@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const TodoForm = ({
+const TaskForm = ({
   lists,
   taskTitle,
   setTaskTitle,
@@ -16,14 +16,14 @@ const TodoForm = ({
   const [dueDateEnabled, setDueDateEnabled] = useState(false);
 
   return (
-    <form id="todo-form" className="todo-form">
+    <form id="task-form" className="task-form">
       <input
         type="text"
         name="title"
         placeholder="Title"
         value={taskTitle}
         required
-        className="todo-form-item"
+        className="task-form-item"
         onChange={(e) => setTaskTitle(e.target.value)}
       />
 
@@ -31,11 +31,11 @@ const TodoForm = ({
         name="description"
         placeholder="Description"
         value={taskDescription}
-        className="todo-form-item"
+        className="task-form-item"
         onChange={(e) => setTaskDescription(e.target.value)}
       ></textarea>
 
-      <span className="todo-form-item">
+      <span className="task-form-item">
         <label htmlFor="list-select">List</label>
         <select
           id="list-select"
@@ -52,7 +52,7 @@ const TodoForm = ({
         </select>
       </span>
 
-      <span className="todo-form-item">
+      <span className="task-form-item">
         <label>
           <input
             type="checkbox"
@@ -71,7 +71,7 @@ const TodoForm = ({
         />
       </span>
 
-      <label htmlFor="tags" className="todo-form-item">
+      <label htmlFor="tags" className="task-form-item">
         Tags
       </label>
       <input
@@ -79,10 +79,10 @@ const TodoForm = ({
         id="tags"
         name="tags"
         placeholder="Add tags..."
-        className="todo-form-item"
+        className="task-form-item"
       />
     </form>
   );
 };
 
-export default TodoForm;
+export default TaskForm;

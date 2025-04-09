@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import TodoItem from "./TodoItem.jsx";
-import AddTodoItem from "./AddTodoItem.jsx";
+import TaskItem from "./TaskItem.jsx";
+import AddTaskItem from "./AddTaskItem.jsx";
 
-const TodoList = ({
+const TaskList = ({
   tasks,
   deleteTask,
   toggleCompleted,
@@ -13,11 +13,11 @@ const TodoList = ({
   const sortedTasks = tasks.sort((a, b) => a.completed - b.completed);
 
   return (
-    <div className="todo-list-container">
-      <div className="todo-list">
-        <AddTodoItem resetTask={resetTask} />
+    <div className="task-list-container">
+      <div className="task-list">
+        <AddTaskItem resetTask={resetTask} />
         {sortedTasks.map((task) => (
-          <TodoItem
+          <TaskItem
             key={task.id}
             task={task}
             deleteTask={deleteTask}
@@ -30,4 +30,4 @@ const TodoList = ({
   );
 };
 
-export default TodoList;
+export default TaskList;

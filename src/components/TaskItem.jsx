@@ -1,6 +1,6 @@
 import React from "react";
 
-const TodoItem = ({ task, deleteTask, toggleCompleted, setSelectedTask }) => {
+const TaskItem = ({ task, deleteTask, toggleCompleted, setSelectedTask }) => {
   const handleClick = () => {
     setSelectedTask(task);
   };
@@ -11,7 +11,7 @@ const TodoItem = ({ task, deleteTask, toggleCompleted, setSelectedTask }) => {
 
   return (
     <div
-      className={`todo-item ${task.completed ? "completed" : ""}`}
+      className={`task-item ${task.completed ? "completed" : ""}`}
       onClick={handleClick}
     >
       <input type="checkbox" checked={task.completed} onChange={handleChange} />
@@ -21,4 +21,4 @@ const TodoItem = ({ task, deleteTask, toggleCompleted, setSelectedTask }) => {
   );
 };
 
-export default TodoItem;
+export default TaskItem;
