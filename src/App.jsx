@@ -24,6 +24,20 @@ const App = () => {
     tasks.length > 0 ? tasks[0] : null
   );
 
+  if (tasks.length == 0) {
+    const newTask = {
+      id: Date.now(),
+      completed: false,
+      title: "Base Task so list is not empty",
+      description: "This should be helpful for testing",
+      list: "",
+      dueDate: "",
+      tags: "",
+    };
+    setSelectedTask(newTask);
+    setTasks([newTask]);
+  }
+
   const [isAddMode, setIsAddMode] = useState(true);
 
   // const [taskTitle, setTaskTitle] = useState(selectedTask.text);
