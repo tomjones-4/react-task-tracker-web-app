@@ -5,8 +5,7 @@ import TaskView from "./components/TaskView.jsx";
 import { useState, useEffect } from "react";
 
 // TODO
-// Text should be reset and managed when clicking on the "Add New Task" button
-// Tasks should be added from the right side task view
+// Distinguish between adding and editing tasks
 
 const App = () => {
   const LOCAL_STORAGE_KEY = "todoApp.tasks";
