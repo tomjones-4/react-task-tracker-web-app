@@ -1,4 +1,4 @@
-import TodoForm from "./TodoForm";
+import TaskForm from "./TaskForm";
 import { useState, useEffect } from "react";
 
 const TaskView = ({ selectedTask, lists, deleteTask, addTask, editTask }) => {
@@ -39,7 +39,7 @@ const TaskView = ({ selectedTask, lists, deleteTask, addTask, editTask }) => {
   return (
     <div>
       <h1>Task</h1>
-      <TodoForm
+      <TaskForm
         lists={lists}
         taskTitle={taskTitle}
         setTaskTitle={setTaskTitle}
