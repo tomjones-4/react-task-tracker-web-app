@@ -4,8 +4,9 @@ const MainView = ({
   tasks,
   deleteTask,
   toggleCompleted,
-  changeSelectedTask,
+  setSelectedTask,
   resetTask,
+  selectedTaskForDebug,
 }) => {
   return (
     <div className="main-view">
@@ -15,9 +16,19 @@ const MainView = ({
         tasks={tasks}
         deleteTask={deleteTask}
         toggleCompleted={toggleCompleted}
-        changeSelectedTask={changeSelectedTask}
+        setSelectedTask={setSelectedTask}
         resetTask={resetTask}
       />
+
+      <div
+        className="debug"
+        onClick={() =>
+          console.log("selectedTaskForDebug = ", selectedTaskForDebug)
+        }
+      >
+        <h2>Debug</h2>
+        <p>Selected Task: {JSON.stringify(selectedTaskForDebug)}</p>
+      </div>
     </div>
   );
 };

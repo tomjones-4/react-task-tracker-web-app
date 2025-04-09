@@ -1,6 +1,18 @@
 import { useState } from "react";
 
-const TodoForm = ({ lists, selectedTask, taskText, setTaskText }) => {
+const TodoForm = ({
+  lists,
+  taskTitle,
+  setTaskTitle,
+  taskDescription,
+  setTaskDescription,
+  taskList,
+  setTaskList,
+  taskDueDate,
+  setTaskDueDate,
+  taskTags,
+  setTaskTags,
+}) => {
   const [dueDateEnabled, setDueDateEnabled] = useState(false);
 
   return (
@@ -8,23 +20,30 @@ const TodoForm = ({ lists, selectedTask, taskText, setTaskText }) => {
       <input
         type="text"
         name="title"
-        value={selectedTask.title}
         placeholder="Title"
+        value={taskTitle}
         required
         className="todo-form-item"
-        // onChange={(e) => setTaskText(e.target.value)}
-        // onChange={(e) => editTask(e.target.value)}
+        onChange={(e) => setTaskTitle(e.target.value)}
       />
 
       <textarea
         name="description"
         placeholder="Description"
+        value={taskDescription}
         className="todo-form-item"
+        onChange={(e) => setTaskDescription(e.target.value)}
       ></textarea>
 
       <span className="todo-form-item">
         <label htmlFor="list-select">List</label>
-        <select id="list-select" name="list">
+        <select
+          id="list-select"
+          name="list"
+          value={taskList}
+          onSelect={(e) => setTaskList(e.target.value)}
+        >
+          <option value="" />
           {lists.map((list) => (
             <option key={list.id} value={list.id}>
               {list.name}
@@ -46,6 +65,8 @@ const TodoForm = ({ lists, selectedTask, taskText, setTaskText }) => {
           type="date"
           id="due-date"
           name="dueDate"
+          value={taskDueDate}
+          onChange={(e) => setTaskDueDate(e.target.value)}
           disabled={!dueDateEnabled}
         />
       </span>

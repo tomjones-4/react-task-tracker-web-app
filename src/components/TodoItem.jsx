@@ -1,13 +1,8 @@
 import React from "react";
 
-const TodoItem = ({
-  task,
-  deleteTask,
-  toggleCompleted,
-  changeSelectedTask,
-}) => {
+const TodoItem = ({ task, deleteTask, toggleCompleted, setSelectedTask }) => {
   const handleClick = () => {
-    changeSelectedTask(task);
+    setSelectedTask(task);
   };
 
   const handleChange = () => {
@@ -20,7 +15,7 @@ const TodoItem = ({
       onClick={handleClick}
     >
       <input type="checkbox" checked={task.completed} onChange={handleChange} />
-      <p>{task.text}</p>
+      <p>{task.title}</p>
       <button onClick={() => deleteTask(task.id)}>X</button>
     </div>
   );

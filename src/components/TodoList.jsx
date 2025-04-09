@@ -6,7 +6,7 @@ const TodoList = ({
   tasks,
   deleteTask,
   toggleCompleted,
-  changeSelectedTask,
+  setSelectedTask,
   resetTask,
 }) => {
   // Sort tasks: incomplete ones first, then completed ones
@@ -22,7 +22,7 @@ const TodoList = ({
             task={task}
             deleteTask={deleteTask}
             toggleCompleted={toggleCompleted}
-            changeSelectedTask={changeSelectedTask}
+            setSelectedTask={setSelectedTask}
           />
         ))}
       </div>
