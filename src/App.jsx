@@ -10,6 +10,8 @@ import { useState, useEffect } from "react";
 // Make it so the list that is selected when editing a task is the list the user is currently on by default
 // Make modal pop up when user clicks on a tag to add it to a task
 // * In the above modal, the user should be able to create a new tag or select an existing one (add ability for user to create new tags)
+// Need to add a way to delete tags
+// Make it so menu buttons show up at bottom of menu. Currently I'm setting the height of the div with menu-footer class, but there should be a better way where I can position the buttons at a certain distance from the bottom.
 
 const App = () => {
   const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";

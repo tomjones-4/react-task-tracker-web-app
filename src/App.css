@@ -7,6 +7,7 @@
   display: flex;
   text-align: center;
   background-color: white;
+  height: 100vh;
 }
 
 .menu-container {
@@ -103,6 +104,24 @@
 .main-view {
   width: 50%; /* Adjust width as needed */
   padding: 20px;
+}
+
+.menu-footer {
+  height: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: start;
+}
+
+.menu-footer span {
+  padding: 10px;
+  border-radius: 20px; /* Rounded edges */
+  margin: 10px;
+  background-color: #f7f7f7; /* Light background */
+  color: slategray;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
 }
 
 /* Style the task list */

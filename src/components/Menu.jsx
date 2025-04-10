@@ -1,5 +1,7 @@
 import React from "react";
 import MenuLists from "./MenuLists";
+import { IoSettingsOutline } from "react-icons/io5";
+import { IoIosLogOut } from "react-icons/io";
 
 const Menu = ({ lists }) => {
   return (
@@ -29,6 +31,16 @@ const Menu = ({ lists }) => {
         ></input>
       </div>
       <MenuLists lists={lists} />
+      <div className="menu-footer">
+        <span>
+          <IoSettingsOutline className="menu-footer-icon" />
+          <p>Settings</p>
+        </span>
+        <span>
+          <IoIosLogOut className="menu-footer-icon" />
+          <p>Logout</p>
+        </span>
+      </div>
     </div>
   );
 };
