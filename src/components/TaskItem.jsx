@@ -1,4 +1,5 @@
 import React from "react";
+import { FaChevronRight } from "react-icons/fa";
 
 const TaskItem = ({
   task,
@@ -23,7 +24,8 @@ const TaskItem = ({
     >
       <input type="checkbox" checked={task.completed} onChange={handleChange} />
       <p>{task.title}</p>
-      <button onClick={() => deleteTask(task.id)}>X</button>
+      {/* <button onClick={() => deleteTask(task.id)}>X</button> */}
+      <FaChevronRight className="expand-task-icon" />
     </div>
   );
 };
