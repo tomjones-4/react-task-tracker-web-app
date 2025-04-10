@@ -39,7 +39,7 @@ const TaskForm = ({
         name="description"
         placeholder="Description"
         value={taskDescription}
-        className="task-form-item"
+        className="task-form-item task-form-description"
         onChange={(e) => setTaskDescription(e.target.value)}
       ></textarea>
 
@@ -62,12 +62,13 @@ const TaskForm = ({
 
       <span className="task-form-item">
         <label>
+          Due date?
           <input
+            className="due-date-checkbox"
             type="checkbox"
             id="enable-due-date"
             onChange={(e) => setDueDateEnabled(e.target.checked)}
           />{" "}
-          Due date?
         </label>
         <input
           type="date"

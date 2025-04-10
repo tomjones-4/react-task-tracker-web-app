@@ -56,7 +56,7 @@ const TaskView = ({
   };
 
   return (
-    <div>
+    <div className="task-view">
       {isAddMode && <h1>Add Task</h1>}
       {!isAddMode && <h1>Edit Task</h1>}
       <TaskForm

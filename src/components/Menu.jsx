@@ -4,7 +4,7 @@ import MenuLists from "./MenuLists";
 const Menu = ({ lists }) => {
   return (
     <div className="menu-container">
-      <h2>Menu</h2>
+      <h1>Menu</h1>
       <div className="search-container">
         <span className="search-icon">
           <svg

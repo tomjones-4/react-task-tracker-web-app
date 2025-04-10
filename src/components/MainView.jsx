@@ -11,7 +11,7 @@ const MainView = ({
 }) => {
   return (
     <div className="main-view">
-      <h1>MainView</h1>
+      <h1>Task List</h1>
 
       <TaskList
         tasks={tasks}
