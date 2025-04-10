@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 
 // TODO
 // Distinguish between adding and editing tasks
+// Add option for user to hide completed tasks instead of showing them crossed out
+// Add ability for user to create new lists
 
 const App = () => {
   const LOCAL_STORAGE_KEY = "todoApp.tasks";
