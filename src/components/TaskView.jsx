@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 const TaskView = ({
   selectedTask,
   lists,
+  tags,
   deleteTask,
   addTask,
   editTask,
   isAddMode,
+  addTag,
 }) => {
   const [taskTitle, setTaskTitle] = useState(selectedTask.title);
   const [taskDescription, setTaskDescription] = useState(
@@ -61,6 +63,7 @@ const TaskView = ({
       {!isAddMode && <h1>Edit Task</h1>}
       <TaskForm
         lists={lists}
+        tags={tags}
         taskTitle={taskTitle}
         setTaskTitle={setTaskTitle}
         taskDescription={taskDescription}
@@ -71,15 +74,31 @@ const TaskView = ({
         setTaskDueDate={setTaskDueDate}
         taskTags={taskTags}
         setTaskTags={setTaskTags}
+        addTag={addTag}
       />
-      <div className="task-buttons">
-        <h3>Task Details</h3>
-        <p>{selectedTask.completed ? "Completed" : "Not Completed"}</p>
-        <button onClick={(e) => deleteTask(selectedTask.id)}>
+      <div>
+        <button
+          className="task-button delete-task-button"
+          onClick={(e) => deleteTask(selectedTask.id)}
+        >
           Delete task
         </button>
-        {!isAddMode && <button onClick={handleEditTask}>Save changes</button>}
-        {isAddMode && <button onClick={handleAddTask}>Add new task</button>}
+        {!isAddMode && (
+          <button
+            className="task-button save-task-button"
+            onClick={handleEditTask}
+          >
+            Save changes
+          </button>
+        )}
+        {isAddMode && (
+          <button
+            className="task-button save-task-button"
+            onClick={handleAddTask}
+          >
+            Add new task
+          </button>
+        )}
       </div>
     </div>
   );
