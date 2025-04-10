@@ -1,4 +1,4 @@
-body {
+* {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif;
 }
@@ -222,4 +222,107 @@ textarea {
 
 .due-date-checkbox {
   margin-left: 5px;
+}
+
+.task-button {
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+.task-button:focus {
+  outline: none; /* Remove default focus outline */
+}
+
+.delete-task-button {
+  background-color: #ff4d4d; /* Red background */
+}
+.delete-task-button:hover {
+  background-color: #ff1a1a; /* Darker red on hover */
+}
+.delete-task-button:focus {
+  box-shadow: 0 0 0 2px rgba(255, 77, 77, 0.5); /* Custom focus outline */
+}
+.delete-task-button:active {
+  background-color: #e60000; /* Even darker red when active */
+}
+
+.save-task-button {
+  background-color: #398219; /* Blue background */
+}
+.save-task-button:hover {
+  background-color: #074e05; /* Darker blue on hover */
+}
+.save-task-button:focus {
+  box-shadow: 0 0 0 2px rgba(12, 90, 29, 0.5); /* Custom focus outline */
+}
+.save-task-button:active {
+  background-color: #02280e; /* Even darker blue when active */
+}
+
+/* Modal styles - see if they look good. Make adjustments as needed. */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  width: 300px;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.tag {
+  background-color: #eee;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.new-tag-section {
+  display: flex;
+  gap: 8px;
+}
+
+.new-tag-input {
+  flex: 1;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.submit-btn {
+  padding: 6px 12px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
 }

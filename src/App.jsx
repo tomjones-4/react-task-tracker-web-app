@@ -5,23 +5,46 @@ import TaskView from "./components/TaskView.jsx";
 import { useState, useEffect } from "react";
 
 // TODO
-// Add option for user to hide completed tasks instead of showing them crossed out
+// Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
 // Add ability for user to create new lists
-// Add ability for user to create new tags
-// Make the fonts in the input and the description the same. They're different right now. Use chrome dev tools "computed" tab to debug
+// Make it so the list that is selected when editing a task is the list the user is currently on by default
+// Make modal pop up when user clicks on a tag to add it to a task
+// * In the above modal, the user should be able to create a new tag or select an existing one (add ability for user to create new tags)
 
 const App = () => {
-  const LOCAL_STORAGE_KEY = "todoApp.tasks";
+  const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";
+  const LOCAL_STORAGE_KEY_TAGS = "todoApp.tags";
+  const LOCAL_STORAGE_KEY_LISTS = "todoApp.lists";
+  // const LOCAL_STORAGE_KEY_SETTINGS = "todoApp.settings";
+  // const LOCAL_STORAGE_KEY_THEME = "todoApp.theme";
 
   const fakeLists = [
     { id: 1, name: "List 1", color: "blue", length: 3 },
     { id: 2, name: "List 2", color: "red", length: 6 },
   ];
 
+  const fakeTags = [
+    { id: 1, name: "Tag 1" },
+    { id: 2, name: "Tag 2" },
+    { id: 3, name: "Tag 3" },
+  ];
+
   const [tasks, setTasks] = useState(() => {
-    const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY);
+    const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY_TASKS);
     return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
   });
+
+  const [tags, setTags] = useState(() => {
+    const storedTags = localStorage.getItem(LOCAL_STORAGE_KEY_TAGS);
+    return storedTags ? JSON.parse(storedTags) : []; // Load from localStorage or default to []
+  });
+
+  const addTag = (tag) => {
+    if (tag.trim()) {
+      setTags([...tags, tag.trim()]);
+      //setNewTag("");
+    }
+  };
 
   const [selectedTask, setSelectedTask] = useState(
     tasks.length > 0 ? tasks[0] : null
@@ -43,18 +66,20 @@ const App = () => {
 
   const [isAddMode, setIsAddMode] = useState(true);
 
-  // const [taskTitle, setTaskTitle] = useState(selectedTask.text);
-  // const [taskDescription, setTaskDescription] = useState(
-  //   selectedTask.description
-  // );
-  // const [taskList, setTaskList] = useState(selectedTask.list);
-  // const [taskDueDate, setTaskDueDate] = useState(selectedTask.dueDate);
-  // const [taskTags, setTaskTags] = useState(selectedTask.tags);
-
   // Save tasks to localStorage whenever the tasks array changes
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
+    localStorage.setItem(LOCAL_STORAGE_KEY_TASKS, JSON.stringify(tasks));
   }, [tasks]);
+
+  // Save tags to localStorage whenever the tags array changes
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY_TAGS, JSON.stringify(tags));
+  }, [tags]);
+
+  // Save lists to localStorage whenever the lists array changes
+  // useEffect(() => {
+  //   localStorage.setItem(LOCAL_STORAGE_KEY_LISTS, JSON.stringify(fakeLists));
+  // }, [fakeLists]);
 
   const deleteTask = (id) => {
     setTasks(tasks.filter((task) => task.id !== id));
@@ -63,17 +88,6 @@ const App = () => {
       setSelectedTask(tasks.length > 0 ? tasks[0] : null);
     }
   };
-
-  // const addTask = (text) => {
-  //   if (!text) return; // Prevent adding empty tasks
-  //   const newTask = {
-  //     id: Date.now(),
-  //     text,
-  //     completed: false,
-  //   };
-  //   setTasks([...tasks, newTask]);
-  //   setSelectedTask(newTask); // Select the newly added task
-  // };
 
   const addTask = (newTask) => {
     if (!newTask) return; // Prevent adding empty tasks
@@ -146,10 +160,12 @@ const App = () => {
       <TaskView
         selectedTask={selectedTask}
         lists={fakeLists}
+        tags={fakeTags}
         deleteTask={deleteTask}
         addTask={addTask}
         editTask={editTask}
         isAddMode={isAddMode}
+        addTag={addTag}
       />
     </div>
   );

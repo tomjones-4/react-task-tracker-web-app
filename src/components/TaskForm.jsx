@@ -1,7 +1,9 @@
 import { useState } from "react";
+import AddTagsModal from "./AddTagsModal";
 
 const TaskForm = ({
   lists,
+  tags,
   taskTitle,
   setTaskTitle,
   taskDescription,
@@ -12,16 +14,13 @@ const TaskForm = ({
   setTaskDueDate,
   taskTags,
   setTaskTags,
+  addTag,
 }) => {
   const [dueDateEnabled, setDueDateEnabled] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddTagModalOpen, setIsAddTagModalOpen] = useState(false);
   const [newTag, setNewTag] = useState("");
 
-  const fakeTags = [
-    { id: 1, name: "Tag 1" },
-    { id: 2, name: "Tag 2" },
-    { id: 3, name: "Tag 3" },
-  ];
+  const closeModal = () => setIsAddTagModalOpen(false);
 
   return (
     <form id="task-form" className="task-form">
@@ -80,16 +79,33 @@ const TaskForm = ({
         />
       </span>
 
-      <label htmlFor="tags" className="task-form-item">
-        Tags
-      </label>
-      <input
-        type="text"
-        id="tags"
-        name="tags"
-        placeholder="Add tags..."
-        className="task-form-item"
-      />
+      <span className="task-form-item">
+        <label htmlFor="tags" className="">
+          Tags
+        </label>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setIsAddTagModalOpen(true);
+          }}
+        >
+          Add Tag
+        </button>
+        {isAddTagModalOpen && (
+          <AddTagsModal addTag={addTag} closeModal={closeModal} />
+        )}
+      </span>
+
+      {/* 
+        <Modal
+          isOpen={isOpen}
+          closeModal={() => setIsOpen(false)}
+          tags={tags}
+          setTags={setTags}
+          addTag={addTag}
+          newTag={newTag}
+          setNewTag={setNewTag}
+        /> */}
     </form>
   );
 };
