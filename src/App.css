@@ -105,19 +105,6 @@
   font-size: larger;
 }
 
-.add-task-item {
-  background-color: #f9f9f9; /* Light gray background */
-  padding: 12px 16px; /* Inner spacing */
-  margin: 10px 0; /* Space between items */
-  border-radius: 8px; /* Rounded corners */
-  border: 1px solid #ddd; /* Light border for definition */
-  display: flex; /* Aligns children (text, buttons) in a row */
-  justify-content: space-between; /* Ensures spacing between text & actions */
-  align-items: center; /* Centers items vertically */
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  transition: background 0.2s ease-in-out;
-}
-
 .add-task-btn {
   background: #007bff;
   color: white;
@@ -136,6 +123,11 @@
   background: #0056b3;
 }
 
+.add-task-icon {
+  margin-right: 10px;
+  color: slategray;
+}
+
 .task-input {
   flex-grow: 1;
   border: none;
@@ -145,16 +137,29 @@
   background: transparent;
 }
 
-.task-item {
-  background-color: #f9f9f9; /* Light gray background */
-  padding: 12px 16px; /* Inner spacing */
-  margin: 10px 0; /* Space between items */
+.add-task-item {
+  padding: 0px 16px; /* Inner spacing */
   border-radius: 8px; /* Rounded corners */
-  border: 1px solid #ddd; /* Light border for definition */
+  display: flex; /* Aligns children (text, buttons) in a row */
+  justify-content: left; /* Ensures spacing between text & actions */
+  align-items: center; /* Centers items vertically */
+  transition: background 0.2s ease-in-out;
+}
+
+.add-task-item:hover {
+  background-color: #f0f0f0; /* Slight hover effect */
+}
+
+.add-task-item p {
+  color: slategray;
+}
+
+.task-item {
+  padding: 12px 16px; /* Inner spacing */
+  border-top: 1px solid #ddd; /* Light border for definition */
   display: flex; /* Aligns children (text, buttons) in a row */
   justify-content: space-between; /* Ensures spacing between text & actions */
   align-items: center; /* Centers items vertically */
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   transition: background 0.2s ease-in-out;
 }
 
@@ -221,10 +226,6 @@ input[type="text"] {
 
 .add-button:active {
   transform: translateX(-50%) scale(0.95); /* Click effect */
-}
-
-.task-list:hover {
-  background-color: #eaeaea; /* Light hover effect */
 }
 
 .task-form {

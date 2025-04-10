@@ -16,7 +16,7 @@ const TaskList = ({
   return (
     <div className="task-list-container">
       <div className="task-list">
-        <AddTaskItem resetTask={resetTask} />
+        <AddTaskItem resetTask={resetTask} className="add-task" />
         {sortedTasks.map((task) => (
           <TaskItem
             key={task.id}
