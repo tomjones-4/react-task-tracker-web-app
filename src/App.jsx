@@ -5,9 +5,10 @@ import TaskView from "./components/TaskView.jsx";
 import { useState, useEffect } from "react";
 
 // TODO
-// Distinguish between adding and editing tasks
 // Add option for user to hide completed tasks instead of showing them crossed out
 // Add ability for user to create new lists
+// Add ability for user to create new tags
+// Make the fonts in the input and the description the same. They're different right now. Use chrome dev tools "computed" tab to debug
 
 const App = () => {
   const LOCAL_STORAGE_KEY = "todoApp.tasks";
