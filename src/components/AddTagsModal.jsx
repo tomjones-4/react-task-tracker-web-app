@@ -1,13 +1,17 @@
 import React from "react";
 
 const AddTagsModal = ({ addTag, closeModal }) => {
+  const handleAddTag = (e) => {
+    addTag();
+  };
+
   return (
     <div className="modal-backdrop" onClick={closeModal}>
       <div
         className="modal-content"
         onClick={(e) => e.stopPropagation()} // prevent backdrop close
       >
-        <button className="close-btn" onClick={closeModal}>
+        <button className="close-tag-modal-btn" onClick={closeModal}>
           &times;
         </button>
         <h2 className="modal-title">Manage Tags</h2>
@@ -33,7 +37,7 @@ const AddTagsModal = ({ addTag, closeModal }) => {
             onChange={(e) => setNewTag(e.target.value)}
             className="new-tag-input"
           />
-          <button className="submit-btn" onClick={addTag}>
+          <button className="add-tag-btn" onClick={handleAddTag}>
             Add
           </button>
         </div>

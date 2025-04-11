@@ -8,6 +8,7 @@
   text-align: center;
   background-color: white;
   height: 100vh;
+  width: 100vw;
 }
 
 .menu-container {
@@ -101,27 +102,41 @@
   text-align: center;
 }
 
-.main-view {
-  width: 50%; /* Adjust width as needed */
-  padding: 20px;
-}
-
 .menu-footer {
-  height: 800px;
   display: flex;
   flex-direction: column;
   justify-content: end;
   align-items: start;
+  position: absolute;
+  bottom: 20px; /* Position at the bottom */
 }
 
 .menu-footer span {
-  padding: 10px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
   border-radius: 20px; /* Rounded edges */
-  margin: 10px;
-  background-color: #f7f7f7; /* Light background */
+  margin: 1px;
   color: slategray;
   cursor: pointer;
   transition: background 0.2s ease-in-out;
+}
+
+.menu-footer-icon {
+  color: black;
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.menu-footer p {
+  color: black;
+  margin: 8px;
+}
+
+.main-view {
+  flex-grow: 1;
+  width: 40%; /* Adjust width as needed */
+  padding: 20px;
 }
 
 /* Style the task list */
@@ -188,7 +203,8 @@
 }
 
 .task-view {
-  /* width: auto; */ /* Uncomment if you want to set a specific width */
+  min-width: 500px;
+  flex-grow: 1;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -301,20 +317,21 @@ textarea {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
-.close-btn {
+.close-tag-modal-btn {
   position: absolute;
-  top: 10px;
+  top: 2px;
   right: 12px;
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 25px;
+  color: red;
   cursor: pointer;
 }
 
 .tag-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   margin: 16px 0;
 }
 
@@ -337,7 +354,7 @@ textarea {
   border-radius: 4px;
 }
 
-.submit-btn {
+.add-tag-btn {
   padding: 6px 12px;
   border: none;
   background-color: #007bff;

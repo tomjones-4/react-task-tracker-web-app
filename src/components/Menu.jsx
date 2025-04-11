@@ -38,7 +38,7 @@ const Menu = ({ lists }) => {
         </span>
         <span>
           <IoIosLogOut className="menu-footer-icon" />
-          <p>Logout</p>
+          <p>Sign out</p>
         </span>
       </div>
     </div>
