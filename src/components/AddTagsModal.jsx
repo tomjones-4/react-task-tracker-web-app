@@ -30,7 +30,7 @@ const AddTagsModal = ({ tags, addTag, deleteTag, addTaskTag, closeModal }) => {
         <button className="close-tag-modal-button" onClick={closeModal}>
           &times;
         </button>
-        <h2 className="modal-title">Apply Tags</h2>
+        <h2 className="modal-title">Manage Tags</h2>
 
         <div className="tag-list">
           {tags.length > 0 ? (
@@ -38,18 +38,23 @@ const AddTagsModal = ({ tags, addTag, deleteTag, addTaskTag, closeModal }) => {
               <span
                 key={i}
                 className="tag"
-                style={{ backgroundColor: tag.color, fontWeight: "bold" }}
+                style={{
+                  backgroundColor: tag.color,
+                }}
                 // Need to handle this a better way than having the onclick apply to the whole span because there is also the garbage icon
                 onClick={(e) => {
                   e.preventDefault();
                   addTaskTag(tag);
                 }}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
               >
                 {tag.name}
                 <button
                   className="delete-tag-button"
                   onClick={(e) => {
                     e.preventDefault();
+                    e.stopPropagation(); // prevent tag click event from firing
                     deleteTag(tag);
                   }}
                 >

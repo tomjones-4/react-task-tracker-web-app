@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 // Make it so menu buttons show up at bottom of menu. Currently I'm setting the height of the div with menu-footer class, but there should be a better way where I can position the buttons at a certain distance from the bottom.
 // Apply a highlight on selected tags in tags modal
 // Don't let user add the same tag twice
+// If a tag is removed from the manage tags modal, it should be removed from tasks that have it applied? Idk, that's debateable
 
 const App = () => {
   const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";
