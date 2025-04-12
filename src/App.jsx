@@ -12,6 +12,8 @@ import { useState, useEffect } from "react";
 // * In the above modal, the user should be able to create a new tag or select an existing one (add ability for user to create new tags)
 // Need to add a way to delete tags
 // Make it so menu buttons show up at bottom of menu. Currently I'm setting the height of the div with menu-footer class, but there should be a better way where I can position the buttons at a certain distance from the bottom.
+// Apply a highlight on selected tags in tags modal
+// Don't let user add the same tag twice
 
 const App = () => {
   const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";

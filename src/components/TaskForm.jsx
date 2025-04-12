@@ -22,6 +22,16 @@ const TaskForm = ({
 
   const closeModal = () => setIsAddTagModalOpen(false);
 
+  const addTaskTag = (newTaskTag) => {
+    setTaskTags(() => [...taskTags, newTaskTag]);
+  };
+
+  const deleteTaskTag = (tagToDelete) => {
+    setTaskTags((prevTags) =>
+      prevTags.filter((tag) => tag.name !== tagToDelete.name)
+    );
+  };
+
   return (
     <form id="task-form" className="task-form">
       <input
@@ -80,22 +90,42 @@ const TaskForm = ({
       </span>
 
       <span className="task-form-item">
-        <label htmlFor="tags" className="">
-          Tags
-        </label>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            setIsAddTagModalOpen(true);
-          }}
-        >
-          Add Tag
-        </button>
+        <label htmlFor="tags">Tags</label>
+        <span>
+          {taskTags.length > 0 &&
+            taskTags.map((tag, i) => (
+              <span
+                key={i}
+                className="tag"
+                style={{ backgroundColor: tag.color, fontWeight: "bold" }}
+              >
+                {tag.name}
+                <button
+                  className="delete-tag-button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    deleteTaskTag(tag);
+                  }}
+                >
+                  &times;
+                </button>
+              </span>
+            ))}
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              setIsAddTagModalOpen(true);
+            }}
+          >
+            Add Tag
+          </button>
+        </span>
         {isAddTagModalOpen && (
           <AddTagsModal
             tags={tags}
             addTag={addTag}
             deleteTag={deleteTag}
+            addTaskTag={addTaskTag}
             closeModal={closeModal}
           />
         )}
