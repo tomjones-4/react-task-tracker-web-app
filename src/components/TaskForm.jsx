@@ -15,10 +15,10 @@ const TaskForm = ({
   taskTags,
   setTaskTags,
   addTag,
+  deleteTag,
 }) => {
   const [dueDateEnabled, setDueDateEnabled] = useState(false);
   const [isAddTagModalOpen, setIsAddTagModalOpen] = useState(false);
-  const [newTag, setNewTag] = useState("");
 
   const closeModal = () => setIsAddTagModalOpen(false);
 
@@ -92,20 +92,14 @@ const TaskForm = ({
           Add Tag
         </button>
         {isAddTagModalOpen && (
-          <AddTagsModal addTag={addTag} closeModal={closeModal} />
+          <AddTagsModal
+            tags={tags}
+            addTag={addTag}
+            deleteTag={deleteTag}
+            closeModal={closeModal}
+          />
         )}
       </span>
-
-      {/* 
-        <Modal
-          isOpen={isOpen}
-          closeModal={() => setIsOpen(false)}
-          tags={tags}
-          setTags={setTags}
-          addTag={addTag}
-          newTag={newTag}
-          setNewTag={setNewTag}
-        /> */}
     </form>
   );
 };

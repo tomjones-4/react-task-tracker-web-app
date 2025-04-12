@@ -1,8 +1,12 @@
-import React from "react";
+import { useState } from "react";
 
-const AddTagsModal = ({ addTag, closeModal }) => {
+const AddTagsModal = ({ tags, addTag, deleteTag, closeModal }) => {
+  const [newTag, setNewTag] = useState("");
+
   const handleAddTag = (e) => {
-    addTag();
+    e.preventDefault();
+    addTag(newTag);
+    setNewTag(""); // Clear input field after adding
   };
 
   return (
@@ -14,26 +18,41 @@ const AddTagsModal = ({ addTag, closeModal }) => {
         <button className="close-tag-modal-btn" onClick={closeModal}>
           &times;
         </button>
-        <h2 className="modal-title">Manage Tags</h2>
+        <h2 className="modal-title">Apply Tags</h2>
 
         <div className="tag-list">
-          {/* {tags.map((tag, i) => (
-            <span key={i} className="tag">
-              {tag}
-            </span>
-          ))} */}
+          {tags.length > 0 ? (
+            tags.map((tag, i) => (
+              <span key={i} className="tag">
+                {tag}
+                <button
+                  className="delete-tag-btn"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    deleteTag(tag);
+                  }}
+                >
+                  X
+                </button>
+              </span>
+            ))
+          ) : (
+            <p>No tags available. Add some below.</p>
+          )}
+
           {/* Example tags for demonstration */}
-          <span className="tag">Work</span>
+
+          {/* <span className="tag">Work</span>
           <span className="tag">Personal</span>
           <span className="tag">Urgent</span>
-          <span className="tag">Important</span>
+          <span className="tag">Important</span> */}
         </div>
 
         <div className="new-tag-section">
           <input
             type="text"
             placeholder="New tag name"
-            // value={newTag}
+            value={newTag}
             onChange={(e) => setNewTag(e.target.value)}
             className="new-tag-input"
           />

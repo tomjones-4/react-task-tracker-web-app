@@ -10,6 +10,7 @@ const TaskView = ({
   editTask,
   isAddMode,
   addTag,
+  deleteTag,
 }) => {
   const [taskTitle, setTaskTitle] = useState(selectedTask.title);
   const [taskDescription, setTaskDescription] = useState(
@@ -75,6 +76,7 @@ const TaskView = ({
         taskTags={taskTags}
         setTaskTags={setTaskTags}
         addTag={addTag}
+        deleteTag={deleteTag}
       />
       <div>
         <button

@@ -25,11 +25,11 @@ const App = () => {
     { id: 2, name: "List 2", color: "red", length: 6 },
   ];
 
-  const fakeTags = [
-    { id: 1, name: "Tag 1" },
-    { id: 2, name: "Tag 2" },
-    { id: 3, name: "Tag 3" },
-  ];
+  // const fakeTags = [
+  //   { id: 1, name: "Tag 1" },
+  //   { id: 2, name: "Tag 2" },
+  //   { id: 3, name: "Tag 3" },
+  // ];
 
   const [tasks, setTasks] = useState(() => {
     const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY_TASKS);
@@ -44,8 +44,12 @@ const App = () => {
   const addTag = (tag) => {
     if (tag.trim()) {
       setTags([...tags, tag.trim()]);
-      //setNewTag("");
     }
+  };
+
+  const deleteTag = (tag) => {
+    const updatedTags = tags.filter((t) => t !== tag);
+    setTags(updatedTags);
   };
 
   const [selectedTask, setSelectedTask] = useState(
@@ -162,12 +166,13 @@ const App = () => {
       <TaskView
         selectedTask={selectedTask}
         lists={fakeLists}
-        tags={fakeTags}
+        tags={tags}
         deleteTask={deleteTask}
         addTask={addTask}
         editTask={editTask}
         isAddMode={isAddMode}
         addTag={addTag}
+        deleteTag={deleteTag}
       />
     </div>
   );
