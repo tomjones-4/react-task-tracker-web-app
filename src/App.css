@@ -317,7 +317,7 @@ textarea {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
-.close-tag-modal-btn {
+.close-tag-modal-button {
   position: absolute;
   top: 2px;
   right: 12px;
@@ -354,11 +354,23 @@ textarea {
   border-radius: 4px;
 }
 
-.add-tag-btn {
+.add-tag-button {
   padding: 6px 12px;
   border: none;
   background-color: #007bff;
   color: white;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.delete-tag-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 5px;
+  padding: 3px;
+}
+
+.delete-task-button:hover {
+  background-color: #ff1a1a; /* Darker red on hover */
 }
