@@ -35,10 +35,8 @@ const App = () => {
     return storedTags ? JSON.parse(storedTags) : []; // Load from localStorage or default to []
   });
 
-  const addTag = (tag) => {
-    if (tag.trim()) {
-      setTags([...tags, tag.trim()]);
-    }
+  const addTag = (newTag) => {
+    setTags([...tags, newTag]);
   };
 
   const deleteTag = (tag) => {

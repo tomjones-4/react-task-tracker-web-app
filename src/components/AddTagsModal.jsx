@@ -2,12 +2,23 @@ import { useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 
 const AddTagsModal = ({ tags, addTag, deleteTag, closeModal }) => {
-  const [newTag, setNewTag] = useState("");
+  const [newTagName, setNewTagName] = useState("");
+
+  const getRandomPastelColor = () => {
+    const hue = Math.floor(Math.random() * 360); // any hue
+    return `hsl(${hue}, 70%, 85%)`; // pastel tone
+  };
 
   const handleAddTag = (e) => {
     e.preventDefault();
+    if (!newTagName.trim()) return; // Prevent adding empty tags
+    let color = getRandomPastelColor();
+    const newTag = {
+      name: newTagName,
+      color: color,
+    };
     addTag(newTag);
-    setNewTag(""); // Clear input field after adding
+    setNewTagName(""); // Clear input field after adding
   };
 
   return (
@@ -24,8 +35,12 @@ const AddTagsModal = ({ tags, addTag, deleteTag, closeModal }) => {
         <div className="tag-list">
           {tags.length > 0 ? (
             tags.map((tag, i) => (
-              <span key={i} className="tag">
-                {tag}
+              <span
+                key={i}
+                className="tag"
+                style={{ backgroundColor: tag.color, fontWeight: "bold" }}
+              >
+                {tag.name}
                 <button
                   className="delete-tag-button"
                   onClick={(e) => {
@@ -46,8 +61,8 @@ const AddTagsModal = ({ tags, addTag, deleteTag, closeModal }) => {
           <input
             type="text"
             placeholder="New tag name"
-            value={newTag}
-            onChange={(e) => setNewTag(e.target.value)}
+            value={newTagName}
+            onChange={(e) => setNewTagName(e.target.value)}
             className="new-tag-input"
           />
           <button className="add-tag-button" onClick={handleAddTag}>
