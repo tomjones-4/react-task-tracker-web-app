@@ -10,11 +10,13 @@ import { useState, useEffect } from "react";
 // Make it so the list that is selected when editing a task is the list the user is currently on by default
 // Make modal pop up when user clicks on a tag to add it to a task
 // * In the above modal, the user should be able to create a new tag or select an existing one (add ability for user to create new tags)
-// Need to add a way to delete tags
 // Make it so menu buttons show up at bottom of menu. Currently I'm setting the height of the div with menu-footer class, but there should be a better way where I can position the buttons at a certain distance from the bottom.
 // Apply a highlight on selected tags in tags modal
 // Don't let user add the same tag twice
 // If a tag is removed from the manage tags modal, it should be removed from tasks that have it applied? Idk, that's debateable
+// Add ability to create new list
+// Add ability to delete list
+// Add color selector for new lists and tags
 
 const App = () => {
   const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";
@@ -38,6 +40,23 @@ const App = () => {
     return storedTags ? JSON.parse(storedTags) : []; // Load from localStorage or default to []
   });
 
+  const [lists, setLists] = useState(() => {
+    const storedLists = localStorage.getItem(LOCAL_STORAGE_KEY_LISTS);
+    return storedLists ? JSON.parse(storedLists) : fakeLists; // Load from localStorage or default to fakeLists
+  });
+
+  const addList = (newList) => {
+    setLists([...lists, newList]);
+  };
+  const deleteList = (listId) => {
+    const updatedLists = lists.filter((list) => list.id !== listId);
+    setLists(updatedLists);
+    // Deselect list if it's deleted
+    if (selectedList && selectedList.id === listId) {
+      setSelectedList(updatedLists.length > 0 ? updatedLists[0] : null);
+    }
+  };
+
   const addTag = (newTag) => {
     setTags([...tags, newTag]);
   };
@@ -49,6 +68,10 @@ const App = () => {
 
   const [selectedTask, setSelectedTask] = useState(
     tasks.length > 0 ? tasks[0] : null
+  );
+
+  const [selectedList, setSelectedList] = useState(
+    lists.length > 0 ? lists[0] : null
   );
 
   if (tasks.length == 0) {
@@ -78,9 +101,9 @@ const App = () => {
   }, [tags]);
 
   // Save lists to localStorage whenever the lists array changes
-  // useEffect(() => {
-  //   localStorage.setItem(LOCAL_STORAGE_KEY_LISTS, JSON.stringify(fakeLists));
-  // }, [fakeLists]);
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY_LISTS, JSON.stringify(lists));
+  }, [lists]);
 
   const deleteTask = (id) => {
     setTasks(tasks.filter((task) => task.id !== id));
@@ -148,7 +171,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <Menu lists={fakeLists} />
+      <Menu lists={lists} />
       <MainView
         tasks={tasks}
         deleteTask={deleteTask}
@@ -160,7 +183,7 @@ const App = () => {
       />
       <TaskView
         selectedTask={selectedTask}
-        lists={fakeLists}
+        lists={lists}
         tags={tags}
         deleteTask={deleteTask}
         addTask={addTask}

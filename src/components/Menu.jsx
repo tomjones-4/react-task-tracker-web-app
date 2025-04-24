@@ -2,6 +2,7 @@ import React from "react";
 import MenuLists from "./MenuLists";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
+import AddList from "./AddList";
 
 const Menu = ({ lists }) => {
   return (
@@ -31,6 +32,7 @@ const Menu = ({ lists }) => {
         ></input>
       </div>
       <MenuLists lists={lists} />
+      <AddList />
       <div className="menu-footer">
         <span>
           <IoSettingsOutline className="menu-footer-icon" />

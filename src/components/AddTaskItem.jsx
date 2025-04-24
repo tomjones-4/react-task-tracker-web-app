@@ -5,7 +5,7 @@ const AddTaskItem = ({ resetTask }) => {
   return (
     <span className="add-task" onClick={resetTask}>
       <FaPlus className="add-task-icon" />
-      <p className="add-task-text">Add New Task</p>
+      <p>Add New Task</p>
     </span>
   );
 };
