@@ -61,8 +61,8 @@ const TaskForm = ({
           onSelect={(e) => setTaskList(e.target.value)}
         >
           <option value="" />
-          {lists.map((list) => (
-            <option key={list.id} value={list.id}>
+          {lists.map((list, i) => (
+            <option key={i} value={list.id}>
               {list.name}
             </option>
           ))}

@@ -122,6 +122,55 @@
   background-color: #f0f0f0; /* Slight hover effect */
 }
 
+.close-list-modal-button {
+  position: absolute;
+  top: 2px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 25px;
+  color: red;
+  cursor: pointer;
+}
+
+.lists {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.list {
+  background-color: #eee;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: "background-color 0.2s";
+}
+
+.new-list-section {
+  display: flex;
+  gap: 8px;
+}
+
+.new-list-input {
+  flex: 1;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-list-button {
+  padding: 6px 12px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 .menu-footer {
   display: flex;
   flex-direction: column;
@@ -348,7 +397,7 @@ textarea {
   cursor: pointer;
 }
 
-.tag-list {
+.tags {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;

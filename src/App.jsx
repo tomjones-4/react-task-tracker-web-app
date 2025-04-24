@@ -6,10 +6,7 @@ import { useState, useEffect } from "react";
 
 // TODO
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
-// Add ability for user to create new lists
 // Make it so the list that is selected when editing a task is the list the user is currently on by default
-// Make modal pop up when user clicks on a tag to add it to a task
-// * In the above modal, the user should be able to create a new tag or select an existing one (add ability for user to create new tags)
 // Make it so menu buttons show up at bottom of menu. Currently I'm setting the height of the div with menu-footer class, but there should be a better way where I can position the buttons at a certain distance from the bottom.
 // Apply a highlight on selected tags in tags modal
 // Don't let user add the same tag twice
@@ -17,7 +14,6 @@ import { useState, useEffect } from "react";
 // Add ability to create new list
 // Add ability to delete list
 // Add color selector for new lists and tags
-
 const App = () => {
   const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";
   const LOCAL_STORAGE_KEY_TAGS = "todoApp.tags";
@@ -48,6 +44,7 @@ const App = () => {
   const addList = (newList) => {
     setLists([...lists, newList]);
   };
+
   const deleteList = (listId) => {
     const updatedLists = lists.filter((list) => list.id !== listId);
     setLists(updatedLists);
@@ -171,7 +168,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <Menu lists={lists} />
+      <Menu lists={lists} addList={addList} deleteList={deleteList} />
       <MainView
         tasks={tasks}
         deleteTask={deleteTask}

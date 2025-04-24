@@ -4,7 +4,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
 import AddList from "./AddList";
 
-const Menu = ({ lists }) => {
+const Menu = ({ lists, addList, deleteList }) => {
   return (
     <div className="menu-container">
       <h1>Menu</h1>
@@ -32,7 +32,7 @@ const Menu = ({ lists }) => {
         ></input>
       </div>
       <MenuLists lists={lists} />
-      <AddList />
+      <AddList lists={lists} addList={addList} deleteList={deleteList} />
       <div className="menu-footer">
         <span>
           <IoSettingsOutline className="menu-footer-icon" />
