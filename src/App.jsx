@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 // Add ability to create new list
 // Add ability to delete list
 // Add color selector for new lists and tags
+
 const App = () => {
   const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";
   const LOCAL_STORAGE_KEY_TAGS = "todoApp.tags";
@@ -25,6 +26,9 @@ const App = () => {
     { id: 1, name: "List 1", color: "blue", length: 3 },
     { id: 2, name: "List 2", color: "red", length: 6 },
   ];
+
+  // Uncomment below line and then refresh page to reset tasks. This is helpful when the structure of tasks changes, since it can cause errors.
+  // const [tasks, setTasks] = useState([]);
 
   const [tasks, setTasks] = useState(() => {
     const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY_TASKS);
@@ -79,11 +83,19 @@ const App = () => {
       description: "This should be helpful for testing",
       list: "",
       dueDate: "",
-      tags: "",
+      tags: [],
     };
     setSelectedTask(newTask);
     setTasks([newTask]);
   }
+
+  // if (tags.length == 0) {
+  //   const newTag = {
+  //     color: "blue",
+  //     name: "Base",
+  //   };
+  //   setTags([newTag]);
+  // }
 
   const [isAddMode, setIsAddMode] = useState(true);
 

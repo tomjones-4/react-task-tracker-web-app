@@ -29,7 +29,7 @@ const TaskView = ({
       setTaskDescription(selectedTask.description || "");
       setTaskList(selectedTask.list || "");
       setTaskDueDate(selectedTask.dueDate || "");
-      setTaskTags(selectedTask.tags || "");
+      setTaskTags(selectedTask.tags || []);
     }
   }, [selectedTask]);
 
