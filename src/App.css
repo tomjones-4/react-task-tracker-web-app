@@ -414,6 +414,10 @@ textarea {
   transition: "background-color 0.2s";
 }
 
+.tag:hover {
+  filter: brightness(85%); /* Darker on hover */
+}
+
 .new-tag-section {
   display: flex;
   gap: 8px;

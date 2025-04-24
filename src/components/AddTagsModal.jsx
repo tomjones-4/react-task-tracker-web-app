@@ -47,8 +47,6 @@ const AddTagsModal = ({ tags, addTag, deleteTag, addTaskTag, closeModal }) => {
                   e.preventDefault();
                   addTaskTag(tag);
                 }}
-                onMouseEnter={() => setHover(true)}
-                onMouseLeave={() => setHover(false)}
               >
                 {tag.name}
                 <button
