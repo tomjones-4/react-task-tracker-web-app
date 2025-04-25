@@ -14,6 +14,8 @@ import { useState, useEffect } from "react";
 // Add ability to create new list
 // Add ability to delete list
 // Add color selector for new lists and tags
+// Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id)
+// Make it so list is saved correctly when it's added to task. Currently, I think it just saves the id or name, but not the other info in the list object (color, length, etc.)
 
 const App = () => {
   const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";
@@ -28,6 +30,8 @@ const App = () => {
   ];
 
   // Uncomment below line and then refresh page to reset tasks. This is helpful when the structure of tasks changes, since it can cause errors.
+  // Same can be done with tags and lists.
+  // When uncommenting this line, comment out the one below it that sets the tasks based on localStorage.
   // const [tasks, setTasks] = useState([]);
 
   const [tasks, setTasks] = useState(() => {
@@ -89,14 +93,6 @@ const App = () => {
     setTasks([newTask]);
   }
 
-  // if (tags.length == 0) {
-  //   const newTag = {
-  //     color: "blue",
-  //     name: "Base",
-  //   };
-  //   setTags([newTag]);
-  // }
-
   const [isAddMode, setIsAddMode] = useState(true);
 
   // Save tasks to localStorage whenever the tasks array changes
@@ -129,6 +125,7 @@ const App = () => {
   };
 
   const editTask = (editedTask) => {
+    const formerList = tasks.find((task) => task.id === editedTask.id).list;
     const updatedTasks = tasks.map((task) => {
       if (task.id === editedTask.id) {
         return {
@@ -143,7 +140,22 @@ const App = () => {
       return task;
     });
     setTasks(updatedTasks);
-    setSelectedTask(updatedTasks.find((task) => task.id === editedTask.id));
+
+    const updatedLists = lists.map((list) => {
+      if (list.id === editedTask.list.id) {
+        return {
+          ...list,
+          length: list.length + 1,
+        };
+      } else if (list.id === formerList.id) {
+        return {
+          ...list,
+          length: list.length - 1,
+        };
+      }
+      return list;
+    });
+    setLists(updatedLists);
   };
 
   const resetTask = () => {

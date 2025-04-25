@@ -16,7 +16,7 @@ const AddList = ({ lists, addList, deleteList }) => {
     <>
       <span className="add-list" onClick={openAddListModal}>
         <FaPlus className="add-list-icon" />
-        <p>Add New Task</p>
+        <p>Add New List</p>
       </span>
       {isAddlistModalOpen && (
         <AddListModal

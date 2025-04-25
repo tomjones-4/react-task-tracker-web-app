@@ -19,8 +19,10 @@ const AddListModal = ({
     if (!newListName.trim()) return; // Prevent adding empty lists
     let color = getRandomPastelColor();
     const newList = {
+      id: Date.now(),
       name: newListName,
       color: color,
+      length: 0,
     };
     addList(newList);
     setNewListName(""); // Clear input field after adding

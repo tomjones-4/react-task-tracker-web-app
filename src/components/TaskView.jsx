@@ -58,6 +58,13 @@ const TaskView = ({
     editTask(updatedTask);
   };
 
+  const updateTaskList = (newListId) => {
+    // TODO - need to handle "no" list case
+    const newList = lists.find((list) => list.id === newListId);
+    if (!newList) return; // Handle case where list is not found
+    setTaskList(newList);
+  };
+
   return (
     <div className="task-view">
       {isAddMode && <h1>Add Task</h1>}
@@ -70,7 +77,7 @@ const TaskView = ({
         taskDescription={taskDescription}
         setTaskDescription={setTaskDescription}
         taskList={taskList}
-        setTaskList={setTaskList}
+        updateTaskList={updateTaskList}
         taskDueDate={taskDueDate}
         setTaskDueDate={setTaskDueDate}
         taskTags={taskTags}
