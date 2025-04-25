@@ -1,6 +1,7 @@
 import TaskList from "./TaskList";
 
 const MainView = ({
+  selectedListName,
   tasks,
   deleteTask,
   toggleCompleted,
@@ -11,7 +12,7 @@ const MainView = ({
 }) => {
   return (
     <div className="main-view">
-      <h1>Task List</h1>
+      <h1>List = {selectedListName}</h1>
 
       <TaskList
         tasks={tasks}

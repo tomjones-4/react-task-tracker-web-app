@@ -1,13 +1,16 @@
 import React from "react";
 
-// const MenuLists = ({ lists }) => {
-const MenuLists = ({ lists }) => {
+const MenuLists = ({ lists, setSelectedList }) => {
   return (
     <div>
       <h3>Lists</h3>
-      {lists.map((list, index) => {
+      {lists.map((list) => {
         return (
-          <div className="menu-list" key={index}>
+          <div
+            className="menu-list"
+            key={list.id}
+            onClick={() => setSelectedList(list)}
+          >
             <span
               className="menu-list-color-block"
               style={{ backgroundColor: list.color }}

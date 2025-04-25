@@ -35,6 +35,10 @@ const App = () => {
     return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
   });
 
+  const [selectedTask, setSelectedTask] = useState(
+    tasks.length > 0 ? tasks[0] : null
+  );
+
   const [tags, setTags] = useState(() => {
     const storedTags = localStorage.getItem(LOCAL_STORAGE_KEY_TAGS);
     return storedTags ? JSON.parse(storedTags) : []; // Load from localStorage or default to []
@@ -45,6 +49,10 @@ const App = () => {
     const storedLists = localStorage.getItem(LOCAL_STORAGE_KEY_LISTS);
     return storedLists ? JSON.parse(storedLists) : []; // Load from localStorage or default to []
   });
+
+  const [selectedList, setSelectedList] = useState(
+    lists.length > 0 ? lists[0] : null
+  );
 
   const addList = (newList) => {
     setLists([...lists, newList]);
@@ -80,14 +88,6 @@ const App = () => {
     const updatedTags = tags.filter((t) => t !== tag);
     setTags(updatedTags);
   };
-
-  const [selectedTask, setSelectedTask] = useState(
-    tasks.length > 0 ? tasks[0] : null
-  );
-
-  const [selectedList, setSelectedList] = useState(
-    lists.length > 0 ? lists[0] : null
-  );
 
   if (tasks.length == 0) {
     const newTask = {
@@ -214,9 +214,15 @@ const App = () => {
 
   return (
     <div className="App">
-      <Menu lists={lists} addList={addList} deleteList={deleteList} />
+      <Menu
+        lists={lists}
+        addList={addList}
+        deleteList={deleteList}
+        setSelectedList={setSelectedList}
+      />
       <MainView
-        tasks={tasks}
+        selectedListName={selectedList.name}
+        tasks={tasks.filter((task) => task.listId === selectedList.id)}
         deleteTask={deleteTask}
         toggleCompleted={toggleCompleted}
         setSelectedTask={setSelectedTask}

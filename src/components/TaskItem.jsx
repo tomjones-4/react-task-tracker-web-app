@@ -3,7 +3,7 @@ import { FaChevronRight } from "react-icons/fa";
 
 const TaskItem = ({
   task,
-  deleteTask,
+  //deleteTask,
   toggleCompleted,
   setSelectedTask,
   setIsAddMode,
