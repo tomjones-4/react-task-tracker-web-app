@@ -59,8 +59,7 @@ const TaskView = ({
   };
 
   const updateTaskList = (newListId) => {
-    // TODO - need to handle "no" list case
-    const newList = lists.find((list) => list.id === newListId);
+    const newList = lists.find((list) => list.id == newListId);
     if (!newList) return; // Handle case where list is not found
     setTaskList(newList);
   };

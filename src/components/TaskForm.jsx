@@ -57,12 +57,11 @@ const TaskForm = ({
         <select
           id="list-select"
           name="list"
-          value={taskList}
+          value={String(taskList.id)}
           onChange={(e) => updateTaskList(e.target.value)}
         >
-          <option value="" />
           {lists.map((list, i) => (
-            <option key={i} value={list.id}>
+            <option key={i} value={String(list.id)}>
               {list.name}
             </option>
           ))}

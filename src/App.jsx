@@ -46,7 +46,7 @@ const App = () => {
 
   const [lists, setLists] = useState(() => {
     const storedLists = localStorage.getItem(LOCAL_STORAGE_KEY_LISTS);
-    return storedLists ? JSON.parse(storedLists) : fakeLists; // Load from localStorage or default to fakeLists
+    return storedLists ? JSON.parse(storedLists) : []; // Load from localStorage or default to []
   });
 
   const addList = (newList) => {
@@ -54,6 +54,7 @@ const App = () => {
   };
 
   const deleteList = (listId) => {
+    if (listId == "0") return; // don't allow deleting "None"
     const updatedLists = lists.filter((list) => list.id !== listId);
     setLists(updatedLists);
     // Deselect list if it's deleted
@@ -91,6 +92,17 @@ const App = () => {
     };
     setSelectedTask(newTask);
     setTasks([newTask]);
+  }
+
+  if (lists.length == 0) {
+    const newList = {
+      id: 0,
+      color: "gray",
+      name: "None",
+      length: 0,
+    };
+    setSelectedList(newList);
+    setLists([newList]);
   }
 
   const [isAddMode, setIsAddMode] = useState(true);
@@ -156,6 +168,7 @@ const App = () => {
       return list;
     });
     setLists(updatedLists);
+    setSelectedTask(editedTask);
   };
 
   const resetTask = () => {
