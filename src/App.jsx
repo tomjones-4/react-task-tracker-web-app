@@ -11,12 +11,14 @@ import { useState, useEffect } from "react";
 // Apply a highlight on selected tags in tags modal
 // Don't let user add the same tag twice
 // If a tag is removed from the manage tags modal, it should be removed from tasks that have it applied? Idk, that's debateable
-// Add ability to create new list
 // Add ability to delete list
 // Add color selector for new lists and tags
+// Give user ability to see all tasks regardless of list
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id)
 // Make it so list is saved correctly when it's added to task. Currently, I think it just saves the id or name, but not the other info in the list object (color, length, etc.)
 // Consider using Headless UI for the modal and dropdown components. This would make it easier to style them and make them more accessible.
+// Highlight the selected list item in the sidebar (background color or bold text)
+// Add a tag filter when "All tasks" is selected in the sidebar
 
 const App = () => {
   const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";
@@ -29,6 +31,11 @@ const App = () => {
   // Same can be done with tags and lists.
   // When uncommenting this line, comment out the one below it that sets the tasks based on localStorage.
   // const [tasks, setTasks] = useState([]);
+
+  const specialLists = [
+    { id: 0, name: "All Tasks", color: "black", count: 0 },
+    { id: 1, name: "Uncategorized", color: "gray", count: 0 },
+  ];
 
   const [tasks, setTasks] = useState(() => {
     const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY_TASKS);
@@ -45,9 +52,16 @@ const App = () => {
   });
 
   // const [lists, setLists] = useState([]);
+  // const [lists, setLists] = useState(() => {
+  //   const storedLists = localStorage.getItem(LOCAL_STORAGE_KEY_LISTS);
+  //   return storedLists ? JSON.parse(storedLists) : []; // Load from localStorage or default to []
+  // });
+
+  // Need to change this so that special lists aren't multiply added every time the page is refreshed
   const [lists, setLists] = useState(() => {
-    const storedLists = localStorage.getItem(LOCAL_STORAGE_KEY_LISTS);
-    return storedLists ? JSON.parse(storedLists) : []; // Load from localStorage or default to []
+    let storedLists = localStorage.getItem(LOCAL_STORAGE_KEY_LISTS);
+    storedLists = storedLists ? JSON.parse(storedLists) : []; // Load from localStorage or default to []
+    return [...specialLists, ...storedLists]; // Add special lists to the beginning
   });
 
   const [selectedList, setSelectedList] = useState(
