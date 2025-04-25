@@ -8,8 +8,8 @@ const TaskForm = ({
   setTaskTitle,
   taskDescription,
   setTaskDescription,
-  taskList,
-  updateTaskList,
+  taskListId,
+  setTaskListId,
   taskDueDate,
   setTaskDueDate,
   taskTags,
@@ -57,11 +57,11 @@ const TaskForm = ({
         <select
           id="list-select"
           name="list"
-          value={String(taskList.id)}
-          onChange={(e) => updateTaskList(e.target.value)}
+          value={String(taskListId)}
+          onChange={(e) => setTaskListId(Number(e.target.value))}
         >
-          {lists.map((list, i) => (
-            <option key={i} value={String(list.id)}>
+          {lists.map((list) => (
+            <option key={String(list.id)} value={String(list.id)}>
               {list.name}
             </option>
           ))}

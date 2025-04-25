@@ -16,7 +16,7 @@ const TaskView = ({
   const [taskDescription, setTaskDescription] = useState(
     selectedTask.description
   );
-  const [taskList, setTaskList] = useState(selectedTask.list);
+  const [taskListId, setTaskListId] = useState(selectedTask.listId);
   const [taskDueDate, setTaskDueDate] = useState(selectedTask.dueDate);
   const [taskTags, setTaskTags] = useState(selectedTask.tags);
 
@@ -27,7 +27,7 @@ const TaskView = ({
     if (selectedTask) {
       setTaskTitle(selectedTask.title || "");
       setTaskDescription(selectedTask.description || "");
-      setTaskList(selectedTask.list || "");
+      setTaskListId(selectedTask.listId || 0);
       setTaskDueDate(selectedTask.dueDate || "");
       setTaskTags(selectedTask.tags || []);
     }
@@ -39,7 +39,7 @@ const TaskView = ({
       completed: false,
       title: taskTitle,
       description: taskDescription,
-      list: taskList,
+      listId: taskListId,
       dueDate: taskDueDate,
       tags: taskTags,
     };
@@ -51,17 +51,11 @@ const TaskView = ({
       ...selectedTask,
       title: taskTitle,
       description: taskDescription,
-      list: taskList,
+      listId: taskListId,
       dueDate: taskDueDate,
       tags: taskTags,
     };
     editTask(updatedTask);
-  };
-
-  const updateTaskList = (newListId) => {
-    const newList = lists.find((list) => list.id == newListId);
-    if (!newList) return; // Handle case where list is not found
-    setTaskList(newList);
   };
 
   return (
@@ -75,8 +69,8 @@ const TaskView = ({
         setTaskTitle={setTaskTitle}
         taskDescription={taskDescription}
         setTaskDescription={setTaskDescription}
-        taskList={taskList}
-        updateTaskList={updateTaskList}
+        taskListId={taskListId}
+        setTaskListId={setTaskListId}
         taskDueDate={taskDueDate}
         setTaskDueDate={setTaskDueDate}
         taskTags={taskTags}

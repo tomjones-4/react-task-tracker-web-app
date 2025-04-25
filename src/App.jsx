@@ -16,6 +16,7 @@ import { useState, useEffect } from "react";
 // Add color selector for new lists and tags
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id)
 // Make it so list is saved correctly when it's added to task. Currently, I think it just saves the id or name, but not the other info in the list object (color, length, etc.)
+// Consider using Headless UI for the modal and dropdown components. This would make it easier to style them and make them more accessible.
 
 const App = () => {
   const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";
@@ -23,11 +24,6 @@ const App = () => {
   const LOCAL_STORAGE_KEY_LISTS = "todoApp.lists";
   // const LOCAL_STORAGE_KEY_SETTINGS = "todoApp.settings";
   // const LOCAL_STORAGE_KEY_THEME = "todoApp.theme";
-
-  const fakeLists = [
-    { id: 1, name: "List 1", color: "blue", length: 3 },
-    { id: 2, name: "List 2", color: "red", length: 6 },
-  ];
 
   // Uncomment below line and then refresh page to reset tasks. This is helpful when the structure of tasks changes, since it can cause errors.
   // Same can be done with tags and lists.
@@ -44,6 +40,7 @@ const App = () => {
     return storedTags ? JSON.parse(storedTags) : []; // Load from localStorage or default to []
   });
 
+  // const [lists, setLists] = useState([]);
   const [lists, setLists] = useState(() => {
     const storedLists = localStorage.getItem(LOCAL_STORAGE_KEY_LISTS);
     return storedLists ? JSON.parse(storedLists) : []; // Load from localStorage or default to []
@@ -54,13 +51,25 @@ const App = () => {
   };
 
   const deleteList = (listId) => {
-    if (listId == "0") return; // don't allow deleting "None"
+    if (listId == 0) return; // don't allow deleting "None" list
     const updatedLists = lists.filter((list) => list.id !== listId);
     setLists(updatedLists);
     // Deselect list if it's deleted
     if (selectedList && selectedList.id === listId) {
       setSelectedList(updatedLists.length > 0 ? updatedLists[0] : null);
     }
+    // Update tasks to remove the deleted list from them
+    // TODO - probably need to update some logic on list count here to make sure it doesn't go negative
+    const updatedTasks = tasks.map((task) => {
+      if (task.list.id === listId) {
+        return {
+          ...task,
+          listId: 0,
+        };
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
   };
 
   const addTag = (newTag) => {
@@ -86,7 +95,7 @@ const App = () => {
       completed: false,
       title: "Base Task so list is not empty",
       description: "This should be helpful for testing",
-      list: "",
+      listId: 0,
       dueDate: "",
       tags: [],
     };
@@ -99,7 +108,7 @@ const App = () => {
       id: 0,
       color: "gray",
       name: "None",
-      length: 0,
+      count: 0,
     };
     setSelectedList(newList);
     setLists([newList]);
@@ -137,14 +146,14 @@ const App = () => {
   };
 
   const editTask = (editedTask) => {
-    const formerList = tasks.find((task) => task.id === editedTask.id).list;
+    const formerListId = tasks.find((task) => task.id === editedTask.id).listId;
     const updatedTasks = tasks.map((task) => {
       if (task.id === editedTask.id) {
         return {
           ...task,
           title: editedTask.title,
           description: editedTask.description,
-          list: editedTask.list,
+          listId: editedTask.listId,
           dueDate: editedTask.dueDate,
           tags: editedTask.tags,
         };
@@ -154,15 +163,15 @@ const App = () => {
     setTasks(updatedTasks);
 
     const updatedLists = lists.map((list) => {
-      if (list.id === editedTask.list.id) {
+      if (list.id === editedTask.listId) {
         return {
           ...list,
-          length: list.length + 1,
+          count: list.count + 1,
         };
-      } else if (list.id === formerList.id) {
+      } else if (list.id === formerListId) {
         return {
           ...list,
-          length: list.length - 1,
+          count: list.count - 1,
         };
       }
       return list;
@@ -177,7 +186,7 @@ const App = () => {
       completed: false,
       title: "",
       description: "",
-      list: "",
+      listId: 0,
       dueDate: "",
       tags: "",
     };

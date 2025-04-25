@@ -13,7 +13,7 @@ const MenuLists = ({ lists }) => {
               style={{ backgroundColor: list.color }}
             ></span>
             <span className="menu-list-name">{list.name}</span>
-            <span className="menu-list-item-count">{list.length}</span>
+            <span className="menu-list-item-count">{list.count}</span>
           </div>
         );
       })}

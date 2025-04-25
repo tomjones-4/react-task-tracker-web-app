@@ -1,12 +1,6 @@
 import { useState } from "react";
 
-const AddListModal = ({
-  lists,
-  addList,
-  deleteTag,
-  addTaskTag,
-  closeModal,
-}) => {
+const AddListModal = ({ addList, closeModal }) => {
   const [newListName, setNewListName] = useState("");
 
   const getRandomPastelColor = () => {
@@ -22,7 +16,7 @@ const AddListModal = ({
       id: Date.now(),
       name: newListName,
       color: color,
-      length: 0,
+      count: 0,
     };
     addList(newList);
     setNewListName(""); // Clear input field after adding
