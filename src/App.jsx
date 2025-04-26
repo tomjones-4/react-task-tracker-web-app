@@ -22,41 +22,50 @@ import { useState, useEffect } from "react";
 // Fix list counts. Especially when task is deleted or a new task is added.
 
 const App = () => {
+  /* Begin Constants */
+
   const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";
   const LOCAL_STORAGE_KEY_TAGS = "todoApp.tags";
   const LOCAL_STORAGE_KEY_LISTS = "todoApp.lists";
   // const LOCAL_STORAGE_KEY_SETTINGS = "todoApp.settings";
   // const LOCAL_STORAGE_KEY_THEME = "todoApp.theme";
 
-  // Uncomment below line and then refresh page to reset tasks. This is helpful when the structure of tasks changes, since it can cause errors.
-  // Same can be done with tags and lists.
-  // When uncommenting this line, comment out the one below it that sets the tasks based on localStorage.
-  // const [tasks, setTasks] = useState([]);
-
-  const specialLists = [
+  const SPECIAL_LISTS = [
     { id: -1, name: "All Tasks", color: "black", count: 0 },
     { id: 0, name: "Uncategorized", color: "gray", count: 0 },
   ];
+
+  /* End Constants */
+
+  /* Begin State Variables */
 
   const [tags, setTags] = useState(() => {
     const storedTags = localStorage.getItem(LOCAL_STORAGE_KEY_TAGS);
     return storedTags ? JSON.parse(storedTags) : []; // Load from localStorage or default to []
   });
 
-  // const [lists, setLists] = useState(specialLists);
+  // Uncomment below line and then refresh page to reset tasks. This is helpful when the structure of tasks changes, since it can cause errors.
+  // When uncommenting this line, comment out the block below it that sets the tasks based on localStorage.
+  // Same can be done with tags and lists.
 
-  // Need to change this so that special lists aren't multiply added every time the page is refreshed
+  // const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+    const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY_TASKS);
+    return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
+  });
+
+  // const [lists, setLists] = useState(specialLists);
   const [lists, setLists] = useState(() => {
     let storedLists = localStorage.getItem(LOCAL_STORAGE_KEY_LISTS);
     storedLists = storedLists ? JSON.parse(storedLists) : []; // Load from localStorage or default to []
 
     // Check if special lists are already in storedLists
-    const specialListIds = specialLists.map((list) => list.id);
+    const specialListIds = SPECIAL_LISTS.map((list) => list.id);
     const hasSpecialLists = storedLists.some((list) =>
       specialListIds.includes(list.id)
     );
     if (!hasSpecialLists) {
-      return [...specialLists, ...storedLists]; // Add special lists to the beginning
+      return [...SPECIAL_LISTS, ...storedLists]; // Add special lists to the beginning
     } else {
       // If special lists are already in storedLists, just return storedLists
       return storedLists;
@@ -65,22 +74,34 @@ const App = () => {
 
   const [selectedList, setSelectedList] = useState(lists[0]);
 
+  const [selectedTask, setSelectedTask] = useState(
+    tasks.find((task) => task.id == selectedList.id) || tasks[0]
+  );
+
+  const [isAddMode, setIsAddMode] = useState(true);
+
+  /* End State Variables */
+
+  /* Begin Functions */
+
   const addList = (newList) => {
     setLists([...lists, newList]);
   };
 
   const deleteList = (listId) => {
     if (listId == -1 || listId == -0) return; // don't allow deleting "All Tasks" or "Uncategorized" lists
-    const updatedLists = lists.filter((list) => list.id !== listId);
-    setLists(updatedLists);
+
     // Deselect list if it's deleted
     if (selectedList && selectedList.id === listId) {
       setSelectedList(updatedLists.length > 0 ? updatedLists[0] : null);
     }
+
     // Update tasks to remove the deleted list from them
     // TODO - probably need to update some logic on list count here to make sure it doesn't go negative
+    let numUncategorizedTasks = 0;
     const updatedTasks = tasks.map((task) => {
       if (task.listId === listId) {
+        numUncategorizedTasks++;
         return {
           ...task,
           listId: 0,
@@ -89,6 +110,19 @@ const App = () => {
       return task;
     });
     setTasks(updatedTasks);
+
+    const updatedLists = lists
+      .filter((list) => list.id !== listId)
+      .map((list) => {
+        if (list.id == 0) {
+          return {
+            ...list,
+            count: list.count + numUncategorizedTasks,
+          };
+        }
+        return list;
+      });
+    setLists(updatedLists);
   };
 
   const changeSelectedList = (list) => {
@@ -104,56 +138,6 @@ const App = () => {
     const updatedTags = tags.filter((t) => t !== tag);
     setTags(updatedTags);
   };
-
-  const [tasks, setTasks] = useState(() => {
-    const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY_TASKS);
-    return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
-  });
-
-  const [selectedTask, setSelectedTask] = useState(
-    tasks.find((task) => task.id == selectedList.id) || tasks[0]
-  );
-
-  if (lists.length == 0) {
-    const newList = {
-      id: 0,
-      color: "gray",
-      name: "None",
-      count: 0,
-    };
-    setSelectedList(newList);
-    setLists([newList]);
-  }
-
-  if (tasks.length == 0) {
-    const newTask = {
-      id: Date.now(),
-      completed: false,
-      title: "Base Task so list is not empty",
-      description: "This should be helpful for testing",
-      listId: 0,
-      dueDate: "",
-      tags: [],
-    };
-    setSelectedTask(newTask);
-    setTasks([newTask]);
-  }
-  const [isAddMode, setIsAddMode] = useState(true);
-
-  // Save tasks to localStorage whenever the tasks array changes
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY_TASKS, JSON.stringify(tasks));
-  }, [tasks]);
-
-  // Save tags to localStorage whenever the tags array changes
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY_TAGS, JSON.stringify(tags));
-  }, [tags]);
-
-  // Save lists to localStorage whenever the lists array changes
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY_LISTS, JSON.stringify(lists));
-  }, [lists]);
 
   const deleteTask = (id) => {
     setTasks(tasks.filter((task) => task.id !== id));
@@ -237,11 +221,65 @@ const App = () => {
     return tasks.filter((task) => task.listId === listId);
   };
 
+  /* End Functions */
+
+  /* Begin Initialization */
+
+  if (lists.length == 0) {
+    const newList = {
+      id: 0,
+      color: "gray",
+      name: "None",
+      count: 0,
+    };
+    setSelectedList(newList);
+    setLists([newList]);
+  }
+
+  if (tasks.length == 0) {
+    const newTask = {
+      id: Date.now(),
+      completed: false,
+      title: "Base Task so list is not empty",
+      description: "This should be helpful for testing",
+      listId: 0,
+      dueDate: "",
+      tags: [],
+    };
+    setSelectedTask(newTask);
+    setTasks([newTask]);
+  }
+
+  /* End Initialization */
+
+  /* Begin seEffect Hooks */
+
+  // Save tasks to localStorage whenever the tasks array changes
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY_TASKS, JSON.stringify(tasks));
+  }, [tasks]);
+
+  // Save tags to localStorage whenever the tags array changes
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY_TAGS, JSON.stringify(tags));
+  }, [tags]);
+
+  // Save lists to localStorage whenever the lists array changes
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY_LISTS, JSON.stringify(lists));
+  }, [lists]);
+
+  /* End useEffect Hooks */
+
+  /* Begin Debugging */
+
   // const testfunction = () => {
   //   console.log("test THISSSS");
   //   setTasks(tasks.slice(0, 2));
   //   console.log(tasks.slice(0, 2));
   // };
+
+  /* End Debugging */
 
   return (
     <div className="App">
