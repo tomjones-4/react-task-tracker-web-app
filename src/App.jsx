@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 // Make it so menu buttons show up at bottom of menu. Currently I'm setting the height of the div with menu-footer class, but there should be a better way where I can position the buttons at a certain distance from the bottom.
 // Apply a highlight on selected tags in tags modal
 // Don't let user add the same tag twice
+// Don't let user add the same list twice
 // If a tag is removed from the manage tags modal, it should be removed from tasks that have it applied? Idk, that's debateable
 // Add ability to delete list
 // Add color selector for new lists and tags
@@ -86,6 +87,8 @@ const App = () => {
 
   const addList = (newList) => {
     setLists([...lists, newList]);
+    setSelectedList(newList); // Select the newly added list
+    resetTask(); // Reset the task view to add a new task
   };
 
   const deleteList = (listId) => {
@@ -131,7 +134,12 @@ const App = () => {
 
   const changeSelectedList = (list) => {
     setSelectedList(list);
-    setSelectedTask(tasks.find((task) => task.listId == list.id) || tasks[0]);
+    if (list.count == 0) {
+      resetTask();
+    } else {
+      setSelectedTask(tasks.find((task) => task.listId == list.id));
+      setIsAddMode(false);
+    }
   };
 
   const addTag = (newTag) => {
