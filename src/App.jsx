@@ -261,6 +261,7 @@ const App = () => {
         setIsAddMode={setIsAddMode}
       />
       <TaskView
+        selectedListId={selectedList.id}
         selectedTask={selectedTask}
         lists={lists}
         tags={tags}

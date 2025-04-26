@@ -2,6 +2,7 @@ import TaskForm from "./TaskForm";
 import { useState, useEffect } from "react";
 
 const TaskView = ({
+  selectedListId,
   selectedTask,
   lists,
   tags,
@@ -65,6 +66,7 @@ const TaskView = ({
       <TaskForm
         lists={lists}
         tags={tags}
+        selectedListId={selectedListId}
         taskTitle={taskTitle}
         setTaskTitle={setTaskTitle}
         taskDescription={taskDescription}

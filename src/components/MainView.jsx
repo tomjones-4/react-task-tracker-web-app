@@ -12,7 +12,7 @@ const MainView = ({
 }) => {
   return (
     <div className="main-view">
-      <h1>List = {selectedListName}</h1>
+      <h1>{selectedListName}</h1>
 
       <TaskList
         tasks={tasks}
@@ -23,14 +23,10 @@ const MainView = ({
         setIsAddMode={setIsAddMode}
       />
 
-      <div
-        className="debug"
-        onClick={() =>
-          console.log("selectedTaskForDebug = ", selectedTaskForDebug)
-        }
-      >
+      <div>
         <h2>Debug</h2>
         <p>Selected Task: {JSON.stringify(selectedTaskForDebug)}</p>
+        <p>Selected List: {selectedListName}</p>
       </div>
     </div>
   );

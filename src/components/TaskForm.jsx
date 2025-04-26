@@ -4,6 +4,7 @@ import AddTagsModal from "./AddTagsModal";
 const TaskForm = ({
   lists,
   tags,
+  selectedListId,
   taskTitle,
   setTaskTitle,
   taskDescription,
@@ -58,9 +59,11 @@ const TaskForm = ({
           id="list-select"
           name="list"
           value={String(taskListId)}
+          // TODO - need to make it so list is set correctly when adding a new task
+          //value={String(selectedListId)}
           onChange={(e) => setTaskListId(Number(e.target.value))}
         >
-          {lists.map((list) => (
+          {lists.slice(1).map((list) => (
             <option key={String(list.id)} value={String(list.id)}>
               {list.name}
             </option>
