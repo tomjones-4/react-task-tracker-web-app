@@ -19,6 +19,7 @@ import { useState, useEffect } from "react";
 // Consider using Headless UI for the modal and dropdown components. This would make it easier to style them and make them more accessible.
 // Highlight the selected list item in the sidebar (background color or bold text)
 // Add a tag filter when "All tasks" is selected in the sidebar
+// Fix list counts. Especially when task is deleted or a new task is added.
 
 const App = () => {
   const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";
