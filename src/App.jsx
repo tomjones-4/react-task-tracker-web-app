@@ -33,47 +33,43 @@ const App = () => {
   // const [tasks, setTasks] = useState([]);
 
   const specialLists = [
-    { id: 0, name: "All Tasks", color: "black", count: 0 },
-    { id: 1, name: "Uncategorized", color: "gray", count: 0 },
+    { id: -1, name: "All Tasks", color: "black", count: 0 },
+    { id: 0, name: "Uncategorized", color: "gray", count: 0 },
   ];
-
-  const [tasks, setTasks] = useState(() => {
-    const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY_TASKS);
-    return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
-  });
-
-  const [selectedTask, setSelectedTask] = useState(
-    tasks.length > 0 ? tasks[0] : null
-  );
 
   const [tags, setTags] = useState(() => {
     const storedTags = localStorage.getItem(LOCAL_STORAGE_KEY_TAGS);
     return storedTags ? JSON.parse(storedTags) : []; // Load from localStorage or default to []
   });
 
-  // const [lists, setLists] = useState([]);
-  // const [lists, setLists] = useState(() => {
-  //   const storedLists = localStorage.getItem(LOCAL_STORAGE_KEY_LISTS);
-  //   return storedLists ? JSON.parse(storedLists) : []; // Load from localStorage or default to []
-  // });
+  // const [lists, setLists] = useState(specialLists);
 
   // Need to change this so that special lists aren't multiply added every time the page is refreshed
   const [lists, setLists] = useState(() => {
     let storedLists = localStorage.getItem(LOCAL_STORAGE_KEY_LISTS);
     storedLists = storedLists ? JSON.parse(storedLists) : []; // Load from localStorage or default to []
-    return [...specialLists, ...storedLists]; // Add special lists to the beginning
+
+    // Check if special lists are already in storedLists
+    const specialListIds = specialLists.map((list) => list.id);
+    const hasSpecialLists = storedLists.some((list) =>
+      specialListIds.includes(list.id)
+    );
+    if (!hasSpecialLists) {
+      return [...specialLists, ...storedLists]; // Add special lists to the beginning
+    } else {
+      // If special lists are already in storedLists, just return storedLists
+      return storedLists;
+    }
   });
 
-  const [selectedList, setSelectedList] = useState(
-    lists.length > 0 ? lists[0] : null
-  );
+  const [selectedList, setSelectedList] = useState(lists[0]);
 
   const addList = (newList) => {
     setLists([...lists, newList]);
   };
 
   const deleteList = (listId) => {
-    if (listId == 0) return; // don't allow deleting "None" list
+    if (listId == -1 || listId == -0) return; // don't allow deleting "All Tasks" or "Uncategorized" lists
     const updatedLists = lists.filter((list) => list.id !== listId);
     setLists(updatedLists);
     // Deselect list if it's deleted
@@ -83,7 +79,7 @@ const App = () => {
     // Update tasks to remove the deleted list from them
     // TODO - probably need to update some logic on list count here to make sure it doesn't go negative
     const updatedTasks = tasks.map((task) => {
-      if (task.list.id === listId) {
+      if (task.listId === listId) {
         return {
           ...task,
           listId: 0,
@@ -94,6 +90,11 @@ const App = () => {
     setTasks(updatedTasks);
   };
 
+  const changeSelectedList = (list) => {
+    setSelectedList(list);
+    setSelectedTask(tasks.find((task) => task.listId == list.id) || tasks[0]);
+  };
+
   const addTag = (newTag) => {
     setTags([...tags, newTag]);
   };
@@ -102,6 +103,26 @@ const App = () => {
     const updatedTags = tags.filter((t) => t !== tag);
     setTags(updatedTags);
   };
+
+  const [tasks, setTasks] = useState(() => {
+    const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY_TASKS);
+    return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
+  });
+
+  const [selectedTask, setSelectedTask] = useState(
+    tasks.find((task) => task.id == selectedList.id) || tasks[0]
+  );
+
+  if (lists.length == 0) {
+    const newList = {
+      id: 0,
+      color: "gray",
+      name: "None",
+      count: 0,
+    };
+    setSelectedList(newList);
+    setLists([newList]);
+  }
 
   if (tasks.length == 0) {
     const newTask = {
@@ -116,18 +137,6 @@ const App = () => {
     setSelectedTask(newTask);
     setTasks([newTask]);
   }
-
-  if (lists.length == 0) {
-    const newList = {
-      id: 0,
-      color: "gray",
-      name: "None",
-      count: 0,
-    };
-    setSelectedList(newList);
-    setLists([newList]);
-  }
-
   const [isAddMode, setIsAddMode] = useState(true);
 
   // Save tasks to localStorage whenever the tasks array changes
@@ -220,6 +229,13 @@ const App = () => {
     );
   };
 
+  const getTasksByListId = (listId) => {
+    if (listId == -1) {
+      return tasks; // Return all tasks for "All Tasks" list
+    }
+    return tasks.filter((task) => task.listId === listId);
+  };
+
   // const testfunction = () => {
   //   console.log("test THISSSS");
   //   setTasks(tasks.slice(0, 2));
@@ -232,11 +248,11 @@ const App = () => {
         lists={lists}
         addList={addList}
         deleteList={deleteList}
-        setSelectedList={setSelectedList}
+        changeSelectedList={changeSelectedList}
       />
       <MainView
         selectedListName={selectedList.name}
-        tasks={tasks.filter((task) => task.listId === selectedList.id)}
+        tasks={getTasksByListId(selectedList.id)}
         deleteTask={deleteTask}
         toggleCompleted={toggleCompleted}
         setSelectedTask={setSelectedTask}

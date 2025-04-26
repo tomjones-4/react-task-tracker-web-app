@@ -41,8 +41,6 @@ const AddTagsModal = ({ tags, addTag, deleteTag, addTaskTag, closeModal }) => {
                 style={{
                   backgroundColor: tag.color,
                 }}
-                // TODO
-                // Need to handle this a better way than having the onclick apply to the whole span because there is also the garbage icon
                 onClick={(e) => {
                   e.preventDefault();
                   addTaskTag(tag);

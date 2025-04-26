@@ -1,6 +1,6 @@
 import React from "react";
 
-const MenuLists = ({ lists, setSelectedList }) => {
+const MenuLists = ({ lists, changeSelectedList }) => {
   return (
     <div>
       <h3>Lists</h3>
@@ -9,7 +9,7 @@ const MenuLists = ({ lists, setSelectedList }) => {
           <div
             className="menu-list"
             key={list.id}
-            onClick={() => setSelectedList(list)}
+            onClick={() => changeSelectedList(list)}
           >
             <span
               className="menu-list-color-block"

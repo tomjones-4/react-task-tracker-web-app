@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { FaTrashAlt } from "react-icons/fa";
 
-const AddListModal = ({ addList, closeModal }) => {
+const AddListModal = ({ lists, addList, deleteList, closeModal }) => {
   const [newListName, setNewListName] = useState("");
 
   const getRandomPastelColor = () => {
@@ -33,31 +34,22 @@ const AddListModal = ({ addList, closeModal }) => {
         </button>
         <h2 className="modal-title">Manage Lists</h2>
 
-        {/* <div className="lists">
+        <div className="lists">
           {lists.length > 0 ? (
-            lists.map((list, i) => (
+            lists.map((list) => (
               <span
-                key={i}
+                key={list.id}
                 className="list"
                 style={{
                   backgroundColor: list.color,
                 }}
-                // TODO
-                // Need to handle this a better way than having the onclick apply to the whole span because there is also the garbage icon
-                onClick={(e) => {
-                  e.preventDefault();
-                  addTaskTag(list);
-                }}
-                onMouseEnter={() => setHover(true)}
-                onMouseLeave={() => setHover(false)}
               >
                 {list.name}
                 <button
                   className="delete-tag-button"
                   onClick={(e) => {
                     e.preventDefault();
-                    e.stopPropagation(); // prevent tag click event from firing
-                    deleteTag(list);
+                    deleteList(list.id);
                   }}
                 >
                   <FaTrashAlt className="delete-tag-icon" />
@@ -67,7 +59,7 @@ const AddListModal = ({ addList, closeModal }) => {
           ) : (
             <p>No lists yet. Add some below!</p>
           )}
-        </div> */}
+        </div>
 
         <div className="new-list-section">
           <input

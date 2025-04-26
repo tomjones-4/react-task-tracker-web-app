@@ -4,7 +4,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
 import AddList from "./AddList";
 
-const Menu = ({ lists, addList, deleteList, setSelectedList }) => {
+const Menu = ({ lists, addList, deleteList, changeSelectedList }) => {
   return (
     <div className="menu-container">
       <h1>Menu</h1>
@@ -31,7 +31,7 @@ const Menu = ({ lists, addList, deleteList, setSelectedList }) => {
           placeholder="Search"
         ></input>
       </div>
-      <MenuLists lists={lists} setSelectedList={setSelectedList} />
+      <MenuLists lists={lists} changeSelectedList={changeSelectedList} />
       <AddList lists={lists} addList={addList} deleteList={deleteList} />
       <div className="menu-footer">
         <span>
