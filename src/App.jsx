@@ -21,6 +21,11 @@ import { useState, useEffect } from "react";
 // Highlight the selected list item in the sidebar (background color or bold text)
 // Add a tag filter when "All tasks" is selected in the sidebar
 // Make Uncategorized list show up at bottom of the menu lists
+// Add ability to delete lists
+// Have the lists show up in a different way from the tags. Also make the user confirm they want to delete a list.
+
+// There's a bug where if you delete a list, the it causes an error in TaskView. I'm not sure if it's maybe because it's deleting all the tasks.
+// There's also an error occurring in the TaskView component.
 
 const App = () => {
   /* Begin Constants */
@@ -49,29 +54,29 @@ const App = () => {
   // When uncommenting this line, comment out the block below it that sets the tasks based on localStorage.
   // Same can be done with tags and lists.
 
-  const [tasks, setTasks] = useState([]);
-  // const [tasks, setTasks] = useState(() => {
-  //   const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY_TASKS);
-  //   return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
-  // });
+  // const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+    const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY_TASKS);
+    return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
+  });
 
-  const [lists, setLists] = useState(SPECIAL_LISTS);
-  // const [lists, setLists] = useState(() => {
-  //   let storedLists = localStorage.getItem(LOCAL_STORAGE_KEY_LISTS);
-  //   storedLists = storedLists ? JSON.parse(storedLists) : []; // Load from localStorage or default to []
+  // const [lists, setLists] = useState(SPECIAL_LISTS);
+  const [lists, setLists] = useState(() => {
+    let storedLists = localStorage.getItem(LOCAL_STORAGE_KEY_LISTS);
+    storedLists = storedLists ? JSON.parse(storedLists) : []; // Load from localStorage or default to []
 
-  //   // Check if special lists are already in storedLists
-  //   const specialListIds = SPECIAL_LISTS.map((list) => list.id);
-  //   const hasSpecialLists = storedLists.some((list) =>
-  //     specialListIds.includes(list.id)
-  //   );
-  //   if (!hasSpecialLists) {
-  //     return [...SPECIAL_LISTS, ...storedLists]; // Add special lists to the beginning
-  //   } else {
-  //     // If special lists are already in storedLists, just return storedLists
-  //     return storedLists;
-  //   }
-  // });
+    // Check if special lists are already in storedLists
+    const specialListIds = SPECIAL_LISTS.map((list) => list.id);
+    const hasSpecialLists = storedLists.some((list) =>
+      specialListIds.includes(list.id)
+    );
+    if (!hasSpecialLists) {
+      return [...SPECIAL_LISTS, ...storedLists]; // Add special lists to the beginning
+    } else {
+      // If special lists are already in storedLists, just return storedLists
+      return storedLists;
+    }
+  });
 
   const [selectedList, setSelectedList] = useState(lists[0]);
 
@@ -92,18 +97,24 @@ const App = () => {
   };
 
   const deleteList = (listId) => {
+    console.log("Deleting list with ID:", listId);
     if (listId == -1 || listId == -0) return; // don't allow deleting "All Tasks" or "Uncategorized" lists
 
     // Deselect list if it's deleted
     if (selectedList && selectedList.id === listId) {
-      setSelectedList(updatedLists.length > 0 ? updatedLists[0] : null);
+      //setSelectedList(updatedLists.length > 0 ? updatedLists[0] : null);
+      changeSelectedList(lists[0]); // Select the first list in the updated lists array
+      setSelectedTask(tasks[0]); // Select the first task in tasks array
     }
+
+    console.log("Selected list after deletion:", selectedList);
+    console.log("Selected task after deletion:", selectedTask);
 
     // Update tasks to remove the deleted list from them
     // TODO - probably need to update some logic on list count here to make sure it doesn't go negative
     let numUncategorizedTasks = 0;
     const updatedTasks = tasks.map((task) => {
-      if (task.listId === listId) {
+      if (task.listId == listId) {
         numUncategorizedTasks++;
         return {
           ...task,
@@ -112,9 +123,22 @@ const App = () => {
       }
       return task;
     });
-    setTasks(updatedTasks);
 
-    setLists(lists.filter((list) => list.id != listId)); // Remove the deleted list from the lists array
+    setTasks(updatedTasks);
+    // const updatedLists = lists.filter((list) => list.id != listId);
+    // setLists(updatedLists); // Remove the deleted list from the lists array
+
+    console.log("Lists before deletion:", lists);
+
+    setLists(
+      lists.filter((list) => {
+        console.log("list.id:", list.id);
+        console.log("equals", list.id != listId);
+        list.id != listId;
+      })
+    ); // Remove the deleted list from the lists array
+    console.log("Updated lists after deletion:", lists);
+
     changeListCount(0, numUncategorizedTasks); // Increment the count of the "Uncategorized" list
   };
 
