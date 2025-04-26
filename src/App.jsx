@@ -19,7 +19,7 @@ import { useState, useEffect } from "react";
 // Consider using Headless UI for the modal and dropdown components. This would make it easier to style them and make them more accessible.
 // Highlight the selected list item in the sidebar (background color or bold text)
 // Add a tag filter when "All tasks" is selected in the sidebar
-// Fix list counts. Especially when task is deleted or a new task is added.
+// Make Uncategorized list show up at bottom of the menu lists
 
 const App = () => {
   /* Begin Constants */
@@ -48,29 +48,29 @@ const App = () => {
   // When uncommenting this line, comment out the block below it that sets the tasks based on localStorage.
   // Same can be done with tags and lists.
 
-  // const [tasks, setTasks] = useState([]);
-  const [tasks, setTasks] = useState(() => {
-    const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY_TASKS);
-    return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
-  });
+  const [tasks, setTasks] = useState([]);
+  // const [tasks, setTasks] = useState(() => {
+  //   const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY_TASKS);
+  //   return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
+  // });
 
-  // const [lists, setLists] = useState(specialLists);
-  const [lists, setLists] = useState(() => {
-    let storedLists = localStorage.getItem(LOCAL_STORAGE_KEY_LISTS);
-    storedLists = storedLists ? JSON.parse(storedLists) : []; // Load from localStorage or default to []
+  const [lists, setLists] = useState(SPECIAL_LISTS);
+  // const [lists, setLists] = useState(() => {
+  //   let storedLists = localStorage.getItem(LOCAL_STORAGE_KEY_LISTS);
+  //   storedLists = storedLists ? JSON.parse(storedLists) : []; // Load from localStorage or default to []
 
-    // Check if special lists are already in storedLists
-    const specialListIds = SPECIAL_LISTS.map((list) => list.id);
-    const hasSpecialLists = storedLists.some((list) =>
-      specialListIds.includes(list.id)
-    );
-    if (!hasSpecialLists) {
-      return [...SPECIAL_LISTS, ...storedLists]; // Add special lists to the beginning
-    } else {
-      // If special lists are already in storedLists, just return storedLists
-      return storedLists;
-    }
-  });
+  //   // Check if special lists are already in storedLists
+  //   const specialListIds = SPECIAL_LISTS.map((list) => list.id);
+  //   const hasSpecialLists = storedLists.some((list) =>
+  //     specialListIds.includes(list.id)
+  //   );
+  //   if (!hasSpecialLists) {
+  //     return [...SPECIAL_LISTS, ...storedLists]; // Add special lists to the beginning
+  //   } else {
+  //     // If special lists are already in storedLists, just return storedLists
+  //     return storedLists;
+  //   }
+  // });
 
   const [selectedList, setSelectedList] = useState(lists[0]);
 
@@ -111,17 +111,21 @@ const App = () => {
     });
     setTasks(updatedTasks);
 
-    const updatedLists = lists
-      .filter((list) => list.id !== listId)
-      .map((list) => {
-        if (list.id == 0) {
-          return {
-            ...list,
-            count: list.count + numUncategorizedTasks,
-          };
-        }
-        return list;
-      });
+    setLists(lists.filter((list) => list.id != listId)); // Remove the deleted list from the lists array
+    changeListCount(0, numUncategorizedTasks); // Increment the count of the "Uncategorized" list
+  };
+
+  // Pass in a negative number to decrement the count
+  const changeListCount = (listId, numListsAdded) => {
+    const updatedLists = lists.map((list) => {
+      if (list.id === listId || list.id == -1) {
+        return {
+          ...list,
+          count: list.count + numListsAdded,
+        };
+      }
+      return list;
+    });
     setLists(updatedLists);
   };
 
@@ -151,6 +155,7 @@ const App = () => {
     if (!newTask) return; // Prevent adding empty tasks
     setTasks([...tasks, newTask]);
     setSelectedTask(newTask); // Select the newly added task
+    changeListCount(newTask.listId, 1); // Increment the count of the list
   };
 
   const editTask = (editedTask) => {
@@ -169,23 +174,9 @@ const App = () => {
       return task;
     });
     setTasks(updatedTasks);
-
-    const updatedLists = lists.map((list) => {
-      if (list.id === editedTask.listId) {
-        return {
-          ...list,
-          count: list.count + 1,
-        };
-      } else if (list.id === formerListId) {
-        return {
-          ...list,
-          count: list.count - 1,
-        };
-      }
-      return list;
-    });
-    setLists(updatedLists);
     setSelectedTask(editedTask);
+    changeListCount(editedTask.listId, 1); // Increment the count of the new list
+    changeListCount(formerListId, -1); // Decrement the count of the old list
   };
 
   const resetTask = () => {
@@ -233,7 +224,7 @@ const App = () => {
       count: 0,
     };
     setSelectedList(newList);
-    setLists([newList]);
+    addList(newList);
   }
 
   if (tasks.length == 0) {
@@ -246,8 +237,8 @@ const App = () => {
       dueDate: "",
       tags: [],
     };
+    addTask(newTask);
     setSelectedTask(newTask);
-    setTasks([newTask]);
   }
 
   /* End Initialization */
