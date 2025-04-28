@@ -3,6 +3,7 @@ import { FaChevronRight } from "react-icons/fa";
 
 const TaskItem = ({
   task,
+  selectedTaskId,
   //deleteTask,
   toggleCompleted,
   setSelectedTask,
@@ -19,7 +20,9 @@ const TaskItem = ({
 
   return (
     <div
-      className={`task-item ${task.completed ? "completed" : ""}`}
+      className={`task-item ${task.completed ? "completed" : ""} ${
+        task.id == selectedTaskId ? "selected" : ""
+      }`}
       onClick={handleClick}
     >
       <input type="checkbox" checked={task.completed} onChange={handleChange} />

@@ -303,6 +303,7 @@ const App = () => {
       <MainView
         selectedListName={selectedList.name}
         tasks={getTasksByListId(selectedList.id)}
+        selectedTaskId={selectedTask.id}
         deleteTask={deleteTask}
         toggleCompleted={toggleCompleted}
         setSelectedTask={setSelectedTask}

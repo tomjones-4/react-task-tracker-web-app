@@ -94,7 +94,6 @@
 .menu-list-name {
   flex-grow: 1; /* Pushes item count to the right */
   font-size: 16px;
-  font-weight: 500;
 }
 
 .menu-list-item-count {
@@ -259,6 +258,10 @@
 .task-item.completed p {
   text-decoration: line-through;
   color: #888;
+}
+
+.task-item.selected {
+  background-color: #cce4ff; /* light blue for selected */
 }
 
 .expand-task-icon {

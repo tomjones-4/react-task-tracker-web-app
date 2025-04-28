@@ -4,6 +4,7 @@ import AddTaskItem from "./AddTaskItem.jsx";
 
 const TaskList = ({
   tasks,
+  selectedTaskId,
   deleteTask,
   toggleCompleted,
   setSelectedTask,
@@ -21,6 +22,7 @@ const TaskList = ({
           <TaskItem
             key={task.id}
             task={task}
+            selectedTaskId={selectedTaskId}
             deleteTask={deleteTask}
             toggleCompleted={toggleCompleted}
             setSelectedTask={setSelectedTask}
