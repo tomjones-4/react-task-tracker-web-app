@@ -79,6 +79,11 @@
   background-color: #eaeaea; /* Light hover effect */
 }
 
+.menu-list.selected {
+  background-color: #cce4ff; /* light blue for selected */
+  font-weight: bold;
+}
+
 .menu-list-color-block {
   width: 12px;
   height: 12px;

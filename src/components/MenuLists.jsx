@@ -1,13 +1,15 @@
 import React from "react";
 
-const MenuLists = ({ lists, changeSelectedList }) => {
+const MenuLists = ({ lists, selectedListId, changeSelectedList }) => {
   return (
     <div>
       <h3>Lists</h3>
       {lists.map((list) => {
         return (
           <div
-            className="menu-list"
+            className={`menu-list ${
+              selectedListId == list.id ? "selected" : ""
+            }`}
             key={list.id}
             onClick={() => changeSelectedList(list)}
           >
