@@ -97,12 +97,10 @@ const App = () => {
   };
 
   const deleteList = (listId) => {
-    console.log("Deleting list with ID:", listId);
     if (listId == -1 || listId == -0) return; // don't allow deleting "All Tasks" or "Uncategorized" lists
 
     // Deselect list if it's deleted
     if (selectedList && selectedList.id === listId) {
-      //setSelectedList(updatedLists.length > 0 ? updatedLists[0] : null);
       changeSelectedList(lists[0]); // Select the first list in the updated lists array
       setSelectedTask(tasks[0]); // Select the first task in tasks array
     }
@@ -125,21 +123,12 @@ const App = () => {
     });
 
     setTasks(updatedTasks);
-    // const updatedLists = lists.filter((list) => list.id != listId);
-    // setLists(updatedLists); // Remove the deleted list from the lists array
-
-    console.log("Lists before deletion:", lists);
-
-    setLists(
-      lists.filter((list) => {
-        console.log("list.id:", list.id);
-        console.log("equals", list.id != listId);
-        list.id != listId;
-      })
-    ); // Remove the deleted list from the lists array
-    console.log("Updated lists after deletion:", lists);
 
     changeListCount(0, numUncategorizedTasks); // Increment the count of the "Uncategorized" list
+    setLists((prevLists) => {
+      const updatedLists = prevLists.filter((list) => list.id != listId);
+      return updatedLists;
+    });
   };
 
   // Pass in a negative number to decrement the count
