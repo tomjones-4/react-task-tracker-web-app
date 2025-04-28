@@ -150,7 +150,10 @@ const App = () => {
     if (list.count == 0) {
       resetTask();
     } else {
-      setSelectedTask(tasks.find((task) => task.listId == list.id));
+      setSelectedTask(
+        // find first task where listId matches selected list id or if listId is -1 (which means "All Tasks"), select the first task
+        tasks.find((task) => task.listId == list.id || list.id == -1)
+      );
       setIsAddMode(false);
     }
   };
