@@ -9,11 +9,6 @@ const TaskItem = ({
   setSelectedTask,
   setIsAddMode,
 }) => {
-  const handleClick = () => {
-    setSelectedTask(task);
-    setIsAddMode(false);
-  };
-
   const handleTaskClick = (e) => {
     setSelectedTask(task);
     setIsAddMode(false);

@@ -1,7 +1,7 @@
 import TaskList from "./TaskList";
 
 const MainView = ({
-  selectedListName,
+  selectedList,
   tasks,
   selectedTaskId,
   deleteTask,
@@ -13,7 +13,7 @@ const MainView = ({
 }) => {
   return (
     <div className="main-view">
-      <h1>{selectedListName}</h1>
+      <h1>{selectedList.name}</h1>
 
       <TaskList
         tasks={tasks}
@@ -28,7 +28,7 @@ const MainView = ({
       <div>
         <h2>Debug</h2>
         <p>Selected Task: {JSON.stringify(selectedTaskForDebug)}</p>
-        <p>Selected List: {selectedListName}</p>
+        <p>Selected List: {JSON.stringify(selectedList)}</p>
       </div>
     </div>
   );

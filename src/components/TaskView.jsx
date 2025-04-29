@@ -17,7 +17,7 @@ const TaskView = ({
   const [taskDescription, setTaskDescription] = useState(
     selectedTask.description
   );
-  const [taskListId, setTaskListId] = useState(selectedTask.listId);
+  const [taskListId, setTaskListId] = useState(selectedListId);
   const [taskDueDate, setTaskDueDate] = useState(selectedTask.dueDate);
   const [taskTagIds, setTaskTagIds] = useState(selectedTask.tagIds);
 
@@ -25,7 +25,7 @@ const TaskView = ({
     if (selectedTask) {
       setTaskTitle(selectedTask.title || "");
       setTaskDescription(selectedTask.description || "");
-      setTaskListId(selectedTask.listId || 0);
+      setTaskListId(selectedListId || 0);
       setTaskDueDate(selectedTask.dueDate || "");
       setTaskTagIds(selectedTask.tagIds || []);
     }
@@ -63,7 +63,7 @@ const TaskView = ({
       <TaskForm
         lists={lists}
         tags={tags}
-        selectedListId={selectedListId}
+        //selectedListId={selectedListId}
         taskTitle={taskTitle}
         setTaskTitle={setTaskTitle}
         taskDescription={taskDescription}

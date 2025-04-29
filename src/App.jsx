@@ -9,22 +9,15 @@ import { useState, useEffect } from "react";
 // Make it so the list that is selected when editing a task is the list the user is currently on by default
 // Consider refactoring the modals for lists and tags since they are very similar and there's some repeated CSS
 // Make it so menu buttons show up at bottom of menu. Currently I'm setting the height of the div with menu-footer class, but there should be a better way where I can position the buttons at a certain distance from the bottom.
-// Apply a highlight on selected tags in tags modal
-// If a tag is removed from the manage tags modal, it should be removed from tasks that have it applied? Idk, that's debateable
 // Add color selector for new lists and tags
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id)
 // Consider using Headless UI for the modal and dropdown components. This would make it easier to style them and make them more accessible.
 // Add a tag filter when "All tasks" is selected in the sidebar
 // Add ability to delete lists
 // Have the lists show up in a different way from the tags. Also make the user confirm they want to delete a list.
-// Make it so task keeps track of tag ids, rather than entire tag objects
 // Need to handle the case where there is no selected task. Right now the code assumes there will always be a selected task, which causes errors if there are no tasks.
 // Make it so when user clicks to add text the cursor is automatically blinking on the title field
 // Improve the UX when a user adds tons of tags. Currently it overflows and looks ugly.
-
-// Current bugs
-// App crashes when deleting a tag that is applied one the currently selected task. It looks like it's OK if the tag is deleted from another task that doesn't have it applied, so I think there's an interesting timing issue.
-// Can't currently remove task tags from the task on task form
 
 const App = () => {
   /* Begin Constants */
@@ -36,8 +29,8 @@ const App = () => {
   // const LOCAL_STORAGE_KEY_THEME = "todoApp.theme";
 
   const SPECIAL_LISTS = [
-    { id: -1, name: "All Tasks", color: "black", count: 0 },
-    { id: 0, name: "Uncategorized", color: "gray", count: 0 },
+    { id: -1, name: "All Tasks", color: "black", count: 1 },
+    { id: 0, name: "Uncategorized", color: "gray", count: 1 },
   ];
 
   const dummyTask = {
@@ -103,7 +96,7 @@ const App = () => {
   const addList = (newList) => {
     setLists([...lists.slice(0, -1), newList, lists[lists.length - 1]]); // Add the new list before the last element (Uncategorized)
     setSelectedList(newList); // Select the newly added list
-    resetTask(); // Reset the task view to add a new task
+    resetTask(newList.id); // Reset the task view to add a new task
   };
 
   const deleteList = (listId) => {
@@ -130,7 +123,8 @@ const App = () => {
 
     setTasks(updatedTasks);
 
-    changeListCount(0, numUncategorizedTasks); // Increment the count of the "Uncategorized" list
+    changeListCountsMultiple(0, numUncategorizedTasks, false); // Increment the count of the "Uncategorized" list
+
     setLists((prevLists) => {
       const updatedLists = prevLists.filter((list) => list.id != listId);
       return updatedLists;
@@ -138,9 +132,19 @@ const App = () => {
   };
 
   // Pass in a negative number to decrement the count
-  const changeListCount = (listId, numListsAdded) => {
+  const changeListCountsMultiple = (
+    listId,
+    numListsAdded,
+    changeAllTasksList = true
+  ) => {
+    // console.log("changing list count");
+    // console.log("listId", listId);
+
     const updatedLists = lists.map((list) => {
-      if (list.id === listId || list.id == -1) {
+      // console.log("does any list have the id we are looking for?");
+      // console.log("list.id", list.id);
+      // console.log(list.id === listId);
+      if (list.id === listId || (list.id === -1 && changeAllTasksList)) {
         return {
           ...list,
           count: list.count + numListsAdded,
@@ -148,21 +152,35 @@ const App = () => {
       }
       return list;
     });
+    // console.log("updatedLists", updatedLists);
     setLists(updatedLists);
   };
 
   const changeSelectedList = (list) => {
+    // console.log("changing selected list to", list.name);
+    // console.log("list.count", list.count);
+    // console.log("all lists", lists);
     setSelectedList(list);
     if (list.count == 0) {
-      resetTask();
+      resetTask(list.id);
     } else {
+      // console.log("in the ELSE statement");
+      // console.log("tasks", tasks);
+      // console.log(
+      //   tasks.find((task) => task.listId == list.id || list.id == -1)
+      // );
       setSelectedTask(
-        // find first task where listId matches selected list id or if listId is -1 (which means "All Tasks"), select the first task
+        // find first task where listId matches selected list id or if listId is 0 (which means "All Tasks"), select the first task
         tasks.find((task) => task.listId == list.id || list.id == -1)
       );
       setIsAddMode(false);
     }
+    // console.log("selected task", selectedTask);
+    // console.log("selected list", selectedList);
+    // console.log("made it here");
   };
+
+  // console.log("selected task just after changing selected list", selectedTask);
 
   const addTag = (newTag) => {
     setTags([...tags, newTag]);
@@ -183,6 +201,19 @@ const App = () => {
   };
 
   const deleteTask = (taskId) => {
+    // console.log("deleting task");
+    // Update the list counts
+    const taskToDelete = tasks.find((task) => task.id === taskId);
+    const taskListId = tasks.find((task) => task.id === taskId).listId;
+
+    // console.log("taskToDelete", taskToDelete);
+
+    // console.log("taskListId", taskListId);
+    // changeListCountOneAtATime(taskListId, -1); // Decrement the count of the list
+    // changeListCountOneAtATime(-1, -1); // Decrement the count of the list
+
+    changeListCountsMultiple(taskListId, -1); // Decrement the count of the list
+
     setTasks(tasks.filter((task) => task.id !== taskId));
     // Deselect task if it's deleted
     if (selectedTask && selectedTask.id === taskId) {
@@ -191,14 +222,22 @@ const App = () => {
   };
 
   const addTask = (newTask) => {
+    console.log("adding task");
+    console.log("newTask", newTask);
     if (!newTask) return; // Prevent adding empty tasks
     setTasks([...tasks, newTask]);
     setSelectedTask(newTask); // Select the newly added task
-    changeListCount(newTask.listId, 1); // Increment the count of the list
+    // changeListCountOneAtATime(newTask.listId, 1); // Increment the count of the list
+    // changeListCountOneAtATime(-1, 1); // Increment the count of the list
+
+    changeListCountsMultiple(newTask.listId, 1); // Increment the count of the list
   };
 
   const editTask = (editedTask) => {
     const formerListId = tasks.find((task) => task.id === editedTask.id).listId;
+
+    // console.log("editedTask.listId", editedTask.listId);
+    // console.log("formerListId", formerListId);
     const updatedTasks = tasks.map((task) => {
       if (task.id === editedTask.id) {
         return {
@@ -214,17 +253,26 @@ const App = () => {
     });
     setTasks(updatedTasks);
     setSelectedTask(editedTask);
-    changeListCount(editedTask.listId, 1); // Increment the count of the new list
-    changeListCount(formerListId, -1); // Decrement the count of the old list
+    if (editedTask.listId !== formerListId) {
+      // changeListCountOneAtATime(editedTask.listId, 1); // Increment the count of the new list
+      // changeListCountOneAtATime(formerListId, -1); // Decrement the count of the old list
+
+      changeListCountsMultiple(editedTask.listId, 1); // Increment the count of the new list
+      changeListCountsMultiple(formerListId, -1); // Decrement the count of the old list
+    }
   };
 
-  const resetTask = () => {
+  const resetTask = (newListId = selectedList.id) => {
+    console.log("RESETTING TASK");
+    console.log("selectedList.id", selectedList.id);
+    console.log("newListId", newListId);
     const newTask = {
       id: Date.now(),
       completed: false,
       title: "",
       description: "",
-      listId: 0,
+      // listId: 0,
+      listId: newListId, // Set the listId to the currently selected list
       dueDate: "",
       tagIds: [],
     };
@@ -300,6 +348,8 @@ const App = () => {
 
   /* End Debugging */
 
+  console.log("selectedTask", selectedTask);
+
   return (
     <div className="App">
       <Menu
@@ -310,7 +360,7 @@ const App = () => {
         selectedListId={selectedList.id}
       />
       <MainView
-        selectedListName={selectedList.name}
+        selectedList={selectedList}
         tasks={getTasksByListId(selectedList.id)}
         selectedTaskId={selectedTask.id}
         deleteTask={deleteTask}
@@ -321,7 +371,7 @@ const App = () => {
         setIsAddMode={setIsAddMode}
       />
       <TaskView
-        selectedListId={selectedList.id}
+        selectedListId={selectedList.id === -1 ? 0 : selectedList.id}
         selectedTask={selectedTask}
         lists={lists}
         tags={tags}
