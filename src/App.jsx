@@ -137,13 +137,7 @@ const App = () => {
     numListsAdded,
     changeAllTasksList = true
   ) => {
-    // console.log("changing list count");
-    // console.log("listId", listId);
-
     const updatedLists = lists.map((list) => {
-      // console.log("does any list have the id we are looking for?");
-      // console.log("list.id", list.id);
-      // console.log(list.id === listId);
       if (list.id === listId || (list.id === -1 && changeAllTasksList)) {
         return {
           ...list,
@@ -152,35 +146,21 @@ const App = () => {
       }
       return list;
     });
-    // console.log("updatedLists", updatedLists);
     setLists(updatedLists);
   };
 
   const changeSelectedList = (list) => {
-    // console.log("changing selected list to", list.name);
-    // console.log("list.count", list.count);
-    // console.log("all lists", lists);
     setSelectedList(list);
     if (list.count == 0) {
       resetTask(list.id);
     } else {
-      // console.log("in the ELSE statement");
-      // console.log("tasks", tasks);
-      // console.log(
-      //   tasks.find((task) => task.listId == list.id || list.id == -1)
-      // );
       setSelectedTask(
         // find first task where listId matches selected list id or if listId is 0 (which means "All Tasks"), select the first task
         tasks.find((task) => task.listId == list.id || list.id == -1)
       );
       setIsAddMode(false);
     }
-    // console.log("selected task", selectedTask);
-    // console.log("selected list", selectedList);
-    // console.log("made it here");
   };
-
-  // console.log("selected task just after changing selected list", selectedTask);
 
   const addTag = (newTag) => {
     setTags([...tags, newTag]);
@@ -201,17 +181,7 @@ const App = () => {
   };
 
   const deleteTask = (taskId) => {
-    // console.log("deleting task");
-    // Update the list counts
-    const taskToDelete = tasks.find((task) => task.id === taskId);
     const taskListId = tasks.find((task) => task.id === taskId).listId;
-
-    // console.log("taskToDelete", taskToDelete);
-
-    // console.log("taskListId", taskListId);
-    // changeListCountOneAtATime(taskListId, -1); // Decrement the count of the list
-    // changeListCountOneAtATime(-1, -1); // Decrement the count of the list
-
     changeListCountsMultiple(taskListId, -1); // Decrement the count of the list
 
     setTasks(tasks.filter((task) => task.id !== taskId));
@@ -222,22 +192,19 @@ const App = () => {
   };
 
   const addTask = (newTask) => {
-    console.log("adding task");
-    console.log("newTask", newTask);
     if (!newTask) return; // Prevent adding empty tasks
     setTasks([...tasks, newTask]);
     setSelectedTask(newTask); // Select the newly added task
+
     // changeListCountOneAtATime(newTask.listId, 1); // Increment the count of the list
     // changeListCountOneAtATime(-1, 1); // Increment the count of the list
 
     changeListCountsMultiple(newTask.listId, 1); // Increment the count of the list
+    changeSelectedList(lists.find((list) => list.id === newTask.listId)); // Select the newly added task's list
   };
 
   const editTask = (editedTask) => {
     const formerListId = tasks.find((task) => task.id === editedTask.id).listId;
-
-    // console.log("editedTask.listId", editedTask.listId);
-    // console.log("formerListId", formerListId);
     const updatedTasks = tasks.map((task) => {
       if (task.id === editedTask.id) {
         return {
@@ -263,9 +230,6 @@ const App = () => {
   };
 
   const resetTask = (newListId = selectedList.id) => {
-    console.log("RESETTING TASK");
-    console.log("selectedList.id", selectedList.id);
-    console.log("newListId", newListId);
     const newTask = {
       id: Date.now(),
       completed: false,
@@ -348,6 +312,7 @@ const App = () => {
 
   /* End Debugging */
 
+  console.log("selectedList", selectedList);
   console.log("selectedTask", selectedTask);
 
   return (
