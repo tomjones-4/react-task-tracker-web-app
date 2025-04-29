@@ -9,8 +9,6 @@ import { useState, useEffect } from "react";
 // Make it so the list that is selected when editing a task is the list the user is currently on by default
 // Make it so menu buttons show up at bottom of menu. Currently I'm setting the height of the div with menu-footer class, but there should be a better way where I can position the buttons at a certain distance from the bottom.
 // Apply a highlight on selected tags in tags modal
-// Don't let user add the same tag twice
-// Don't let user add the same list twice
 // If a tag is removed from the manage tags modal, it should be removed from tasks that have it applied? Idk, that's debateable
 // Add color selector for new lists and tags
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id)

@@ -4,7 +4,14 @@ import { FaTrashAlt } from "react-icons/fa";
 const AddListModal = ({ lists, addList, deleteList, closeModal }) => {
   const [newListName, setNewListName] = useState("");
   const [error, setError] = useState("");
+  const [wiggle, setWiggle] = useState(false);
   const inputRef = useRef(null);
+
+  const showError = (message) => {
+    setError(message);
+    setWiggle(true);
+    setTimeout(() => setWiggle(false), 400); // Remove class after animation
+  };
 
   const getRandomPastelColor = () => {
     const hue = Math.floor(Math.random() * 360); // any hue
@@ -23,7 +30,7 @@ const AddListModal = ({ lists, addList, deleteList, closeModal }) => {
         (list) => list.name.toLowerCase() == trimmedListName.toLowerCase()
       )
     ) {
-      setError("A list with this name already exists.");
+      showError("A list with this name already exists.");
       // Auto-focus and select text
       inputRef.current.focus();
       inputRef.current.select();
@@ -45,7 +52,9 @@ const AddListModal = ({ lists, addList, deleteList, closeModal }) => {
   return (
     <div className="modal-backdrop" onClick={closeModal}>
       <div
-        className={`modal-content ${error ? "error" : ""}`}
+        className={`modal-content ${error ? "error" : ""} ${
+          wiggle ? "wiggle" : ""
+        }`}
         onClick={(e) => e.stopPropagation()} // prevent backdrop close
       >
         <button className="close-list-modal-button" onClick={closeModal}>

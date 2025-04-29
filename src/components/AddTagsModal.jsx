@@ -4,7 +4,14 @@ import { FaTrashAlt } from "react-icons/fa";
 const AddTagsModal = ({ tags, addTag, deleteTag, addTaskTag, closeModal }) => {
   const [newTagName, setNewTagName] = useState("");
   const [error, setError] = useState("");
+  const [wiggle, setWiggle] = useState(false);
   const inputRef = useRef(null);
+
+  const showError = (message) => {
+    setError(message);
+    setWiggle(true);
+    setTimeout(() => setWiggle(false), 400); // Remove class after animation
+  };
 
   const getRandomPastelColor = () => {
     const hue = Math.floor(Math.random() * 360); // any hue
@@ -21,7 +28,7 @@ const AddTagsModal = ({ tags, addTag, deleteTag, addTaskTag, closeModal }) => {
     if (
       tags.some((tag) => tag.name.toLowerCase() == trimmedTagName.toLowerCase())
     ) {
-      setError("A tag with this name already exists.");
+      showError("A tag with this name already exists.");
       // Auto-focus and select text
       inputRef.current.focus();
       inputRef.current.select();
@@ -41,7 +48,9 @@ const AddTagsModal = ({ tags, addTag, deleteTag, addTaskTag, closeModal }) => {
   return (
     <div className="modal-backdrop" onClick={closeModal}>
       <div
-        className={`modal-content ${error ? "error" : ""}`}
+        className={`modal-content ${error ? "error" : ""} ${
+          wiggle ? "wiggle" : ""
+        }`}
         onClick={(e) => e.stopPropagation()} // prevent backdrop close
       >
         <button className="close-tag-modal-button" onClick={closeModal}>
