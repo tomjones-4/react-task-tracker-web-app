@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 
 const AddTagsModal = ({ tags, addTag, deleteTag, addTaskTag, closeModal }) => {
   const [newTagName, setNewTagName] = useState("");
+  const [error, setError] = useState("");
+  const inputRef = useRef(null);
 
   const getRandomPastelColor = () => {
     const hue = Math.floor(Math.random() * 360); // any hue
@@ -11,20 +13,35 @@ const AddTagsModal = ({ tags, addTag, deleteTag, addTaskTag, closeModal }) => {
 
   const handleAddTag = (e) => {
     e.preventDefault();
-    if (!newTagName.trim()) return; // Prevent adding empty tags
+
+    const trimmedTagName = newTagName.trim();
+    if (!trimmedTagName) return; // Prevent adding empty tags
+
+    // Check if tag already exists
+    if (
+      tags.some((tag) => tag.name.toLowerCase() == trimmedTagName.toLowerCase())
+    ) {
+      setError("A tag with this name already exists.");
+      // Auto-focus and select text
+      inputRef.current.focus();
+      inputRef.current.select();
+      return;
+    }
+
     let color = getRandomPastelColor();
     const newTag = {
-      name: newTagName,
+      name: trimmedTagName,
       color: color,
     };
     addTag(newTag);
     setNewTagName(""); // Clear input field after adding
+    setError(""); // Clear error message
   };
 
   return (
     <div className="modal-backdrop" onClick={closeModal}>
       <div
-        className="modal-content"
+        className={`modal-content ${error ? "error" : ""}`}
         onClick={(e) => e.stopPropagation()} // prevent backdrop close
       >
         <button className="close-tag-modal-button" onClick={closeModal}>
@@ -66,16 +83,18 @@ const AddTagsModal = ({ tags, addTag, deleteTag, addTaskTag, closeModal }) => {
 
         <div className="new-tag-section">
           <input
+            ref={inputRef}
             type="text"
             placeholder="New tag name"
             value={newTagName}
             onChange={(e) => setNewTagName(e.target.value)}
-            className="new-tag-input"
+            className={`new-tag-input ${error ? "error" : ""}`}
           />
           <button className="add-tag-button" onClick={handleAddTag}>
             Add
           </button>
         </div>
+        {error && <div className="error-message">{error}</div>}
       </div>
     </div>
   );
