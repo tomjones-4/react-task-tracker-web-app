@@ -5,19 +5,27 @@ import TaskView from "./components/TaskView.jsx";
 import { useState, useEffect } from "react";
 
 // TODO
-// Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
-// Make it so the list that is selected when editing a task is the list the user is currently on by default
-// Consider refactoring the modals for lists and tags since they are very similar and there's some repeated CSS
-// Make it so menu buttons show up at bottom of menu. Currently I'm setting the height of the div with menu-footer class, but there should be a better way where I can position the buttons at a certain distance from the bottom.
-// Add color selector for new lists and tags
-// Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id)
-// Consider using Headless UI for the modal and dropdown components. This would make it easier to style them and make them more accessible.
-// Add a tag filter when "All tasks" is selected in the sidebar
-// Add ability to delete lists
-// Have the lists show up in a different way from the tags. Also make the user confirm they want to delete a list.
+
+/* High Priority */
 // Need to handle the case where there is no selected task. Right now the code assumes there will always be a selected task, which causes errors if there are no tasks.
+// Add color selector for new lists and tags
+/* End High Priority */
+
+/* Medium Priority */
+// Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
+// Make the user confirm they want to delete a list.
+// Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
 // Make it so when user clicks to add text the cursor is automatically blinking on the title field
+// Add a tag filter when "All tasks" is selected in the sidebar
+/* End Medium Priority */
+
+/* Low Priority */
+// Have the lists show up in a different way from the tags.
+// Refactor whatever logic is shared between lists and tags modals
+// Make it so menu buttons show up at bottom of menu. Currently I'm setting the height of the div with menu-footer class, but there should be a better way where I can position the buttons at a certain distance from the bottom.
+// Consider using Headless UI for the modal and dropdown components. This would make it easier to style them and make them more accessible.
 // Improve the UX when a user adds tons of tags. Currently it overflows and looks ugly.
+/* End Low Priority */
 
 const App = () => {
   /* Begin Constants */
