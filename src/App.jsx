@@ -22,6 +22,9 @@ import { useState, useEffect } from "react";
 // Make it so when user clicks to add text the cursor is automatically blinking on the title field
 // Improve the UX when a user adds tons of tags. Currently it overflows and looks ugly.
 
+// Current bugs
+// App crashes when deleting a tag that is applied one the currently selected task. It looks like it's OK if the tag is deleted from another task that doesn't have it applied, so I think there's an interesting timing issue.
+
 const App = () => {
   /* Begin Constants */
 
