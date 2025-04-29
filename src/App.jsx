@@ -24,6 +24,7 @@ import { useState, useEffect } from "react";
 
 // Current bugs
 // App crashes when deleting a tag that is applied one the currently selected task. It looks like it's OK if the tag is deleted from another task that doesn't have it applied, so I think there's an interesting timing issue.
+// Can't currently remove task tags from the task on task form
 
 const App = () => {
   /* Begin Constants */
