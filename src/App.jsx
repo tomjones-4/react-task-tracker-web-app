@@ -13,12 +13,9 @@ import { useState, useEffect } from "react";
 // Don't let user add the same list twice
 // If a tag is removed from the manage tags modal, it should be removed from tasks that have it applied? Idk, that's debateable
 // Add color selector for new lists and tags
-// Give user ability to see all tasks regardless of list
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id)
-// Make it so list is saved correctly when it's added to task. Currently, I think it just saves the id or name, but not the other info in the list object (color, length, etc.)
 // Consider using Headless UI for the modal and dropdown components. This would make it easier to style them and make them more accessible.
 // Add a tag filter when "All tasks" is selected in the sidebar
-// Make Uncategorized list show up at bottom of the menu lists
 // Add ability to delete lists
 // Have the lists show up in a different way from the tags. Also make the user confirm they want to delete a list.
 
@@ -86,7 +83,7 @@ const App = () => {
   /* Begin Functions */
 
   const addList = (newList) => {
-    setLists([...lists, newList]);
+    setLists([...lists.slice(0, -1), newList, lists[lists.length - 1]]); // Add the new list before the last element (Uncategorized)
     setSelectedList(newList); // Select the newly added list
     resetTask(); // Reset the task view to add a new task
   };
