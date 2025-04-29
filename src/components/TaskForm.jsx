@@ -13,8 +13,8 @@ const TaskForm = ({
   setTaskListId,
   taskDueDate,
   setTaskDueDate,
-  taskTags,
-  setTaskTags,
+  taskTagIds,
+  setTaskTagIds,
   addTag,
   deleteTag,
 }) => {
@@ -23,13 +23,13 @@ const TaskForm = ({
 
   const closeModal = () => setIsAddTagModalOpen(false);
 
-  const addTaskTag = (newTaskTag) => {
-    setTaskTags(() => [...taskTags, newTaskTag]);
+  const addTaskTag = (newTaskTagId) => {
+    setTaskTagIds(() => [...taskTagIds, newTaskTagId]);
   };
 
-  const deleteTaskTag = (tagToDelete) => {
-    setTaskTags((prevTags) =>
-      prevTags.filter((tag) => tag.name !== tagToDelete.name)
+  const deleteTaskTag = (tagToDeleteId) => {
+    setTaskTagIds((prevTagIds) =>
+      prevTagIds.filter((id) => id !== tagToDeleteId)
     );
   };
 
@@ -94,10 +94,11 @@ const TaskForm = ({
       <span className="task-form-item">
         <label htmlFor="tags">Tags</label>
         <span>
-          {taskTags.length > 0 &&
-            taskTags.map((tag, i) => (
+          {taskTagIds
+            .map((id) => tags.find((tag) => tag.id === id))
+            .map((tag) => (
               <span
-                key={i}
+                key={tag.id}
                 className="tag"
                 style={{ backgroundColor: tag.color, fontWeight: "bold" }}
               >
@@ -128,6 +129,7 @@ const TaskForm = ({
             addTag={addTag}
             deleteTag={deleteTag}
             addTaskTag={addTaskTag}
+            taskTagIds={taskTagIds}
             closeModal={closeModal}
           />
         )}

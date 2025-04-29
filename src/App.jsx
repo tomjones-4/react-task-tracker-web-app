@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 // TODO
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
 // Make it so the list that is selected when editing a task is the list the user is currently on by default
+// Consider refactoring the modals for lists and tags since they are very similar and there's some repeated CSS
 // Make it so menu buttons show up at bottom of menu. Currently I'm setting the height of the div with menu-footer class, but there should be a better way where I can position the buttons at a certain distance from the bottom.
 // Apply a highlight on selected tags in tags modal
 // If a tag is removed from the manage tags modal, it should be removed from tasks that have it applied? Idk, that's debateable
@@ -16,6 +17,10 @@ import { useState, useEffect } from "react";
 // Add a tag filter when "All tasks" is selected in the sidebar
 // Add ability to delete lists
 // Have the lists show up in a different way from the tags. Also make the user confirm they want to delete a list.
+// Make it so task keeps track of tag ids, rather than entire tag objects
+// Need to handle the case where there is no selected task. Right now the code assumes there will always be a selected task, which causes errors if there are no tasks.
+// Make it so when user clicks to add text the cursor is automatically blinking on the title field
+// Improve the UX when a user adds tons of tags. Currently it overflows and looks ugly.
 
 const App = () => {
   /* Begin Constants */
@@ -31,10 +36,21 @@ const App = () => {
     { id: 0, name: "Uncategorized", color: "gray", count: 0 },
   ];
 
+  const dummyTask = {
+    id: Date.now(),
+    completed: false,
+    title: "Tend to the garden",
+    description: "Water the plants and remove weeds",
+    listId: 0,
+    dueDate: "",
+    tagIds: [],
+  };
+
   /* End Constants */
 
   /* Begin State Variables */
 
+  // const [tags, setTags] = useState([]);
   const [tags, setTags] = useState(() => {
     const storedTags = localStorage.getItem(LOCAL_STORAGE_KEY_TAGS);
     return storedTags ? JSON.parse(storedTags) : []; // Load from localStorage or default to []
@@ -44,7 +60,7 @@ const App = () => {
   // When uncommenting this line, comment out the block below it that sets the tasks based on localStorage.
   // Same can be done with tags and lists.
 
-  // const [tasks, setTasks] = useState([]);
+  // const [tasks, setTasks] = useState([dummyTask]);
   const [tasks, setTasks] = useState(() => {
     const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY_TASKS);
     return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
@@ -95,11 +111,7 @@ const App = () => {
       setSelectedTask(tasks[0]); // Select the first task in tasks array
     }
 
-    console.log("Selected list after deletion:", selectedList);
-    console.log("Selected task after deletion:", selectedTask);
-
     // Update tasks to remove the deleted list from them
-    // TODO - probably need to update some logic on list count here to make sure it doesn't go negative
     let numUncategorizedTasks = 0;
     const updatedTasks = tasks.map((task) => {
       if (task.listId == listId) {
@@ -153,14 +165,30 @@ const App = () => {
   };
 
   const deleteTag = (tag) => {
+    console.log("Deleting tag:", tag);
+
+    // Remove the tag from all tasks that have it
+    const updatedTasks = tasks.map((task) => {
+      console.log("task tag ids before:", task.tagIds);
+      console.log(
+        "task tag ids after:",
+        task.tagIds.filter((tagId) => tagId != tag.id)
+      );
+      return {
+        ...task,
+        tagIds: task.tagIds.filter((tagId) => tagId != tag.id),
+      };
+    });
+    setTasks(updatedTasks);
+
     const updatedTags = tags.filter((t) => t !== tag);
     setTags(updatedTags);
   };
 
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  const deleteTask = (taskId) => {
+    setTasks(tasks.filter((task) => task.id !== taskId));
     // Deselect task if it's deleted
-    if (selectedTask && selectedTask.id === id) {
+    if (selectedTask && selectedTask.id === taskId) {
       setSelectedTask(tasks.length > 0 ? tasks[0] : null);
     }
   };
@@ -182,7 +210,7 @@ const App = () => {
           description: editedTask.description,
           listId: editedTask.listId,
           dueDate: editedTask.dueDate,
-          tags: editedTask.tags,
+          tagIds: editedTask.tagIds,
         };
       }
       return task;
@@ -201,7 +229,7 @@ const App = () => {
       description: "",
       listId: 0,
       dueDate: "",
-      tags: "",
+      tagIds: [],
     };
     setSelectedTask(newTask);
     setIsAddMode(true);
@@ -230,30 +258,19 @@ const App = () => {
 
   /* Begin Initialization */
 
-  if (lists.length == 0) {
-    const newList = {
-      id: 0,
-      color: "gray",
-      name: "None",
-      count: 0,
-    };
-    setSelectedList(newList);
-    addList(newList);
-  }
-
-  if (tasks.length == 0) {
-    const newTask = {
-      id: Date.now(),
-      completed: false,
-      title: "Base Task so list is not empty",
-      description: "This should be helpful for testing",
-      listId: 0,
-      dueDate: "",
-      tags: [],
-    };
-    addTask(newTask);
-    setSelectedTask(newTask);
-  }
+  // if (tasks.length == 0) {
+  //   const newTask = {
+  //     id: Date.now(),
+  //     completed: false,
+  //     title: "Tend to the garden",
+  //     description: "Water the plants and remove weeds",
+  //     listId: 0,
+  //     dueDate: "",
+  //     tagIds: [],
+  //   };
+  //   addTask(newTask);
+  //   setSelectedTask(newTask);
+  // }
 
   /* End Initialization */
 

@@ -518,6 +518,10 @@ textarea {
   filter: brightness(85%); /* Darker on hover */
 }
 
+.tag.selected {
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.4);
+}
+
 .new-tag-section {
   display: flex;
   gap: 8px;

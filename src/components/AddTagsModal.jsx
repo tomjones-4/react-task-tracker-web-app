@@ -1,7 +1,14 @@
 import { useState, useRef } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 
-const AddTagsModal = ({ tags, addTag, deleteTag, addTaskTag, closeModal }) => {
+const AddTagsModal = ({
+  tags,
+  addTag,
+  deleteTag,
+  addTaskTag,
+  taskTagIds,
+  closeModal,
+}) => {
   const [newTagName, setNewTagName] = useState("");
   const [error, setError] = useState("");
   const [wiggle, setWiggle] = useState(false);
@@ -37,6 +44,7 @@ const AddTagsModal = ({ tags, addTag, deleteTag, addTaskTag, closeModal }) => {
 
     let color = getRandomPastelColor();
     const newTag = {
+      id: Date.now(),
       name: trimmedTagName,
       color: color,
     };
@@ -60,16 +68,18 @@ const AddTagsModal = ({ tags, addTag, deleteTag, addTaskTag, closeModal }) => {
 
         <div className="tags">
           {tags.length > 0 ? (
-            tags.map((tag, i) => (
+            tags.map((tag) => (
               <span
-                key={i}
-                className="tag"
+                key={tag.id}
+                className={`tag ${
+                  taskTagIds.includes(tag.id) ? "selected" : ""
+                }`}
                 style={{
                   backgroundColor: tag.color,
                 }}
                 onClick={(e) => {
                   e.preventDefault();
-                  addTaskTag(tag);
+                  addTaskTag(tag.id);
                 }}
               >
                 {tag.name}

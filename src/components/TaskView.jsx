@@ -19,10 +19,10 @@ const TaskView = ({
   );
   const [taskListId, setTaskListId] = useState(selectedTask.listId);
   const [taskDueDate, setTaskDueDate] = useState(selectedTask.dueDate);
-  const [taskTags, setTaskTags] = useState(selectedTask.tags);
+  const [taskTagIds, setTaskTagIds] = useState(selectedTask.tagIds);
 
-  // console.log(JSON.stringify(selectedTask));
-  // console.log(taskTitle);
+  console.log("taskTagIds", taskTagIds);
+  console.log("selectedTask.tagIds", selectedTask.tagIds);
 
   useEffect(() => {
     if (selectedTask) {
@@ -30,7 +30,7 @@ const TaskView = ({
       setTaskDescription(selectedTask.description || "");
       setTaskListId(selectedTask.listId || 0);
       setTaskDueDate(selectedTask.dueDate || "");
-      setTaskTags(selectedTask.tags || []);
+      setTaskTagIds(selectedTask.tagIds || []);
     }
   }, [selectedTask]);
 
@@ -42,7 +42,7 @@ const TaskView = ({
       description: taskDescription,
       listId: taskListId,
       dueDate: taskDueDate,
-      tags: taskTags,
+      tagIds: taskTagIds,
     };
     addTask(newTask);
   };
@@ -54,7 +54,7 @@ const TaskView = ({
       description: taskDescription,
       listId: taskListId,
       dueDate: taskDueDate,
-      tags: taskTags,
+      tagIds: taskTagIds,
     };
     editTask(updatedTask);
   };
@@ -75,8 +75,8 @@ const TaskView = ({
         setTaskListId={setTaskListId}
         taskDueDate={taskDueDate}
         setTaskDueDate={setTaskDueDate}
-        taskTags={taskTags}
-        setTaskTags={setTaskTags}
+        taskTagIds={taskTagIds}
+        setTaskTagIds={setTaskTagIds}
         addTag={addTag}
         deleteTag={deleteTag}
       />
