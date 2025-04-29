@@ -132,7 +132,7 @@ const App = () => {
 
     setTasks(updatedTasks);
 
-    changeListCountsMultiple(0, numUncategorizedTasks, false); // Increment the count of the "Uncategorized" list
+    changeListCount(0, numUncategorizedTasks, false); // Increment the count of the "Uncategorized" list
 
     setLists((prevLists) => {
       const updatedLists = prevLists.filter((list) => list.id != listId);
@@ -141,7 +141,7 @@ const App = () => {
   };
 
   // Pass in a negative number to decrement the count
-  const changeListCountsMultiple = (
+  const changeListCount = (
     listId,
     numListsAdded,
     changeAllTasksList = true
@@ -163,10 +163,6 @@ const App = () => {
     if (list.count == 0) {
       resetTask(list.id);
     } else {
-      setSelectedTask(
-        // find first task where listId matches selected list id or if listId is 0 (which means "All Tasks"), select the first task
-        tasks.find((task) => task.listId == list.id || list.id == -1)
-      );
       setIsAddMode(false);
     }
   };
@@ -191,7 +187,7 @@ const App = () => {
 
   const deleteTask = (taskId) => {
     const taskListId = tasks.find((task) => task.id === taskId).listId;
-    changeListCountsMultiple(taskListId, -1); // Decrement the count of the list
+    changeListCount(taskListId, -1); // Decrement the count of the list
 
     setTasks(tasks.filter((task) => task.id !== taskId));
     // Deselect task if it's deleted
@@ -205,10 +201,7 @@ const App = () => {
     setTasks([...tasks, newTask]);
     setSelectedTask(newTask); // Select the newly added task
 
-    // changeListCountOneAtATime(newTask.listId, 1); // Increment the count of the list
-    // changeListCountOneAtATime(-1, 1); // Increment the count of the list
-
-    changeListCountsMultiple(newTask.listId, 1); // Increment the count of the list
+    changeListCount(newTask.listId, 1); // Increment the count of the list
     changeSelectedList(lists.find((list) => list.id === newTask.listId)); // Select the newly added task's list
   };
 
@@ -230,11 +223,8 @@ const App = () => {
     setTasks(updatedTasks);
     setSelectedTask(editedTask);
     if (editedTask.listId !== formerListId) {
-      // changeListCountOneAtATime(editedTask.listId, 1); // Increment the count of the new list
-      // changeListCountOneAtATime(formerListId, -1); // Decrement the count of the old list
-
-      changeListCountsMultiple(editedTask.listId, 1); // Increment the count of the new list
-      changeListCountsMultiple(formerListId, -1); // Decrement the count of the old list
+      changeListCount(editedTask.listId, 1); // Increment the count of the new list
+      changeListCount(formerListId, -1); // Decrement the count of the old list
     }
   };
 

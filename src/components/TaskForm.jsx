@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AddTagsModal from "./AddTagsModal";
+import TagModal from "./TagModal";
 
 const TaskForm = ({
   lists,
@@ -19,9 +19,9 @@ const TaskForm = ({
   deleteTag,
 }) => {
   const [dueDateEnabled, setDueDateEnabled] = useState(false);
-  const [isAddTagModalOpen, setIsAddTagModalOpen] = useState(false);
+  const [isTagModalOpen, setIsTagModalOpen] = useState(false);
 
-  const closeModal = () => setIsAddTagModalOpen(false);
+  const closeModal = () => setIsTagModalOpen(false);
 
   const addTaskTag = (newTaskTagId) => {
     setTaskTagIds(() => [...taskTagIds, newTaskTagId]);
@@ -116,14 +116,14 @@ const TaskForm = ({
           <button
             onClick={(e) => {
               e.preventDefault();
-              setIsAddTagModalOpen(true);
+              setIsTagModalOpen(true);
             }}
           >
             Add Tag
           </button>
         </span>
-        {isAddTagModalOpen && (
-          <AddTagsModal
+        {isTagModalOpen && (
+          <TagModal
             tags={tags}
             addTag={addTag}
             deleteTag={deleteTag}

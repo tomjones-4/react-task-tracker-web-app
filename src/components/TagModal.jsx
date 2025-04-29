@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 
-const AddTagsModal = ({
+const TagModal = ({
   tags,
   addTag,
   deleteTag,
@@ -9,7 +9,13 @@ const AddTagsModal = ({
   taskTagIds,
   closeModal,
 }) => {
+  const getRandomPastelColor = () => {
+    const hue = Math.floor(Math.random() * 360); // any hue
+    return `hsl(${hue}, 70%, 85%)`; // pastel tone
+  };
+
   const [newTagName, setNewTagName] = useState("");
+  const [newTagColor, setNewTagColor] = useState(getRandomPastelColor());
   const [error, setError] = useState("");
   const [wiggle, setWiggle] = useState(false);
   const inputRef = useRef(null);
@@ -20,11 +26,6 @@ const AddTagsModal = ({
     setTimeout(() => setWiggle(false), 400); // Remove class after animation
     inputRef.current.focus();
     inputRef.current.select();
-  };
-
-  const getRandomPastelColor = () => {
-    const hue = Math.floor(Math.random() * 360); // any hue
-    return `hsl(${hue}, 70%, 85%)`; // pastel tone
   };
 
   const handleAddTag = (e) => {
@@ -46,7 +47,8 @@ const AddTagsModal = ({
     const newTag = {
       id: Date.now(),
       name: trimmedTagName,
-      color: color,
+      color: newTagColor,
+      //color: color,
     };
     addTag(newTag);
     setNewTagName(""); // Clear input field after adding
@@ -117,6 +119,14 @@ const AddTagsModal = ({
             onChange={(e) => setNewTagName(e.target.value)}
             className={`new-tag-input ${error ? "error" : ""}`}
           />
+          <input
+            type="color"
+            value={newTagColor}
+            onChange={(e) => {
+              console.log("color", newTagColor);
+              setNewTagColor(e.target.value);
+            }}
+          />
           <button className="add-tag-button" onClick={handleAddTag}>
             Add
           </button>
@@ -127,4 +137,4 @@ const AddTagsModal = ({
   );
 };
 
-export default AddTagsModal;
+export default TagModal;
