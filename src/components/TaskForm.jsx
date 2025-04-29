@@ -28,9 +28,7 @@ const TaskForm = ({
   };
 
   const deleteTaskTag = (tagToDeleteId) => {
-    setTaskTagIds((prevTagIds) =>
-      prevTagIds.filter((id) => id !== tagToDeleteId)
-    );
+    setTaskTagIds(taskTagIds.filter((id) => id !== tagToDeleteId));
   };
 
   return (
@@ -108,7 +106,7 @@ const TaskForm = ({
                   className="delete-tag-button"
                   onClick={(e) => {
                     e.preventDefault();
-                    deleteTaskTag(tag);
+                    deleteTaskTag(tag.id);
                   }}
                 >
                   &times;

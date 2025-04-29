@@ -18,6 +18,8 @@ const AddTagsModal = ({
     setError(message);
     setWiggle(true);
     setTimeout(() => setWiggle(false), 400); // Remove class after animation
+    inputRef.current.focus();
+    inputRef.current.select();
   };
 
   const getRandomPastelColor = () => {
@@ -36,9 +38,7 @@ const AddTagsModal = ({
       tags.some((tag) => tag.name.toLowerCase() == trimmedTagName.toLowerCase())
     ) {
       showError("A tag with this name already exists.");
-      // Auto-focus and select text
-      inputRef.current.focus();
-      inputRef.current.select();
+
       return;
     }
 
@@ -50,6 +50,17 @@ const AddTagsModal = ({
     };
     addTag(newTag);
     setNewTagName(""); // Clear input field after adding
+    setError(""); // Clear error message
+  };
+
+  const handleAddTaskTag = (e, tagId) => {
+    e.preventDefault();
+    // Check if tag is already applied
+    if (taskTagIds.some((id) => id === tagId)) {
+      showError("This tag is already applied.");
+      return;
+    }
+    addTaskTag(tagId);
     setError(""); // Clear error message
   };
 
@@ -77,10 +88,7 @@ const AddTagsModal = ({
                 style={{
                   backgroundColor: tag.color,
                 }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  addTaskTag(tag.id);
-                }}
+                onClick={(e) => handleAddTaskTag(e, tag.id)}
               >
                 {tag.name}
                 <button
