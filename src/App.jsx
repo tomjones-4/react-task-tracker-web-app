@@ -54,23 +54,23 @@ const App = () => {
 
   /* Begin State Variables */
 
+  // Uncomment below lines and then refresh page to reset tags, tasks, and lists. This is helpful when the structures of these objects change, since it can cause errors.
+  // When uncommenting this line, comment out the blocks below it that sets the tasks, tags, and lists based on localStorage.
+
   // const [tags, setTags] = useState([]);
+  // const [tasks, setTasks] = useState([dummyTask]);
+  // const [lists, setLists] = useState(SPECIAL_LISTS);
+
   const [tags, setTags] = useState(() => {
     const storedTags = localStorage.getItem(LOCAL_STORAGE_KEY_TAGS);
     return storedTags ? JSON.parse(storedTags) : []; // Load from localStorage or default to []
   });
 
-  // Uncomment below line and then refresh page to reset tasks. This is helpful when the structure of tasks changes, since it can cause errors.
-  // When uncommenting this line, comment out the block below it that sets the tasks based on localStorage.
-  // Same can be done with tags and lists.
-
-  // const [tasks, setTasks] = useState([dummyTask]);
   const [tasks, setTasks] = useState(() => {
     const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY_TASKS);
     return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
   });
 
-  // const [lists, setLists] = useState(SPECIAL_LISTS);
   const [lists, setLists] = useState(() => {
     let storedLists = localStorage.getItem(LOCAL_STORAGE_KEY_LISTS);
     storedLists = storedLists ? JSON.parse(storedLists) : []; // Load from localStorage or default to []
@@ -107,7 +107,7 @@ const App = () => {
   };
 
   const deleteList = (listId) => {
-    if (listId == -1 || listId == -0) return; // don't allow deleting "All Tasks" or "Uncategorized" lists
+    if (listId == -1 || listId == 0) return; // don't allow deleting "All Tasks" or "Uncategorized" lists
 
     // Deselect list if it's deleted
     if (selectedList && selectedList.id === listId) {
@@ -168,24 +168,17 @@ const App = () => {
     setTags([...tags, newTag]);
   };
 
-  const deleteTag = (tag) => {
-    console.log("Deleting tag:", tag);
-
+  const deleteTag = (tagId) => {
     // Remove the tag from all tasks that have it
     const updatedTasks = tasks.map((task) => {
-      console.log("task tag ids before:", task.tagIds);
-      console.log(
-        "task tag ids after:",
-        task.tagIds.filter((tagId) => tagId != tag.id)
-      );
       return {
         ...task,
-        tagIds: task.tagIds.filter((tagId) => tagId != tag.id),
+        tagIds: task.tagIds.filter((id) => id != tagId),
       };
     });
     setTasks(updatedTasks);
 
-    const updatedTags = tags.filter((t) => t !== tag);
+    const updatedTags = tags.filter((tag) => tag.id !== tagId);
     setTags(updatedTags);
   };
 

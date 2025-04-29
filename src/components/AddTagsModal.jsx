@@ -88,7 +88,7 @@ const AddTagsModal = ({
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation(); // prevent tag click event from firing
-                    deleteTag(tag);
+                    deleteTag(tag.id);
                   }}
                 >
                   <FaTrashAlt className="delete-tag-icon" />

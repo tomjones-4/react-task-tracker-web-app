@@ -95,6 +95,7 @@ const TaskForm = ({
         <label htmlFor="tags">Tags</label>
         <span>
           {taskTagIds
+            .filter((id) => tags.some((tag) => tag.id === id)) // do this filter to avoid state sync issue where tag still exists in taskTagIds but not in tags, which happens briefly after tag is deleted
             .map((id) => tags.find((tag) => tag.id === id))
             .map((tag) => (
               <span

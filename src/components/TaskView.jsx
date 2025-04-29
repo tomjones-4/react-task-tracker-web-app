@@ -21,9 +21,6 @@ const TaskView = ({
   const [taskDueDate, setTaskDueDate] = useState(selectedTask.dueDate);
   const [taskTagIds, setTaskTagIds] = useState(selectedTask.tagIds);
 
-  console.log("taskTagIds", taskTagIds);
-  console.log("selectedTask.tagIds", selectedTask.tagIds);
-
   useEffect(() => {
     if (selectedTask) {
       setTaskTitle(selectedTask.title || "");
