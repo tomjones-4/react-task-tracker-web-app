@@ -20,7 +20,6 @@ import { useState, useEffect, useRef } from "react";
 
 /* Low Priority */
 // Allow users to drag and drop tasks to reorder them.
-// Need to figure out what expected behavior should be when tags are removed. Currently the tag ids still live on the task, but they don't show up. I think tags should behave similarly to lists, and when a tag is removed, it should be removed from all tasks that have it.
 // Have the lists show up in a different way from the tags.
 // Refactor whatever logic is shared between lists and tags modals
 // Make it so menu buttons show up at bottom of menu. Currently I'm setting the height of the div with menu-footer class, but there should be a better way where I can position the buttons at a certain distance from the bottom.
@@ -366,7 +365,7 @@ const App = () => {
         isAddMode={isAddMode}
         addTag={addTag}
         deleteTag={deleteTag}
-        taskFormRef={taskFormRef}
+        ref={taskFormRef}
       />
     </div>
   );

@@ -23,7 +23,7 @@ const TaskForm = forwardRef(
       addTag,
       deleteTag,
     },
-    titleRef
+    ref
   ) => {
     const [dueDateEnabled, setDueDateEnabled] = useState(false);
     const [isTagModalOpen, setIsTagModalOpen] = useState(false);
@@ -38,11 +38,10 @@ const TaskForm = forwardRef(
       setTaskTagIds(taskTagIds.filter((id) => id !== tagToDeleteId));
     };
 
-    const inputRef = useRef(null);
-    // Expose a method to focus the input
-    useImperativeHandle(titleRef, () => ({
+    const taskTitleInputRef = useRef(null);
+    useImperativeHandle(ref, () => ({
       focusTitleInput() {
-        inputRef.current?.focus();
+        taskTitleInputRef.current?.focus();
       },
     }));
 
@@ -56,7 +55,7 @@ const TaskForm = forwardRef(
     return (
       <form id="task-form" className="task-form">
         <input
-          ref={inputRef}
+          ref={taskTitleInputRef}
           type="text"
           name="title"
           placeholder="Title"
