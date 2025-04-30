@@ -163,6 +163,10 @@ const App = () => {
     if (list.count == 0) {
       resetTask(list.id);
     } else {
+      setSelectedTask(
+        // find first task where listId matches selected list id or if listId is 0 (which means "All Tasks"), select the first task
+        tasks.find((task) => task.listId == list.id || list.id == -1)
+      );
       setIsAddMode(false);
     }
   };
@@ -199,10 +203,11 @@ const App = () => {
   const addTask = (newTask) => {
     if (!newTask) return; // Prevent adding empty tasks
     setTasks([...tasks, newTask]);
-    setSelectedTask(newTask); // Select the newly added task
 
     changeListCount(newTask.listId, 1); // Increment the count of the list
     changeSelectedList(lists.find((list) => list.id === newTask.listId)); // Select the newly added task's list
+
+    setSelectedTask(newTask); // Select the newly added task
   };
 
   const editTask = (editedTask) => {
