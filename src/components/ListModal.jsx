@@ -1,8 +1,14 @@
 import { useState, useRef } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 
-const AddListModal = ({ lists, addList, deleteList, closeModal }) => {
+const ListModal = ({ lists, addList, deleteList, closeModal }) => {
+  const getRandomPastelColor = () => {
+    const hue = Math.floor(Math.random() * 360); // any hue
+    return `hsl(${hue}, 70%, 85%)`; // pastel tone
+  };
+
   const [newListName, setNewListName] = useState("");
+  const [newListColor, setNewListColor] = useState(getRandomPastelColor());
   const [error, setError] = useState("");
   const [wiggle, setWiggle] = useState(false);
   const inputRef = useRef(null);
@@ -11,11 +17,8 @@ const AddListModal = ({ lists, addList, deleteList, closeModal }) => {
     setError(message);
     setWiggle(true);
     setTimeout(() => setWiggle(false), 400); // Remove class after animation
-  };
-
-  const getRandomPastelColor = () => {
-    const hue = Math.floor(Math.random() * 360); // any hue
-    return `hsl(${hue}, 70%, 85%)`; // pastel tone
+    inputRef.current.focus();
+    inputRef.current.select();
   };
 
   const handleAddList = (e) => {
@@ -31,17 +34,15 @@ const AddListModal = ({ lists, addList, deleteList, closeModal }) => {
       )
     ) {
       showError("A list with this name already exists.");
-      // Auto-focus and select text
-      inputRef.current.focus();
-      inputRef.current.select();
       return;
     }
 
-    let color = getRandomPastelColor();
+    //let color = getRandomPastelColor();
     const newList = {
       id: Date.now(),
       name: trimmedListName,
-      color: color,
+      //color: color,
+      color: newListColor,
       count: 0,
     };
     addList(newList);
@@ -98,6 +99,14 @@ const AddListModal = ({ lists, addList, deleteList, closeModal }) => {
             onChange={(e) => setNewListName(e.target.value)}
             className={`new-list-input ${error ? "error" : ""}`}
           />
+          <input
+            type="color"
+            value={newListColor}
+            onChange={(e) => {
+              console.log("color", newListColor);
+              setNewListColor(e.target.value);
+            }}
+          />
           <button className="add-list-button" onClick={handleAddList}>
             Add
           </button>
@@ -108,4 +117,4 @@ const AddListModal = ({ lists, addList, deleteList, closeModal }) => {
   );
 };
 
-export default AddListModal;
+export default ListModal;

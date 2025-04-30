@@ -39,7 +39,6 @@ const TagModal = ({
       tags.some((tag) => tag.name.toLowerCase() == trimmedTagName.toLowerCase())
     ) {
       showError("A tag with this name already exists.");
-
       return;
     }
 

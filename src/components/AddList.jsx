@@ -1,7 +1,7 @@
 import React from "react";
 import { FaPlus } from "react-icons/fa";
 import { useState } from "react";
-import AddListModal from "./AddListModal";
+import ListModal from "./ListModal";
 
 const AddList = ({ lists, addList, deleteList }) => {
   const [isAddlistModalOpen, setIsAddlistModalOpen] = useState(false);
@@ -19,7 +19,7 @@ const AddList = ({ lists, addList, deleteList }) => {
         <p>Add New List</p>
       </span>
       {isAddlistModalOpen && (
-        <AddListModal
+        <ListModal
           lists={lists}
           addList={addList}
           deleteList={deleteList}
