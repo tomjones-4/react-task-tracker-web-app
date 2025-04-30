@@ -109,6 +109,7 @@ const App = () => {
   /* Begin Refs */
 
   const taskFormRef = useRef(null);
+  const searchInputRef = useRef(null);
 
   /* End Refs */
 
@@ -319,6 +320,34 @@ const App = () => {
     localStorage.setItem(LOCAL_STORAGE_KEY_LISTS, JSON.stringify(lists));
   }, [lists]);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "/") {
+        const tag = e.target.tagName.toLowerCase();
+        const isEditable = e.target.isContentEditable;
+
+        if (tag === "input" || tag === "textarea" || isEditable) {
+          // Don't trigger shortcut if focused on input, textarea, or contenteditable
+          return;
+        }
+        e.preventDefault();
+        searchInputRef.current?.focusSearchInput(); // Focus the search input
+        return;
+      }
+      // TODO - eventually include functionality for "Escape" key
+      // if (event.key === "Escape") {
+      //   setSelectedTask(tasks[0]); // Reset to the first task
+      //   setIsAddMode(false);
+      //   searchInputRef.current?.focus(); // Focus the search input
+      //   return;
+      // }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   /* End useEffect Hooks */
 
   /* Begin Debugging */
@@ -342,6 +371,7 @@ const App = () => {
         deleteList={deleteList}
         changeSelectedList={changeSelectedList}
         selectedListId={selectedList.id}
+        ref={searchInputRef}
       />
       <MainView
         selectedList={selectedList}
