@@ -12,6 +12,7 @@ const TaskView = ({
   isAddMode,
   addTag,
   deleteTag,
+  taskFormRef,
 }) => {
   const [taskTitle, setTaskTitle] = useState(selectedTask.title);
   const [taskDescription, setTaskDescription] = useState(
@@ -64,6 +65,7 @@ const TaskView = ({
         lists={lists}
         tags={tags}
         //selectedListId={selectedListId}
+        titleRef={taskFormRef}
         taskTitle={taskTitle}
         setTaskTitle={setTaskTitle}
         taskDescription={taskDescription}

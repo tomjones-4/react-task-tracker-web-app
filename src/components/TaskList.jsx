@@ -8,7 +8,7 @@ const TaskList = ({
   deleteTask,
   toggleCompleted,
   setSelectedTask,
-  resetTask,
+  handleStartNewTask,
   setIsAddMode,
 }) => {
   // Sort tasks: incomplete ones first, then completed ones
@@ -17,7 +17,10 @@ const TaskList = ({
   return (
     <div className="task-list-container">
       <div className="task-list">
-        <AddTaskItem resetTask={resetTask} className="add-task" />
+        <AddTaskItem
+          handleStartNewTask={handleStartNewTask}
+          className="add-task"
+        />
         {sortedTasks.map((task) => (
           <TaskItem
             key={task.id}

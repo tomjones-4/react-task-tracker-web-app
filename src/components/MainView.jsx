@@ -7,7 +7,7 @@ const MainView = ({
   deleteTask,
   toggleCompleted,
   setSelectedTask,
-  resetTask,
+  handleStartNewTask,
   selectedTaskForDebug,
   setIsAddMode,
 }) => {
@@ -21,7 +21,7 @@ const MainView = ({
         deleteTask={deleteTask}
         toggleCompleted={toggleCompleted}
         setSelectedTask={setSelectedTask}
-        resetTask={resetTask}
+        handleStartNewTask={handleStartNewTask}
         setIsAddMode={setIsAddMode}
       />
 

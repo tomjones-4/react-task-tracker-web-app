@@ -2,7 +2,7 @@ import "./App.css";
 import Menu from "./components/Menu.jsx";
 import MainView from "./components/MainView.jsx";
 import TaskView from "./components/TaskView.jsx";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // TODO
 
@@ -13,11 +13,12 @@ import { useState, useEffect } from "react";
 /* Medium Priority */
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
-// Make it so when user clicks to add text the cursor is automatically blinking on the title field
 // Add a tag filter when "All tasks" is selected in the sidebar
+// Allow tasks to have subtasks. (See the mockup on Github)
 /* End Medium Priority */
 
 /* Low Priority */
+// Allow users to drag and drop tasks to reorder them.
 // Need to figure out what expected behavior should be when tags are removed. Currently the tag ids still live on the task, but they don't show up. I think tags should behave similarly to lists, and when a tag is removed, it should be removed from all tasks that have it.
 // Have the lists show up in a different way from the tags.
 // Refactor whatever logic is shared between lists and tags modals
@@ -26,6 +27,11 @@ import { useState, useEffect } from "react";
 // Improve the UX when a user adds tons of tags. Currently it overflows and looks ugly.
 // Improve the UX for color picker.
 // Improve the adding/editing task form UI.
+// Use highlights to show tasks that are getting old or are due urgently.
+// Have the menu slide stay in a fixed position even as user scrolls down on list.
+// Persistent scroll position per list - If you scroll down a list of tasks, then switch to another and come back, restore your scroll.
+// Allow users to take advantage of keyboard shortcuts like "Enter" to submit a task, "/" to search, and "Esc" to clear inputs or exit modes.
+
 /* End Low Priority */
 
 const App = () => {
@@ -99,6 +105,12 @@ const App = () => {
   const [isAddMode, setIsAddMode] = useState(true);
 
   /* End State Variables */
+
+  /* Begin Refs */
+
+  const taskFormRef = useRef(null);
+
+  /* End Refs */
 
   /* Begin Functions */
 
@@ -246,6 +258,11 @@ const App = () => {
     setIsAddMode(true);
   };
 
+  const handleStartNewTask = () => {
+    resetTask();
+    taskFormRef.current?.focusTitleInput(); // Focus the title input
+  };
+
   const toggleCompleted = (id) => {
     setTasks(
       tasks.map((task) => {
@@ -333,7 +350,7 @@ const App = () => {
         deleteTask={deleteTask}
         toggleCompleted={toggleCompleted}
         setSelectedTask={setSelectedTask}
-        resetTask={resetTask}
+        handleStartNewTask={handleStartNewTask}
         selectedTaskForDebug={selectedTask}
         setIsAddMode={setIsAddMode}
       />
@@ -348,6 +365,7 @@ const App = () => {
         isAddMode={isAddMode}
         addTag={addTag}
         deleteTag={deleteTag}
+        taskFormRef={taskFormRef}
       />
     </div>
   );
