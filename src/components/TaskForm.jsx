@@ -7,7 +7,9 @@ const TaskForm = forwardRef(
       lists,
       tags,
       selectedListId,
+      isAddMode,
       handleAddTask,
+      handleEditTask,
       taskTitle,
       setTaskTitle,
       taskDescription,
@@ -47,7 +49,7 @@ const TaskForm = forwardRef(
     const handleKeyDown = (e) => {
       if (e.key === "Enter") {
         e.preventDefault(); // Prevent form submission
-        handleAddTask();
+        isAddMode ? handleAddTask() : handleEditTask();
       }
     };
 
