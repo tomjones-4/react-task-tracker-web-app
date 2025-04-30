@@ -8,12 +8,10 @@ import { useState, useEffect } from "react";
 
 /* High Priority */
 // Need to handle the case where there is no selected task. Right now the code assumes there will always be a selected task, which causes errors if there are no tasks.
-// Add color selector for new lists and tags
 /* End High Priority */
 
 /* Medium Priority */
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
-// Make the user confirm they want to delete a list.
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
 // Make it so when user clicks to add text the cursor is automatically blinking on the title field
 // Add a tag filter when "All tasks" is selected in the sidebar
@@ -26,6 +24,8 @@ import { useState, useEffect } from "react";
 // Make it so menu buttons show up at bottom of menu. Currently I'm setting the height of the div with menu-footer class, but there should be a better way where I can position the buttons at a certain distance from the bottom.
 // Consider using Headless UI for the modal and dropdown components. This would make it easier to style them and make them more accessible.
 // Improve the UX when a user adds tons of tags. Currently it overflows and looks ugly.
+// Improve the UX for color picker.
+// Improve the adding/editing task form UI.
 /* End Low Priority */
 
 const App = () => {
@@ -203,10 +203,8 @@ const App = () => {
   const addTask = (newTask) => {
     if (!newTask) return; // Prevent adding empty tasks
     setTasks([...tasks, newTask]);
-
     changeListCount(newTask.listId, 1); // Increment the count of the list
     changeSelectedList(lists.find((list) => list.id === newTask.listId)); // Select the newly added task's list
-
     setSelectedTask(newTask); // Select the newly added task
   };
 

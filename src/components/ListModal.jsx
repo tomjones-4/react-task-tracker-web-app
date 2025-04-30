@@ -12,6 +12,7 @@ const ListModal = ({ lists, addList, deleteList, closeModal }) => {
   const [error, setError] = useState("");
   const [wiggle, setWiggle] = useState(false);
   const inputRef = useRef(null);
+  const [listToDelete, setListToDelete] = useState(null);
 
   const showError = (message) => {
     setError(message);
@@ -78,7 +79,7 @@ const ListModal = ({ lists, addList, deleteList, closeModal }) => {
                   className="delete-tag-button"
                   onClick={(e) => {
                     e.preventDefault();
-                    deleteList(list.id);
+                    setListToDelete(list);
                   }}
                 >
                   <FaTrashAlt className="delete-tag-icon" />
@@ -112,6 +113,33 @@ const ListModal = ({ lists, addList, deleteList, closeModal }) => {
           </button>
         </div>
         {error && <div className="error-message">{error}</div>}
+        {listToDelete && (
+          // <div className="mt-4 p-4 bg-red-50 border border-red-300 rounded-lg animate-slide-up">
+          <div className="delete-list">
+            <h3 className="title">Delete list "{listToDelete.name}"?</h3>
+            <p className="message">
+              Tasks in this list will be preserved and moved to the{" "}
+              <strong>Uncategorized</strong> list.
+            </p>
+            <div className="actions">
+              <button
+                onClick={() => setListToDelete(null)}
+                className="cancel-button"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  deleteList(listToDelete.id);
+                  setListToDelete(null);
+                }}
+                className="delete-button"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
