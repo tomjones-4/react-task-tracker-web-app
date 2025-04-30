@@ -33,6 +33,11 @@ const TaskView = ({
   }, [selectedTask]);
 
   const handleAddTask = (e) => {
+    // TODO - consider making this cleaner than an alert
+    if (!taskTitle) {
+      alert("Please enter a title for the task.");
+      return;
+    }
     const newTask = {
       id: Date.now(),
       completed: false,
@@ -66,6 +71,7 @@ const TaskView = ({
         tags={tags}
         //selectedListId={selectedListId}
         titleRef={taskFormRef}
+        handleAddTask={handleAddTask}
         taskTitle={taskTitle}
         setTaskTitle={setTaskTitle}
         taskDescription={taskDescription}

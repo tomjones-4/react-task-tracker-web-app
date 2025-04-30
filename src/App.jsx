@@ -8,6 +8,7 @@ import { useState, useEffect, useRef } from "react";
 
 /* High Priority */
 // Need to handle the case where there is no selected task. Right now the code assumes there will always be a selected task, which causes errors if there are no tasks.
+// Don't allow adding empty tasks
 /* End High Priority */
 
 /* Medium Priority */

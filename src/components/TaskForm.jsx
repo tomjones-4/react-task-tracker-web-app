@@ -2,32 +2,27 @@ import { useState, useRef, useImperativeHandle, forwardRef } from "react";
 import TagModal from "./TagModal";
 
 const TaskForm = forwardRef(
-  ({
-    lists,
-    tags,
-    selectedListId,
-    titleRef,
-    taskTitle,
-    setTaskTitle,
-    taskDescription,
-    setTaskDescription,
-    taskListId,
-    setTaskListId,
-    taskDueDate,
-    setTaskDueDate,
-    taskTagIds,
-    setTaskTagIds,
-    addTag,
-    deleteTag,
-  }) => {
-    const inputRef = useRef(null);
-    // Expose a method to focus the input
-    useImperativeHandle(titleRef, () => ({
-      focusTitleInput() {
-        inputRef.current?.focus();
-      },
-    }));
-
+  (
+    {
+      lists,
+      tags,
+      selectedListId,
+      handleAddTask,
+      taskTitle,
+      setTaskTitle,
+      taskDescription,
+      setTaskDescription,
+      taskListId,
+      setTaskListId,
+      taskDueDate,
+      setTaskDueDate,
+      taskTagIds,
+      setTaskTagIds,
+      addTag,
+      deleteTag,
+    },
+    titleRef
+  ) => {
     const [dueDateEnabled, setDueDateEnabled] = useState(false);
     const [isTagModalOpen, setIsTagModalOpen] = useState(false);
 
@@ -41,6 +36,21 @@ const TaskForm = forwardRef(
       setTaskTagIds(taskTagIds.filter((id) => id !== tagToDeleteId));
     };
 
+    const inputRef = useRef(null);
+    // Expose a method to focus the input
+    useImperativeHandle(titleRef, () => ({
+      focusTitleInput() {
+        inputRef.current?.focus();
+      },
+    }));
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault(); // Prevent form submission
+        handleAddTask();
+      }
+    };
+
     return (
       <form id="task-form" className="task-form">
         <input
@@ -52,6 +62,7 @@ const TaskForm = forwardRef(
           required
           className="task-form-item"
           onChange={(e) => setTaskTitle(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
 
         <textarea
@@ -60,6 +71,7 @@ const TaskForm = forwardRef(
           value={taskDescription}
           className="task-form-item task-form-description"
           onChange={(e) => setTaskDescription(e.target.value)}
+          onKeyDown={handleKeyDown}
         ></textarea>
 
         <span className="task-form-item">
