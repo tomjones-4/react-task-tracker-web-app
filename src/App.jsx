@@ -19,7 +19,6 @@ import { useState, useEffect, useRef } from "react";
 /* End Medium Priority */
 
 /* Low Priority */
-// Allow users to drag and drop tasks to reorder them.
 // Have the lists show up in a different way from the tags.
 // Refactor whatever logic is shared between lists and tags modals
 // Make it so menu buttons show up at bottom of menu. Currently I'm setting the height of the div with menu-footer class, but there should be a better way where I can position the buttons at a certain distance from the bottom.
@@ -398,6 +397,7 @@ const App = () => {
     <div className="App">
       <Menu
         lists={lists}
+        setLists={setLists}
         addList={addList}
         deleteList={deleteList}
         changeSelectedList={changeSelectedList}
@@ -408,6 +408,7 @@ const App = () => {
       <MainView
         selectedList={selectedList}
         tasks={getTasksByListId(selectedList.id)}
+        setTasks={setTasks}
         selectedTaskId={selectedTask.id}
         deleteTask={deleteTask}
         toggleCompleted={toggleCompleted}

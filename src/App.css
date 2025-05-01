@@ -295,6 +295,13 @@
   transition: "background-color 0.2s";
 }
 
+.drag-handle {
+  cursor: grab;
+  padding: 0 8px 0 2px;
+  display: inline-flex;
+  align-items: center;
+}
+
 .new-list-section {
   display: flex;
   gap: 8px;

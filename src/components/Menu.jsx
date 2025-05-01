@@ -5,7 +5,15 @@ import { IoIosLogOut } from "react-icons/io";
 
 const Menu = forwardRef(
   (
-    { lists, addList, deleteList, selectedListId, changeSelectedList, ripple },
+    {
+      lists,
+      setLists,
+      addList,
+      deleteList,
+      selectedListId,
+      changeSelectedList,
+      ripple,
+    },
     ref
   ) => {
     const searchInputRef = useRef(null);
@@ -45,6 +53,7 @@ const Menu = forwardRef(
         </div>
         <MenuLists
           lists={lists}
+          setLists={setLists}
           addList={addList}
           deleteList={deleteList}
           selectedListId={selectedListId}

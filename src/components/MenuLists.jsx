@@ -1,8 +1,25 @@
 import React from "react";
 import AddList from "./AddList";
+import { FaGripVertical } from "react-icons/fa";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  useSortable,
+  verticalListSortingStrategy,
+  SortableContext,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import MenuListItem from "./MenuListItem";
 
 const MenuLists = ({
   lists,
+  setLists,
   addList,
   deleteList,
   selectedListId,
@@ -14,6 +31,17 @@ const MenuLists = ({
     ripple(e);
   };
 
+  const sensors = useSensors(useSensor(PointerSensor));
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (active.id !== over.id) {
+      const oldIndex = lists.findIndex((t) => t.id === active.id);
+      const newIndex = lists.findIndex((t) => t.id === over.id);
+      setLists((lists) => arrayMove(lists, oldIndex, newIndex));
+    }
+  };
+
   return (
     <div>
       <h3>Lists</h3>
@@ -23,26 +51,24 @@ const MenuLists = ({
         deleteList={deleteList}
         ripple={ripple}
       />
-      {lists.map((list) => {
-        return (
-          <div
-            className={`menu-list ${
-              selectedListId == list.id ? "selected" : ""
-            }`}
-            key={list.id}
-            // onClick={() => changeSelectedList(list)}
-            onClick={(e) => handleListClick(e, list)}
-          >
-            <span
-              className="menu-list-color-block"
-              style={{ backgroundColor: list.color }}
-            ></span>
-            <span className="menu-list-name">{list.name}</span>
-            <span className="menu-list-item-count">{list.count}</span>
-            <span className="ripple" />
-          </div>
-        );
-      })}
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={lists.map((list) => list.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          {lists.map((list) => (
+            <MenuListItem
+              list={list}
+              isSelected={selectedListId == list.id}
+              handleListClick={handleListClick}
+            />
+          ))}
+        </SortableContext>
+      </DndContext>
     </div>
   );
 };

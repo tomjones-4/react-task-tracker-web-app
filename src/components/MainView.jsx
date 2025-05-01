@@ -3,6 +3,7 @@ import TaskList from "./TaskList";
 const MainView = ({
   selectedList,
   tasks,
+  setTasks,
   selectedTaskId,
   deleteTask,
   toggleCompleted,
@@ -18,6 +19,7 @@ const MainView = ({
 
       <TaskList
         tasks={tasks}
+        setTasks={setTasks}
         selectedTaskId={selectedTaskId}
         deleteTask={deleteTask}
         toggleCompleted={toggleCompleted}
