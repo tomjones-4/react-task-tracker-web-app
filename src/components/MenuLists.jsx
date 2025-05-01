@@ -1,6 +1,5 @@
 import React from "react";
 import AddList from "./AddList";
-import { FaGripVertical } from "react-icons/fa";
 import {
   DndContext,
   closestCenter,
@@ -10,11 +9,9 @@ import {
 } from "@dnd-kit/core";
 import {
   arrayMove,
-  useSortable,
   verticalListSortingStrategy,
   SortableContext,
 } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import MenuListItem from "./MenuListItem";
 
 const MenuLists = ({
@@ -62,6 +59,7 @@ const MenuLists = ({
         >
           {lists.map((list) => (
             <MenuListItem
+              key={list.id}
               list={list}
               isSelected={selectedListId == list.id}
               handleListClick={handleListClick}
