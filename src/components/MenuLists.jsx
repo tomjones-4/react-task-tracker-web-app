@@ -1,29 +1,28 @@
 import React from "react";
+import AddList from "./AddList";
 
-const MenuLists = ({ lists, selectedListId, changeSelectedList }) => {
+const MenuLists = ({
+  lists,
+  addList,
+  deleteList,
+  selectedListId,
+  changeSelectedList,
+  ripple,
+}) => {
   const handleListClick = (e, list) => {
     changeSelectedList(list);
-    const target = e.currentTarget;
-    const ripple = target.querySelector(".ripple");
-
-    // Get click coordinates relative to the target element
-    const rect = target.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    // Position the ripple at the click point
-    ripple.style.top = `${y}px`;
-    ripple.style.left = `${x}px`;
-
-    // Reset the ripple animation
-    ripple.classList.remove("ripple-animate");
-    void ripple.offsetWidth; // reflow to restart animation
-    ripple.classList.add("ripple-animate");
+    ripple(e);
   };
 
   return (
     <div>
       <h3>Lists</h3>
+      <AddList
+        lists={lists}
+        addList={addList}
+        deleteList={deleteList}
+        ripple={ripple}
+      />
       {lists.map((list) => {
         return (
           <div

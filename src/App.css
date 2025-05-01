@@ -245,6 +245,7 @@
 }
 
 .add-list {
+  position: relative;
   padding: 0px 10px; /* Inner spacing */
   border-radius: 8px; /* Rounded corners */
   display: flex; /* Aligns children (text, buttons) in a row */
@@ -252,6 +253,7 @@
   align-items: center; /* Centers items vertically */
   cursor: pointer;
   transition: background 0.2s ease-in-out;
+  overflow: hidden;
 }
 
 .add-list-icon {
@@ -342,13 +344,18 @@
 
 .main-view {
   margin-left: 350px; /* match menu width */
-  margin-right: 450px; /* match task view width */
+  margin-right: 500px; /* match task view width */
+  padding: 20px 30px;
   flex-grow: 1;
-  padding: 20px;
   overflow-y: auto;
-  width: calc(100% - 800px); /* Adjust for menu and task view */
+  width: calc(100% - 850px); /* Adjust for menu and task view */
   height: 100vh; /* Full height */
   flex-grow: 1;
+  box-sizing: border-box;
+}
+
+.main-view h1 {
+  margin-left: 10px;
 }
 
 .task-list {
@@ -365,12 +372,14 @@
 }
 
 .add-task {
+  position: relative;
   padding: 0px 16px; /* Inner spacing */
   border-radius: 8px; /* Rounded corners */
   display: flex; /* Aligns children (text, buttons) in a row */
   justify-content: left; /* Ensures spacing between text & actions */
   align-items: center; /* Centers items vertically */
   transition: background 0.2s ease-in-out;
+  overflow: hidden;
 }
 
 .add-task:hover {
@@ -461,7 +470,6 @@
   flex-direction: column;
   background-color: #f7f7f7; /* Light background */
   border-radius: 20px; /* Rounded edges */
-  margin: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   box-sizing: border-box;
   z-index: 10;

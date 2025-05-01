@@ -10,6 +10,7 @@ const TaskList = ({
   setSelectedTask,
   handleStartNewTask,
   setIsAddMode,
+  ripple,
 }) => {
   // Sort tasks: incomplete ones first, then completed ones
   const sortedTasks = tasks.sort((a, b) => a.completed - b.completed);
@@ -30,6 +31,7 @@ const TaskList = ({
             toggleCompleted={toggleCompleted}
             setSelectedTask={setSelectedTask}
             setIsAddMode={setIsAddMode}
+            ripple={ripple}
           />
         ))}
       </div>

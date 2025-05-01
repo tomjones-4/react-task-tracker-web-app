@@ -2,10 +2,12 @@ import React, { useRef, forwardRef, useImperativeHandle } from "react";
 import MenuLists from "./MenuLists";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
-import AddList from "./AddList";
 
 const Menu = forwardRef(
-  ({ lists, addList, deleteList, selectedListId, changeSelectedList }, ref) => {
+  (
+    { lists, addList, deleteList, selectedListId, changeSelectedList, ripple },
+    ref
+  ) => {
     const searchInputRef = useRef(null);
     useImperativeHandle(ref, () => ({
       focusSearchInput() {
@@ -16,6 +18,7 @@ const Menu = forwardRef(
     return (
       <div className="menu-container">
         <h1>Menu</h1>
+
         <div className="search-container">
           <span className="search-icon">
             <svg
@@ -42,10 +45,12 @@ const Menu = forwardRef(
         </div>
         <MenuLists
           lists={lists}
+          addList={addList}
+          deleteList={deleteList}
           selectedListId={selectedListId}
           changeSelectedList={changeSelectedList}
+          ripple={ripple}
         />
-        <AddList lists={lists} addList={addList} deleteList={deleteList} />
         <div className="menu-footer">
           <span>
             <IoSettingsOutline className="menu-footer-icon" />

@@ -259,7 +259,8 @@ const App = () => {
     setIsAddMode(true);
   };
 
-  const handleStartNewTask = () => {
+  const handleStartNewTask = (e) => {
+    ripple(e);
     resetTask();
     taskFormRef.current?.focusTitleInput(); // Focus the title input
   };
@@ -284,6 +285,36 @@ const App = () => {
   };
 
   /* End Functions */
+
+  /* Begin front-end effects */
+
+  const ripple = (e) => {
+    const target = e.currentTarget;
+    const ripple = target.querySelector(".ripple");
+
+    // Get click coordinates relative to the target element
+    const rect = target.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Position the ripple at the click point
+    ripple.style.top = `${y}px`;
+    ripple.style.left = `${x}px`;
+
+    // Reset the ripple animation
+    ripple.classList.remove("ripple-animate");
+    void ripple.offsetWidth; // reflow to restart animation
+    ripple.classList.add("ripple-animate");
+
+    console.log("x", x);
+    console.log("y", y);
+    console.log("e.clientX", e.clientX);
+    console.log("e.clientY", e.clientY);
+    console.log("rect.left", rect.left);
+    console.log("rect.top", rect.top);
+  };
+
+  /* End front-end effects */
 
   /* Begin Initialization */
 
@@ -371,6 +402,7 @@ const App = () => {
         deleteList={deleteList}
         changeSelectedList={changeSelectedList}
         selectedListId={selectedList.id}
+        ripple={ripple}
         ref={searchInputRef}
       />
       <MainView
@@ -383,6 +415,7 @@ const App = () => {
         handleStartNewTask={handleStartNewTask}
         selectedTaskForDebug={selectedTask}
         setIsAddMode={setIsAddMode}
+        ripple={ripple}
       />
       <TaskView
         selectedListId={selectedList.id === -1 ? 0 : selectedList.id}

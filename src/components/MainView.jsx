@@ -10,6 +10,7 @@ const MainView = ({
   handleStartNewTask,
   selectedTaskForDebug,
   setIsAddMode,
+  ripple,
 }) => {
   return (
     <div className="main-view">
@@ -23,6 +24,7 @@ const MainView = ({
         setSelectedTask={setSelectedTask}
         handleStartNewTask={handleStartNewTask}
         setIsAddMode={setIsAddMode}
+        ripple={ripple}
       />
 
       <div>
