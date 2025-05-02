@@ -534,6 +534,39 @@ textarea {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
+.task-form input,
+.task-form textarea,
+.task-form select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.task-form input:focus,
+.task-form textarea:focus,
+.task-form select:focus {
+  border-color: #4f46e5; /* Indigo */
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
+.task-form .add-tag-button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 9999px;
+  background-color: #4f46e5;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.task-form button:hover {
+  background-color: #3730a3;
+}
+
 .task-form-item {
   display: flex;
   align-items: center;
@@ -543,12 +576,22 @@ textarea {
   color: gray;
 }
 
-.task-form-description {
-  color: black;
-}
-
 .due-date-checkbox {
   margin-left: 5px;
+}
+
+.task-form-buttons-container {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 16px;
+  border-radius: 9999px;
+  color: white;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.task-form button:hover {
+  background-color: #3730a3;
 }
 
 .task-button {
@@ -587,8 +630,6 @@ textarea {
 .save-task-button:active {
   background-color: #02280e; /* Even darker blue when active */
 }
-
-/* Modal styles - see if they look good. Make adjustments as needed. */
 
 .modal-backdrop {
   position: fixed;
@@ -713,15 +754,6 @@ textarea {
 
 .modal-content.wiggle {
   animation: wiggle 0.4s ease;
-}
-
-.add-tag-button {
-  padding: 6px 12px;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
 .delete-tag-button {

@@ -140,6 +140,7 @@ const TaskForm = forwardRef(
                 </span>
               ))}
             <button
+              className="add-tag-button"
               onClick={(e) => {
                 e.preventDefault();
                 setIsTagModalOpen(true);

@@ -8,7 +8,7 @@ const TaskFormButtons = ({
   handleAddTask,
 }) => {
   return (
-    <div>
+    <div className="task-form-buttons-container">
       <button
         className="task-button delete-task-button"
         onClick={(e) => deleteTask(selectedTaskId)}
