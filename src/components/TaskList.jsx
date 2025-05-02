@@ -41,11 +41,11 @@ const TaskList = ({
 
   return (
     <div className="task-list-container">
+      <AddTaskItem
+        handleStartNewTask={handleStartNewTask}
+        className="add-task"
+      />
       <div className="task-list">
-        <AddTaskItem
-          handleStartNewTask={handleStartNewTask}
-          className="add-task"
-        />
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}

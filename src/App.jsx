@@ -21,13 +21,11 @@ import { useState, useEffect, useRef } from "react";
 /* Low Priority */
 // Have the lists show up in a different way from the tags.
 // Refactor whatever logic is shared between lists and tags modals
-// Make it so menu buttons show up at bottom of menu. Currently I'm setting the height of the div with menu-footer class, but there should be a better way where I can position the buttons at a certain distance from the bottom.
 // Consider using Headless UI for the modal and dropdown components. This would make it easier to style them and make them more accessible.
 // Improve the UX when a user adds tons of tags. Currently it overflows and looks ugly.
 // Improve the UX for color picker.
 // Improve the adding/editing task form UI.
 // Use highlights to show tasks that are getting old or are due urgently.
-// Have the menu slide stay in a fixed position even as user scrolls down on list.
 // Persistent scroll position per list - If you scroll down a list of tasks, then switch to another and come back, restore your scroll.
 // Allow users to take advantage of keyboard shortcuts like "Enter" to submit a task, "/" to search, and "Esc" to clear inputs or exit modes.
 

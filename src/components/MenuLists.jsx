@@ -48,6 +48,7 @@ const MenuLists = ({
         deleteList={deleteList}
         ripple={ripple}
       />
+      <div className="menu-lists">
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -67,6 +68,7 @@ const MenuLists = ({
           ))}
         </SortableContext>
       </DndContext>
+      </div>
     </div>
   );
 };

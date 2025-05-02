@@ -13,6 +13,8 @@
 }
 
 .menu-container {
+  display: flex;
+  flex-direction: column;
   position: fixed;
   top: 12px;
   left: 12px;
@@ -23,7 +25,6 @@
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   z-index: 10;
-  overflow-y: auto;
   box-sizing: border-box;
 }
 
@@ -60,14 +61,18 @@
   font-size: 18px;
 }
 
-.menu-lists-container {
-  padding: 10px;
-  height: auto;
-  overflow-y: auto; /* Scroll if needed */
-}
-
 .menu-lists-container h3 {
   text-align: left;
+}
+
+.menu-lists {
+  overflow-y: auto; /* scrollable when content grows */
+  overflow-x: hidden;
+  box-sizing: border-box;
+  padding-right: 4px;
+  flex: 1 1 auto;
+  min-height: 0; /* fix for Firefox scroll bug */
+  max-height: 500px;
 }
 
 .menu-list {
@@ -322,9 +327,8 @@
   display: flex;
   flex-direction: column;
   justify-content: end;
-  align-items: start;
-  position: absolute;
-  bottom: 20px; /* Position at the bottom */
+  flex: 1;
+  margin-top: auto; /* pushes to bottom if space */
 }
 
 .menu-footer span {
@@ -354,7 +358,6 @@
   margin-right: 500px; /* match task view width */
   padding: 20px 30px;
   flex-grow: 1;
-  overflow-y: auto;
   width: calc(100% - 850px); /* Adjust for menu and task view */
   height: 100vh; /* Full height */
   flex-grow: 1;
@@ -365,11 +368,19 @@
   margin-left: 10px;
 }
 
-.task-list {
-  width: 90%;
+.task-list-container {
+  height: 75%;
+  width: 95%;
   max-width: auto;
   padding: 20px;
   font-size: larger;
+  box-sizing: border-box;
+}
+
+.task-list {
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .add-task-icon {
