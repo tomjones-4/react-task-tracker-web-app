@@ -1,6 +1,8 @@
 import { useState, useRef, forwardRef, useImperativeHandle } from "react";
 import TagModal from "./TagModal";
 import TaskFormButtons from "./TaskFormButtons";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const TaskForm = forwardRef(
   (
@@ -105,12 +107,14 @@ const TaskForm = forwardRef(
               onChange={(e) => setDueDateEnabled(e.target.checked)}
             />{" "}
           </label>
-          <input
-            type="date"
-            id="due-date"
-            name="dueDate"
-            value={taskDueDate}
-            onChange={(e) => setTaskDueDate(e.target.value)}
+          <DatePicker
+            className="datepicker-input"
+            calendarClassName="datepicker-calendar"
+            selected={taskDueDate}
+            onChange={(date) => setTaskDueDate(date)}
+            placeholderText="Select a due date"
+            dateFormat="MMMM d, yyyy"
+            isClearable
             disabled={!dueDateEnabled}
           />
         </span>

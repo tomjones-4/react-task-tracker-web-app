@@ -563,7 +563,7 @@ textarea {
   transition: background-color 0.2s;
 }
 
-.task-form button:hover {
+.task-form .add-tag-button:hover {
   background-color: #3730a3;
 }
 
@@ -580,6 +580,100 @@ textarea {
   margin-left: 5px;
 }
 
+.react-datepicker {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 12px;
+  padding: 8px;
+}
+
+.react-datepicker__header {
+  background-color: #f0f4f8;
+  border-bottom: none;
+  padding-top: 10px;
+  padding-bottom: 100px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.react-datepicker__navigation {
+  top: 16px;
+  line-height: 1.5;
+}
+
+.react-datepicker__navigation--previous {
+  left: 10px;
+}
+
+.react-datepicker__navigation--next {
+  right: 10px;
+}
+
+.datepicker-input {
+  padding: 12px 16px;
+  border: 2px solid #d0d7de;
+  border-radius: 12px;
+  font-size: 1rem;
+  width: 100%;
+  background-color: #fafbfc;
+  transition: border 0.2s ease;
+}
+
+.datepicker-input:focus {
+  border-color: #4f8cff;
+  outline: none;
+  background-color: #fff;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #4f8cff;
+  color: white;
+  border-radius: 50%;
+}
+
+.react-datepicker__day--today {
+  font-weight: bold;
+  color: #4f8cff;
+}
+
+/* Add this to override layout issues */
+.react-datepicker__month-container {
+  padding: 0 30px;
+}
+
+/* Optional: center the navigation buttons */
+.react-datepicker__navigation {
+  top: 10px;
+}
+
+/* Replace default arrow buttons with icons (example using content) */
+.react-datepicker__navigation--previous::before,
+.react-datepicker__navigation--next::before {
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.react-datepicker__navigation--previous::before {
+  background-image: url("/your-left-icon.svg"); /* Customize path */
+}
+
+.react-datepicker__navigation--next::before {
+  background-image: url("/your-right-icon.svg"); /* Customize path */
+}
+
 .task-form-buttons-container {
   display: flex;
   justify-content: space-around;
@@ -590,9 +684,9 @@ textarea {
   transition: background-color 0.2s;
 }
 
-.task-form button:hover {
+/* .task-form button:hover {
   background-color: #3730a3;
-}
+} */
 
 .task-button {
   color: white;
