@@ -1,4 +1,10 @@
-import { useState, useRef, forwardRef, useImperativeHandle } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import TagModal from "./TagModal";
 import TaskFormButtons from "./TaskFormButtons";
 import DatePicker from "react-datepicker";
@@ -9,30 +15,79 @@ const TaskForm = forwardRef(
     {
       lists,
       tags,
-      selectedTaskId,
+      selectedListId,
+      selectedTask,
       deleteTask,
       isAddMode,
-      handleAddTask,
-      handleEditTask,
-      taskTitle,
-      setTaskTitle,
-      taskDescription,
-      setTaskDescription,
-      taskListId,
-      setTaskListId,
-      taskDueDate,
-      setTaskDueDate,
-      taskTagIds,
-      setTaskTagIds,
+      addTask,
+      editTask,
       addTag,
       deleteTag,
     },
     ref
   ) => {
+    const [taskTitle, setTaskTitle] = useState(selectedTask.title);
+    const [taskDescription, setTaskDescription] = useState(
+      selectedTask.description
+    );
+    const [taskListId, setTaskListId] = useState(selectedListId);
+    const [taskDueDate, setTaskDueDate] = useState(selectedTask.dueDate);
+    const [taskTagIds, setTaskTagIds] = useState(selectedTask.tagIds);
     const [dueDateEnabled, setDueDateEnabled] = useState(false);
     const [isTagModalOpen, setIsTagModalOpen] = useState(false);
 
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+      if (selectedTask) {
+        setTaskTitle(selectedTask.title || "");
+        setTaskDescription(selectedTask.description || "");
+        setTaskListId(selectedListId || 0);
+        setTaskDueDate(selectedTask.dueDate || "");
+        setTaskTagIds(selectedTask.tagIds || []);
+      }
+    }, [selectedTask]);
+
+    useEffect(() => {
+      if (taskTitle) {
+        setError("");
+      }
+    }, [taskTitle]);
+
     const closeModal = () => setIsTagModalOpen(false);
+
+    const handleAddTask = () => {
+      if (!taskTitle) {
+        setError("Task title cannot be empty.");
+        return;
+      }
+      const newTask = {
+        id: Date.now(),
+        completed: false,
+        title: taskTitle,
+        description: taskDescription,
+        listId: taskListId,
+        dueDate: taskDueDate,
+        tagIds: taskTagIds,
+      };
+      addTask(newTask);
+    };
+
+    const handleEditTask = () => {
+      if (!taskTitle) {
+        setError("Task title cannot be empty.");
+        return;
+      }
+      const updatedTask = {
+        ...selectedTask,
+        title: taskTitle,
+        description: taskDescription,
+        listId: taskListId,
+        dueDate: taskDueDate,
+        tagIds: taskTagIds,
+      };
+      editTask(updatedTask);
+    };
 
     const addTaskTag = (newTaskTagId) => {
       setTaskTagIds(() => [...taskTagIds, newTaskTagId]);
@@ -85,8 +140,6 @@ const TaskForm = forwardRef(
             id="list-select"
             name="list"
             value={String(taskListId)}
-            // TODO - need to make it so list is set correctly when adding a new task
-            //value={String(selectedListId)}
             onChange={(e) => setTaskListId(Number(e.target.value))}
           >
             {lists.slice(1).map((list) => (
@@ -165,12 +218,19 @@ const TaskForm = forwardRef(
           )}
         </span>
         <TaskFormButtons
+          taskTitle={taskTitle}
           deleteTask={deleteTask}
-          selectedTaskId={selectedTaskId}
+          selectedTaskId={selectedTask.id}
           isAddMode={isAddMode}
           handleEditTask={handleEditTask}
           handleAddTask={handleAddTask}
         />
+
+        {error && (
+          <div className="error-message">
+            <p>{error}</p>
+          </div>
+        )}
       </form>
     );
   }

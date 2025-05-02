@@ -8,11 +8,13 @@ import { useState, useEffect, useRef } from "react";
 
 /* High Priority */
 // Need to handle the case where there is no selected task. Right now the code assumes there will always be a selected task, which causes errors if there are no tasks.
-// Don't allow adding empty tasks
+// Make it so selected task doesn't change after saving when editing
 /* End High Priority */
 
 /* Medium Priority */
+// Add authentication - require a user to login. This will require Supabase.
 // Make it so when a task is deleted, the next task in the list is highlighted rather than the first one
+// Make it so when a list is deleted, the next list in the menu is highlighted rather than the first one
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
 // Add a tag filter when "All tasks" is selected in the sidebar
@@ -25,7 +27,6 @@ import { useState, useEffect, useRef } from "react";
 // Consider using Headless UI for the modal and dropdown components. This would make it easier to style them and make them more accessible.
 // Improve the UX when a user adds tons of tags. Currently it overflows and looks ugly.
 // Improve the UX for color picker.
-// Improve the adding/editing task form UI.
 // Use highlights to show tasks that are getting old or are due urgently.
 // Allow users to take advantage of keyboard shortcuts like "Enter" to submit a task, "/" to search, and "Esc" to clear inputs or exit modes.
 
