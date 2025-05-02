@@ -8,7 +8,6 @@ import { useState, useEffect, useRef } from "react";
 
 /* High Priority */
 // Need to handle the case where there is no selected task. Right now the code assumes there will always be a selected task, which causes errors if there are no tasks.
-// Make it so selected task doesn't change after saving when editing
 /* End High Priority */
 
 /* Medium Priority */
@@ -16,6 +15,7 @@ import { useState, useEffect, useRef } from "react";
 // Make it so when a task is deleted, the next task in the list is highlighted rather than the first one
 // Make it so when a list is deleted, the next list in the menu is highlighted rather than the first one
 // Make it so when a user switches between lists, the selected task is the same per list. This might use logic similar to scroll positions.
+// I think the above 3 tasks all require keeping track of the task ids in each list, which will be a bit of a refactor. I can get rid of the count property, but I'll need to add a taskIds of type int[] to each list.
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
 // Add a tag filter when "All tasks" is selected in the sidebar
@@ -210,6 +210,10 @@ const App = () => {
     // Deselect task if it's deleted
     if (selectedTask && selectedTask.id === taskId) {
       setSelectedTask(tasks.length > 0 ? tasks[0] : null);
+      // TODO - make it so when a task is deleted, next one in list is selected. Above line of code can be commented out once solution below works.
+      // TODO - make it so if a task is the last one in a list and it's deleted, the task is reset and user is brought to add mode on that list.
+      //const taskList = lists.find((list) => list.id === taskListId);
+      //const positionInList = TODO;
     }
   };
 
