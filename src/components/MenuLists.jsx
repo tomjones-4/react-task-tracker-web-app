@@ -49,25 +49,25 @@ const MenuLists = ({
         ripple={ripple}
       />
       <div className="menu-lists">
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext
-          items={lists.map((list) => list.id)}
-          strategy={verticalListSortingStrategy}
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
         >
-          {lists.map((list) => (
-            <MenuListItem
-              key={list.id}
-              list={list}
-              isSelected={selectedListId == list.id}
-              handleListClick={handleListClick}
-            />
-          ))}
-        </SortableContext>
-      </DndContext>
+          <SortableContext
+            items={lists.map((list) => list.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            {lists.map((list) => (
+              <MenuListItem
+                key={list.id}
+                list={list}
+                isSelected={selectedListId == list.id}
+                handleListClick={handleListClick}
+              />
+            ))}
+          </SortableContext>
+        </DndContext>
       </div>
     </div>
   );

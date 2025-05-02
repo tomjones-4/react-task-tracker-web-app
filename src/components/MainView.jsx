@@ -20,6 +20,7 @@ const MainView = ({
       <TaskList
         tasks={tasks}
         setTasks={setTasks}
+        selectedListId={selectedList.id}
         selectedTaskId={selectedTaskId}
         deleteTask={deleteTask}
         toggleCompleted={toggleCompleted}

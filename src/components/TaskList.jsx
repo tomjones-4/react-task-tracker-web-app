@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import TaskItem from "./TaskItem.jsx";
 import AddTaskItem from "./AddTaskItem.jsx";
 import {
@@ -17,6 +17,7 @@ import {
 const TaskList = ({
   tasks,
   setTasks,
+  selectedListId,
   selectedTaskId,
   deleteTask,
   toggleCompleted,
@@ -39,13 +40,37 @@ const TaskList = ({
     }
   };
 
+  const listRef = useRef(null);
+  const [scrollPositions, setScrollPositions] = useState({});
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (listRef.current) {
+        setScrollPositions((prevScrollPositions) => ({
+          ...prevScrollPositions,
+          [selectedListId]: listRef.current.scrollTop,
+        }));
+      }
+    };
+
+    const el = listRef.current;
+    el?.addEventListener("scroll", handleScroll);
+    return () => el?.removeEventListener("scroll", handleScroll);
+  }, [selectedListId]);
+
+  useEffect(() => {
+    if (listRef.current && scrollPositions[selectedListId] != null) {
+      listRef.current.scrollTop = scrollPositions[selectedListId];
+    }
+  }, [selectedListId]);
+
   return (
     <div className="task-list-container">
       <AddTaskItem
         handleStartNewTask={handleStartNewTask}
         className="add-task"
       />
-      <div className="task-list">
+      <div className="task-list" ref={listRef}>
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
