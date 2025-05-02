@@ -24,7 +24,6 @@ import { useState, useEffect, useRef } from "react";
 
 /* Low Priority */
 // Consider adding a reset task button on the task form.
-// When adding task to empty list, we're still in add mode rather than edit mode after adding first task.
 // Have the lists show up in a different way from the tags.
 // Refactor whatever logic is shared between lists and tags modals
 // Consider using Headless UI for the modal and dropdown components. This would make it easier to style them and make them more accessible.
@@ -219,6 +218,7 @@ const App = () => {
     setTasks([...tasks, newTask]);
     changeListCount(newTask.listId, 1); // Increment the count of the list
     changeSelectedList(lists.find((list) => list.id === newTask.listId)); // Select the newly added task's list
+    setIsAddMode(false);
     setSelectedTask(newTask); // Select the newly added task
   };
 
