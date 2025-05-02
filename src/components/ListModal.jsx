@@ -54,9 +54,7 @@ const ListModal = ({ lists, addList, deleteList, closeModal }) => {
   return (
     <div className="modal-backdrop" onClick={closeModal}>
       <div
-        className={`modal-content ${error ? "error" : ""} ${
-          wiggle ? "wiggle" : ""
-        }`}
+        className={`modal-content ${wiggle ? "wiggle" : ""}`}
         onClick={(e) => e.stopPropagation()} // prevent backdrop close
       >
         <button className="close-list-modal-button" onClick={closeModal}>

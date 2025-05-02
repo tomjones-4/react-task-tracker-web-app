@@ -37,6 +37,7 @@ const TaskForm = forwardRef(
     const [isTagModalOpen, setIsTagModalOpen] = useState(false);
 
     const [error, setError] = useState("");
+    const [wiggle, setWiggle] = useState(false);
 
     useEffect(() => {
       if (selectedTask) {
@@ -48,6 +49,14 @@ const TaskForm = forwardRef(
       }
     }, [selectedTask]);
 
+    const showError = (message) => {
+      setError(message);
+      setWiggle(true);
+      setTimeout(() => setWiggle(false), 400); // Remove class after animation
+      taskTitleInputRef.current.focus();
+      taskTitleInputRef.current.select();
+    };
+
     useEffect(() => {
       if (taskTitle) {
         setError("");
@@ -58,7 +67,7 @@ const TaskForm = forwardRef(
 
     const handleAddTask = () => {
       if (!taskTitle) {
-        setError("Task title cannot be empty.");
+        showError("Task title cannot be empty.");
         return;
       }
       const newTask = {
@@ -75,7 +84,7 @@ const TaskForm = forwardRef(
 
     const handleEditTask = () => {
       if (!taskTitle) {
-        setError("Task title cannot be empty.");
+        showError("Task title cannot be empty.");
         return;
       }
       const updatedTask = {
@@ -112,7 +121,7 @@ const TaskForm = forwardRef(
     };
 
     return (
-      <form id="task-form" className="task-form">
+      <form id="task-form" className={`task-form ${wiggle ? "wiggle" : ""}`}>
         <input
           ref={taskTitleInputRef}
           type="text"
@@ -226,11 +235,7 @@ const TaskForm = forwardRef(
           handleAddTask={handleAddTask}
         />
 
-        {error && (
-          <div className="error-message">
-            <p>{error}</p>
-          </div>
-        )}
+        {error && <div className="error-message">{error}</div>}
       </form>
     );
   }

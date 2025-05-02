@@ -315,10 +315,6 @@
   border-radius: 4px;
 }
 
-.new-list-input.error {
-  border-color: #ff6b6b;
-}
-
 .menu-footer {
   display: flex;
   flex-direction: column;
@@ -751,10 +747,6 @@ textarea {
   border-radius: 4px;
 }
 
-.new-tag-input.error {
-  border-color: #ff6b6b;
-}
-
 .error-message {
   color: #ff4b4b;
   background-color: #ffecec;
@@ -803,7 +795,8 @@ textarea {
   }
 }
 
-.modal-content.wiggle {
+.modal-content.wiggle,
+.task-form.wiggle {
   animation: wiggle 0.4s ease;
 }
 

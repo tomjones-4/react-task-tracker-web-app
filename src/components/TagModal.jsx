@@ -116,7 +116,7 @@ const TagModal = ({
             placeholder="New tag name"
             value={newTagName}
             onChange={(e) => setNewTagName(e.target.value)}
-            className={`new-tag-input ${error ? "error" : ""}`}
+            className="new-tag-input"
           />
           <input
             type="color"
