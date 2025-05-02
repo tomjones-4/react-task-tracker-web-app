@@ -11,23 +11,18 @@ const TaskFormButtons = ({
     <div className="task-form-buttons-container">
       <button
         className="task-button delete-task-button"
+        type="button"
         onClick={(e) => deleteTask(selectedTaskId)}
       >
         Delete task
       </button>
       {!isAddMode && (
-        <button
-          className="task-button save-task-button"
-          onClick={handleEditTask}
-        >
+        <button type="submit" className="task-button save-task-button">
           Save changes
         </button>
       )}
       {isAddMode && (
-        <button
-          className="task-button save-task-button"
-          onClick={handleAddTask}
-        >
+        <button type="submit" className="task-button save-task-button">
           Add new task
         </button>
       )}

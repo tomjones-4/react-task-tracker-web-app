@@ -15,6 +15,7 @@ import { useState, useEffect, useRef } from "react";
 // Add authentication - require a user to login. This will require Supabase.
 // Make it so when a task is deleted, the next task in the list is highlighted rather than the first one
 // Make it so when a list is deleted, the next list in the menu is highlighted rather than the first one
+// Make it so when a user switches between lists, the selected task is the same per list. This might use logic similar to scroll positions.
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
 // Add a tag filter when "All tasks" is selected in the sidebar
@@ -22,6 +23,8 @@ import { useState, useEffect, useRef } from "react";
 /* End Medium Priority */
 
 /* Low Priority */
+// Consider adding a reset task button on the task form.
+// When adding task to empty list, we're still in add mode rather than edit mode after adding first task.
 // Have the lists show up in a different way from the tags.
 // Refactor whatever logic is shared between lists and tags modals
 // Consider using Headless UI for the modal and dropdown components. This would make it easier to style them and make them more accessible.

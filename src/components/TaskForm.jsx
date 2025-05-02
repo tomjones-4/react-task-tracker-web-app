@@ -65,7 +65,8 @@ const TaskForm = forwardRef(
 
     const closeModal = () => setIsTagModalOpen(false);
 
-    const handleAddTask = () => {
+    const handleAddTask = (e) => {
+      e.preventDefault();
       if (!taskTitle) {
         showError("Task title cannot be empty.");
         return;
@@ -82,7 +83,8 @@ const TaskForm = forwardRef(
       addTask(newTask);
     };
 
-    const handleEditTask = () => {
+    const handleEditTask = (e) => {
+      e.preventDefault();
       if (!taskTitle) {
         showError("Task title cannot be empty.");
         return;
@@ -115,13 +117,16 @@ const TaskForm = forwardRef(
 
     const handleKeyDown = (e) => {
       if (e.key === "Enter") {
-        e.preventDefault(); // Prevent form submission
         isAddMode ? handleAddTask() : handleEditTask();
       }
     };
 
     return (
-      <form id="task-form" className={`task-form ${wiggle ? "wiggle" : ""}`}>
+      <form
+        id="task-form"
+        className={`task-form ${wiggle ? "wiggle" : ""}`}
+        onSubmit={isAddMode ? handleAddTask : handleEditTask}
+      >
         <input
           ref={taskTitleInputRef}
           type="text"
@@ -196,6 +201,7 @@ const TaskForm = forwardRef(
                   {tag.name}
                   <button
                     className="delete-tag-button"
+                    type="button"
                     onClick={(e) => {
                       e.preventDefault();
                       deleteTaskTag(tag.id);
@@ -207,6 +213,7 @@ const TaskForm = forwardRef(
               ))}
             <button
               className="add-tag-button"
+              type="button"
               onClick={(e) => {
                 e.preventDefault();
                 setIsTagModalOpen(true);
