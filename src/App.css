@@ -366,6 +366,8 @@
 
 .main-view h1 {
   margin-left: 10px;
+  font-size: 44px;
+  margin-block-start: 10px;
 }
 
 .task-list-container {
@@ -513,13 +515,23 @@ textarea {
   resize: both;
 }
 
-.task-form {
+/* .task-form {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   margin-top: 10px;
   padding: 10px;
+} */
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .task-form-item {

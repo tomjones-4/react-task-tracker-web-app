@@ -72,7 +72,8 @@ const TaskView = forwardRef(
         <TaskForm
           lists={lists}
           tags={tags}
-          //selectedListId={selectedListId}
+          selectedTaskId={selectedTask.id}
+          deleteTask={deleteTask}
           isAddMode={isAddMode}
           handleAddTask={handleAddTask}
           handleEditTask={handleEditTask}
@@ -90,30 +91,6 @@ const TaskView = forwardRef(
           deleteTag={deleteTag}
           ref={ref}
         />
-        <div>
-          <button
-            className="task-button delete-task-button"
-            onClick={(e) => deleteTask(selectedTask.id)}
-          >
-            Delete task
-          </button>
-          {!isAddMode && (
-            <button
-              className="task-button save-task-button"
-              onClick={handleEditTask}
-            >
-              Save changes
-            </button>
-          )}
-          {isAddMode && (
-            <button
-              className="task-button save-task-button"
-              onClick={handleAddTask}
-            >
-              Add new task
-            </button>
-          )}
-        </div>
       </div>
     );
   }

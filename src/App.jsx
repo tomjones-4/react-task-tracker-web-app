@@ -12,6 +12,7 @@ import { useState, useEffect, useRef } from "react";
 /* End High Priority */
 
 /* Medium Priority */
+// Make it so when a task is deleted, the next task in the list is highlighted rather than the first one
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
 // Add a tag filter when "All tasks" is selected in the sidebar
@@ -26,7 +27,6 @@ import { useState, useEffect, useRef } from "react";
 // Improve the UX for color picker.
 // Improve the adding/editing task form UI.
 // Use highlights to show tasks that are getting old or are due urgently.
-// Persistent scroll position per list - If you scroll down a list of tasks, then switch to another and come back, restore your scroll.
 // Allow users to take advantage of keyboard shortcuts like "Enter" to submit a task, "/" to search, and "Esc" to clear inputs or exit modes.
 
 /* End Low Priority */

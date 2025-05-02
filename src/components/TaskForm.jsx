@@ -1,12 +1,14 @@
 import { useState, useRef, forwardRef, useImperativeHandle } from "react";
 import TagModal from "./TagModal";
+import TaskFormButtons from "./TaskFormButtons";
 
 const TaskForm = forwardRef(
   (
     {
       lists,
       tags,
-      selectedListId,
+      selectedTaskId,
+      deleteTask,
       isAddMode,
       handleAddTask,
       handleEditTask,
@@ -157,6 +159,13 @@ const TaskForm = forwardRef(
             />
           )}
         </span>
+        <TaskFormButtons
+          deleteTask={deleteTask}
+          selectedTaskId={selectedTaskId}
+          isAddMode={isAddMode}
+          handleEditTask={handleEditTask}
+          handleAddTask={handleAddTask}
+        />
       </form>
     );
   }
