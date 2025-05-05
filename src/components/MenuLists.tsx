@@ -75,7 +75,7 @@ const MenuLists: React.FC<MenuListsProps> = ({
               <MenuListItem
                 key={list.id}
                 list={list}
-                isSelected={selectedListId == list.id}
+                isSelected={selectedListId === list.id}
                 handleListClick={handleListClick}
               />
             ))}

@@ -1,9 +1,20 @@
 import React from "react";
+import { List } from "../types";
 import { FaGripVertical } from "react-icons/fa";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-const MenuListItem = ({ list, isSelected, handleListClick }) => {
+type MenuListItemProps = {
+  list: List;
+  isSelected: boolean;
+  handleListClick: (e: React.MouseEvent<HTMLDivElement>, list: List) => void;
+};
+
+const MenuListItem: React.FC<MenuListItemProps> = ({
+  list,
+  isSelected,
+  handleListClick,
+}) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: list.id });
   const style = {
@@ -25,7 +36,7 @@ const MenuListItem = ({ list, isSelected, handleListClick }) => {
           style={{ backgroundColor: list.color }}
         ></span>
         <span className="menu-list-name">{list.name}</span>
-        <span className="menu-list-item-count">{list.count}</span>
+        <span className="menu-list-item-count">{list.taskIds.length}</span>
         <span className="ripple" />
       </div>
     </div>

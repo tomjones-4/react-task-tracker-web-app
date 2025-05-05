@@ -1,6 +1,22 @@
+import React from "react";
 import TaskList from "./TaskList";
+import { List, Task } from "../types";
 
-const MainView = ({
+type MainViewProps = {
+  selectedList: List;
+  tasks: Task[];
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  selectedTaskId: number;
+  deleteTask: (taskId: number) => void;
+  toggleCompleted: (taskId: number) => void;
+  setSelectedTask: React.Dispatch<React.SetStateAction<Task>>;
+  handleStartNewTask: (e: React.MouseEvent<HTMLDivElement>) => void;
+  selectedTaskForDebug: Task;
+  setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
+  ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
+};
+
+const MainView: React.FC<MainViewProps> = ({
   selectedList,
   tasks,
   setTasks,

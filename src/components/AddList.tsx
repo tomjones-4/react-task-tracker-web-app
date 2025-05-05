@@ -2,12 +2,25 @@ import React from "react";
 import { FaPlus } from "react-icons/fa";
 import { useState } from "react";
 import ListModal from "./ListModal";
+import { List } from "../types";
 
-const AddList = ({ lists, addList, deleteList, ripple }) => {
-  const [isAddlistModalOpen, setIsAddlistModalOpen] = useState(false);
+type AddListProps = {
+  lists: List[];
+  addList: (newList: List) => void;
+  deleteList: (listId: number) => void;
+  ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
+};
+
+const AddList: React.FC<AddListProps> = ({
+  lists,
+  addList,
+  deleteList,
+  ripple,
+}) => {
+  const [isAddlistModalOpen, setIsAddlistModalOpen] = useState<boolean>(false);
   const closeModal = () => setIsAddlistModalOpen(false);
 
-  const openAddListModal = (e) => {
+  const openAddListModal = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     ripple(e);
     setIsAddlistModalOpen(true);

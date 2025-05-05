@@ -1,7 +1,11 @@
 import React from "react";
 import { FaPlus } from "react-icons/fa";
 
-const AddTaskItem = ({ handleStartNewTask }) => {
+type AddTaskItemProps = {
+  handleStartNewTask: (e: React.MouseEvent<HTMLDivElement>) => void;
+};
+
+const AddTaskItem: React.FC<AddTaskItemProps> = ({ handleStartNewTask }) => {
   return (
     <div className="add-task" onClick={handleStartNewTask}>
       <FaPlus className="add-task-icon" />

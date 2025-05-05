@@ -31,6 +31,7 @@ const TagModal: React.FC<TagModalProps> = ({
   );
   const [error, setError] = useState<string>("");
   const [wiggle, setWiggle] = useState<boolean>(false);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const showError = (message: string) => {

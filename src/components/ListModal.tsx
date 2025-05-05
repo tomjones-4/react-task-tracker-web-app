@@ -1,28 +1,44 @@
 import { useState, useRef } from "react";
+import { List } from "../types";
 import { FaTrashAlt } from "react-icons/fa";
 
-const ListModal = ({ lists, addList, deleteList, closeModal }) => {
+type ListModalProps = {
+  lists: List[];
+  addList: (newList: List) => void;
+  deleteList: (listId: number) => void;
+  closeModal: () => void;
+};
+
+const ListModal: React.FC<ListModalProps> = ({
+  lists,
+  addList,
+  deleteList,
+  closeModal,
+}) => {
   const getRandomPastelColor = () => {
     const hue = Math.floor(Math.random() * 360); // any hue
     return `hsl(${hue}, 70%, 85%)`; // pastel tone
   };
 
-  const [newListName, setNewListName] = useState("");
-  const [newListColor, setNewListColor] = useState(getRandomPastelColor());
-  const [error, setError] = useState("");
-  const [wiggle, setWiggle] = useState(false);
-  const inputRef = useRef(null);
-  const [listToDelete, setListToDelete] = useState(null);
+  const [newListName, setNewListName] = useState<string>("");
+  const [newListColor, setNewListColor] = useState<string>(
+    getRandomPastelColor()
+  );
+  const [error, setError] = useState<string>("");
+  const [wiggle, setWiggle] = useState<boolean>(false);
+  const [listToDelete, setListToDelete] = useState<List | null>(null);
 
-  const showError = (message) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const showError = (message: string) => {
     setError(message);
     setWiggle(true);
     setTimeout(() => setWiggle(false), 400); // Remove class after animation
-    inputRef.current.focus();
-    inputRef.current.select();
+    inputRef.current?.focus();
+    inputRef.current?.select();
   };
 
-  const handleAddList = (e) => {
+  const handleAddList = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     const trimmedListName = newListName.trim();
@@ -39,12 +55,12 @@ const ListModal = ({ lists, addList, deleteList, closeModal }) => {
     }
 
     //let color = getRandomPastelColor();
-    const newList = {
+    const newList: List = {
       id: Date.now(),
       name: trimmedListName,
       //color: color,
       color: newListColor,
-      count: 0,
+      taskIds: [],
     };
     addList(newList);
     setNewListName(""); // Clear input field after adding

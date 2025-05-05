@@ -1,9 +1,24 @@
 import React, { useRef, forwardRef, useImperativeHandle } from "react";
 import MenuLists from "./MenuLists";
+import { List } from "../types";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
 
-const Menu = forwardRef(
+type MenuProps = {
+  lists: List[];
+  setLists: React.Dispatch<React.SetStateAction<List[]>>;
+  addList: (newList: List) => void;
+  deleteList: (listId: number) => void;
+  selectedListId: number;
+  changeSelectedList: (list: List) => void;
+  ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
+};
+
+export type MenuRef = {
+  focusSearchInput: () => void;
+};
+
+const Menu = forwardRef<MenuRef, MenuProps>(
   (
     {
       lists,
@@ -16,7 +31,7 @@ const Menu = forwardRef(
     },
     ref
   ) => {
-    const searchInputRef = useRef(null);
+    const searchInputRef = useRef<HTMLInputElement>(null);
     useImperativeHandle(ref, () => ({
       focusSearchInput() {
         searchInputRef.current?.focus();
