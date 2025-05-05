@@ -1,9 +1,19 @@
 import React from "react";
+import { Task } from "../types";
 import { FaChevronRight, FaGripVertical } from "react-icons/fa";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-const TaskItem = ({
+type TaskItemProps = {
+  task: Task;
+  selectedTaskId: number;
+  toggleCompleted: (taskId: number) => void;
+  setSelectedTask: React.Dispatch<React.SetStateAction<Task>>;
+  setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
+  ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
+};
+
+const TaskItem: React.FC<TaskItemProps> = ({
   task,
   selectedTaskId,
   toggleCompleted,
@@ -11,7 +21,7 @@ const TaskItem = ({
   setIsAddMode,
   ripple,
 }) => {
-  const handleTaskClick = (e) => {
+  const handleTaskClick = (e: React.MouseEvent<HTMLDivElement>) => {
     setSelectedTask(task);
     setIsAddMode(false);
     ripple(e);

@@ -1,7 +1,18 @@
 import { useState, useRef } from "react";
+import { Tag } from "../types";
 import { FaTrashAlt } from "react-icons/fa";
 
-const TagModal = ({
+type TagModalProps = {
+  tags: Tag[];
+
+  addTag: (newTag: Tag) => void;
+  deleteTag: (tagId: number) => void;
+  addTaskTag: (newTaskTagId: number) => void;
+  taskTagIds: number[];
+  closeModal: () => void;
+};
+
+const TagModal: React.FC<TagModalProps> = ({
   tags,
   addTag,
   deleteTag,
@@ -14,21 +25,23 @@ const TagModal = ({
     return `hsl(${hue}, 70%, 85%)`; // pastel tone
   };
 
-  const [newTagName, setNewTagName] = useState("");
-  const [newTagColor, setNewTagColor] = useState(getRandomPastelColor());
-  const [error, setError] = useState("");
-  const [wiggle, setWiggle] = useState(false);
-  const inputRef = useRef(null);
+  const [newTagName, setNewTagName] = useState<string>("");
+  const [newTagColor, setNewTagColor] = useState<string>(
+    getRandomPastelColor()
+  );
+  const [error, setError] = useState<string>("");
+  const [wiggle, setWiggle] = useState<boolean>(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const showError = (message) => {
+  const showError = (message: string) => {
     setError(message);
     setWiggle(true);
     setTimeout(() => setWiggle(false), 400); // Remove class after animation
-    inputRef.current.focus();
-    inputRef.current.select();
+    inputRef.current?.focus();
+    inputRef.current?.select();
   };
 
-  const handleAddTag = (e) => {
+  const handleAddTag = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     const trimmedTagName = newTagName.trim();
@@ -54,7 +67,10 @@ const TagModal = ({
     setError(""); // Clear error message
   };
 
-  const handleAddTaskTag = (e, tagId) => {
+  const handleAddTaskTag = (
+    e: React.MouseEvent<HTMLSpanElement>,
+    tagId: number
+  ) => {
     e.preventDefault();
     // Check if tag is already applied
     if (taskTagIds.some((id) => id === tagId)) {
