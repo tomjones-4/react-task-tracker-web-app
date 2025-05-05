@@ -1,12 +1,6 @@
 import React from "react";
 
-const TaskFormButtons = ({
-  deleteTask,
-  selectedTaskId,
-  isAddMode,
-  handleEditTask,
-  handleAddTask,
-}) => {
+const TaskFormButtons = ({ deleteTask, selectedTaskId, isAddMode }) => {
   return (
     <div className="task-form-buttons-container">
       <button

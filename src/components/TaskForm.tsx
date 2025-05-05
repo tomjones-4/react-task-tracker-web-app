@@ -1,16 +1,28 @@
-import {
-  useState,
-  useEffect,
-  useRef,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
+import React, { useState, useEffect, useRef, useImperativeHandle } from "react";
 import TagModal from "./TagModal";
 import TaskFormButtons from "./TaskFormButtons";
+import { List, Task, Tag } from "../types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const TaskForm = forwardRef(
+type TaskFormProps = {
+  lists: List[];
+  tags: Tag[];
+  selectedListId: number;
+  selectedTask: Task;
+  deleteTask: (taskId: number) => void;
+  isAddMode: boolean;
+  addTask: (newTask: Task) => void;
+  editTask: (editedTask: Task) => void;
+  addTag: (newTag: Tag) => void;
+  deleteTag: (tagId: number) => void;
+};
+
+export type TaskFormRef = {
+  focusTitleInput: () => void;
+};
+
+const TaskForm = React.forwardRef<TaskFormRef, TaskFormProps>(
   (
     {
       lists,
@@ -26,35 +38,37 @@ const TaskForm = forwardRef(
     },
     ref
   ) => {
-    const [taskTitle, setTaskTitle] = useState(selectedTask.title);
-    const [taskDescription, setTaskDescription] = useState(
+    const [taskTitle, setTaskTitle] = useState<string>(selectedTask.title);
+    const [taskDescription, setTaskDescription] = useState<string>(
       selectedTask.description
     );
-    const [taskListId, setTaskListId] = useState(selectedListId);
-    const [taskDueDate, setTaskDueDate] = useState(selectedTask.dueDate);
-    const [taskTagIds, setTaskTagIds] = useState(selectedTask.tagIds);
-    const [dueDateEnabled, setDueDateEnabled] = useState(false);
-    const [isTagModalOpen, setIsTagModalOpen] = useState(false);
+    const [taskListId, setTaskListId] = useState<number>(selectedListId);
+    const [taskDueDate, setTaskDueDate] = useState<Date | null>(
+      selectedTask.dueDate
+    );
+    const [taskTagIds, setTaskTagIds] = useState<number[]>(selectedTask.tagIds);
+    const [dueDateEnabled, setDueDateEnabled] = useState<boolean>(false);
+    const [isTagModalOpen, setIsTagModalOpen] = useState<boolean>(false);
 
-    const [error, setError] = useState("");
-    const [wiggle, setWiggle] = useState(false);
+    const [error, setError] = useState<string>("");
+    const [wiggle, setWiggle] = useState<boolean>(false);
 
     useEffect(() => {
       if (selectedTask) {
         setTaskTitle(selectedTask.title || "");
         setTaskDescription(selectedTask.description || "");
         setTaskListId(selectedListId || 0);
-        setTaskDueDate(selectedTask.dueDate || "");
+        setTaskDueDate(selectedTask.dueDate || null);
         setTaskTagIds(selectedTask.tagIds || []);
       }
     }, [selectedTask]);
 
-    const showError = (message) => {
+    const showError = (message: string) => {
       setError(message);
       setWiggle(true);
       setTimeout(() => setWiggle(false), 400); // Remove class after animation
-      taskTitleInputRef.current.focus();
-      taskTitleInputRef.current.select();
+      taskTitleInputRef.current?.focus();
+      taskTitleInputRef.current?.select();
     };
 
     useEffect(() => {
@@ -65,13 +79,18 @@ const TaskForm = forwardRef(
 
     const closeModal = () => setIsTagModalOpen(false);
 
-    const handleAddTask = (e) => {
+    const handleAddTask = (
+      e:
+        | React.FormEvent<HTMLFormElement>
+        | React.KeyboardEvent<HTMLInputElement>
+        | React.KeyboardEvent<HTMLTextAreaElement>
+    ) => {
       e.preventDefault();
       if (!taskTitle) {
         showError("Task title cannot be empty.");
         return;
       }
-      const newTask = {
+      const newTask: Task = {
         id: Date.now(),
         completed: false,
         title: taskTitle,
@@ -83,7 +102,12 @@ const TaskForm = forwardRef(
       addTask(newTask);
     };
 
-    const handleEditTask = (e) => {
+    const handleEditTask = (
+      e:
+        | React.FormEvent<HTMLFormElement>
+        | React.KeyboardEvent<HTMLInputElement>
+        | React.KeyboardEvent<HTMLTextAreaElement>
+    ) => {
       e.preventDefault();
       if (!taskTitle) {
         showError("Task title cannot be empty.");
@@ -100,24 +124,28 @@ const TaskForm = forwardRef(
       editTask(updatedTask);
     };
 
-    const addTaskTag = (newTaskTagId) => {
+    const addTaskTag = (newTaskTagId: number) => {
       setTaskTagIds(() => [...taskTagIds, newTaskTagId]);
     };
 
-    const deleteTaskTag = (tagToDeleteId) => {
+    const deleteTaskTag = (tagToDeleteId: number) => {
       setTaskTagIds(taskTagIds.filter((id) => id !== tagToDeleteId));
     };
 
-    const taskTitleInputRef = useRef(null);
+    const taskTitleInputRef = useRef<HTMLInputElement>(null);
     useImperativeHandle(ref, () => ({
       focusTitleInput() {
         taskTitleInputRef.current?.focus();
       },
     }));
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (
+      e:
+        | React.KeyboardEvent<HTMLInputElement>
+        | React.KeyboardEvent<HTMLTextAreaElement>
+    ) => {
       if (e.key === "Enter") {
-        isAddMode ? handleAddTask() : handleEditTask();
+        isAddMode ? handleAddTask(e) : handleEditTask(e);
       }
     };
 
@@ -192,6 +220,7 @@ const TaskForm = forwardRef(
             {taskTagIds
               .filter((id) => tags.some((tag) => tag.id === id)) // do this filter to avoid state sync issue where tag still exists in taskTagIds but not in tags, which happens briefly after tag is deleted
               .map((id) => tags.find((tag) => tag.id === id))
+              .filter((tag): tag is Tag => tag !== undefined) // <-- type guard
               .map((tag) => (
                 <span
                   key={tag.id}
@@ -234,12 +263,9 @@ const TaskForm = forwardRef(
           )}
         </span>
         <TaskFormButtons
-          taskTitle={taskTitle}
           deleteTask={deleteTask}
           selectedTaskId={selectedTask.id}
           isAddMode={isAddMode}
-          handleEditTask={handleEditTask}
-          handleAddTask={handleAddTask}
         />
 
         {error && <div className="error-message">{error}</div>}
