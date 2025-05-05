@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import TaskItem from "./TaskItem.jsx";
 import AddTaskItem from "./AddTaskItem.jsx";
+import { Task } from "../types";
 import {
   DndContext,
   closestCenter,
   PointerSensor,
   useSensor,
   useSensors,
+  DragEndEvent,
 } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -14,7 +16,20 @@ import {
   SortableContext,
 } from "@dnd-kit/sortable";
 
-const TaskList = ({
+type TaskListProps = {
+  tasks: Task[];
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  selectedListId: number;
+  selectedTaskId: number;
+  deleteTask: (taskId: number) => void;
+  toggleCompleted: (taskId: number) => void;
+  setSelectedTask: React.Dispatch<React.SetStateAction<Task>>;
+  handleStartNewTask: (e: React.MouseEvent<HTMLDivElement>) => void;
+  setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
+  ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
+};
+
+const TaskList: React.FC<TaskListProps> = ({
   tasks,
   setTasks,
   selectedListId,
@@ -27,12 +42,15 @@ const TaskList = ({
   ripple,
 }) => {
   // Sort tasks: incomplete ones first, then completed ones
-  const sortedTasks = tasks.sort((a, b) => a.completed - b.completed);
+  const sortedTasks = tasks.sort(
+    (a, b) => Number(a.completed) - Number(b.completed)
+  );
 
   const sensors = useSensors(useSensor(PointerSensor));
 
-  const handleDragEnd = (event) => {
-    const { active, over } = event;
+  const handleDragEnd = (e: DragEndEvent) => {
+    const { active, over } = e;
+    if (!over) return; //safeguard against null
     if (active.id !== over.id) {
       const oldIndex = tasks.findIndex((t) => t.id === active.id);
       const newIndex = tasks.findIndex((t) => t.id === over.id);
@@ -40,15 +58,16 @@ const TaskList = ({
     }
   };
 
-  const listRef = useRef(null);
-  const [scrollPositions, setScrollPositions] = useState({});
+  const listRef = useRef<HTMLDivElement>(null);
+  const [scrollPositions, setScrollPositions] = useState<number[]>([]);
 
   useEffect(() => {
     const handleScroll = () => {
       if (listRef.current) {
+        const currentList = listRef.current;
         setScrollPositions((prevScrollPositions) => ({
           ...prevScrollPositions,
-          [selectedListId]: listRef.current.scrollTop,
+          [selectedListId]: currentList.scrollTop,
         }));
       }
     };
@@ -66,10 +85,7 @@ const TaskList = ({
 
   return (
     <div className="task-list-container">
-      <AddTaskItem
-        handleStartNewTask={handleStartNewTask}
-        className="add-task"
-      />
+      <AddTaskItem handleStartNewTask={handleStartNewTask} />
       <div className="task-list" ref={listRef}>
         <DndContext
           sensors={sensors}
@@ -85,7 +101,6 @@ const TaskList = ({
                 key={task.id}
                 task={task}
                 selectedTaskId={selectedTaskId}
-                deleteTask={deleteTask}
                 toggleCompleted={toggleCompleted}
                 setSelectedTask={setSelectedTask}
                 setIsAddMode={setIsAddMode}

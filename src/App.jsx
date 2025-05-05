@@ -270,10 +270,10 @@ const App = () => {
     taskFormRef.current?.focusTitleInput(); // Focus the title input
   };
 
-  const toggleCompleted = (id) => {
+  const toggleCompleted = (taskId) => {
     setTasks(
       tasks.map((task) => {
-        if (task.id === id) {
+        if (task.id === taskId) {
           return { ...task, completed: !task.completed };
         } else {
           return task;
@@ -294,6 +294,7 @@ const App = () => {
   /* Begin front-end effects */
 
   const ripple = (e) => {
+    //const ripple = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.currentTarget;
     const ripple = target.querySelector(".ripple");
 

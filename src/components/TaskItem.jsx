@@ -6,7 +6,6 @@ import { CSS } from "@dnd-kit/utilities";
 const TaskItem = ({
   task,
   selectedTaskId,
-  //deleteTask,
   toggleCompleted,
   setSelectedTask,
   setIsAddMode,
