@@ -1,8 +1,26 @@
 import TaskForm from "./TaskForm";
 import SubtaskForm from "./SubtaskForm";
 import { useState, useEffect, forwardRef } from "react";
+import { List, Task, Tag } from "../types";
 
-const TaskView = forwardRef(
+type TaskViewProps = {
+  selectedListId: number;
+  selectedTask: Task;
+  lists: List[];
+  tags: Tag[];
+  deleteTask: (taskId: number) => void;
+  addTask: (newTask: Task) => void;
+  editTask: (editedTask: Task) => void;
+  isAddMode: boolean;
+  addTag: (newTag: Tag) => void;
+  deleteTag: (tagId: number) => void;
+};
+
+export type TaskFormRef = {
+  focusTitleInput: () => void;
+};
+
+const TaskView = forwardRef<TaskFormRef, TaskViewProps>(
   (
     {
       selectedListId,

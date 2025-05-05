@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useImperativeHandle } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import TagModal from "./TagModal";
 import TaskFormButtons from "./TaskFormButtons";
 import { List, Task, Tag } from "../types";
@@ -22,7 +28,7 @@ export type TaskFormRef = {
   focusTitleInput: () => void;
 };
 
-const TaskForm = React.forwardRef<TaskFormRef, TaskFormProps>(
+const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
   (
     {
       lists,
