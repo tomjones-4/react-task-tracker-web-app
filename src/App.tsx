@@ -13,7 +13,6 @@ import { List, Task, Tag } from "./types";
 
 /* Medium Priority */
 // Add authentication - require a user to login. This will require Supabase.
-// Make it so when a task is deleted, the next task in the list is highlighted rather than the first one
 // Make it so when a list is deleted, the next list in the menu is highlighted rather than the first one
 // Make it so when a user switches between lists, the selected task is the same per list. This might use logic similar to scroll positions.
 // I think the above 3 tasks all require keeping track of the task ids in each list, which will be a bit of a refactor. I can get rid of the count property, but I'll need to add a taskIds of type int[] to each list.
@@ -308,19 +307,44 @@ const App = () => {
     const taskToDelete = tasks.find((task: Task) => task.id === taskId);
     if (!taskToDelete) return;
 
+    // Select new task if selected task is deleted
+    if (selectedTask && selectedTask.id === taskId) {
+      const taskList = lists.find((list) => list.id === taskToDelete.listId);
+      if (!taskList) {
+        console.error("No list found for deleted task");
+        return;
+      }
+
+      const indexInList = taskList.taskIds.indexOf(taskId);
+      if (indexInList === -1) {
+        console.warn("No position in list found when deleting task");
+        return;
+      }
+
+      if (taskList.taskIds.length <= 1) {
+        resetTask();
+      } else {
+        const taskToSelect = tasks.find(
+          (task: Task) =>
+            task.id ===
+            taskList.taskIds[
+              indexInList < taskList.taskIds.length - 1
+                ? indexInList + 1
+                : indexInList - 1
+            ]
+        );
+
+        if (!taskToSelect) {
+          console.warn("No task found when looking to select new task");
+          return;
+        }
+        console.log("taskToSelect.title", taskToSelect.title);
+        setSelectedTask(taskToSelect);
+      }
+    }
+
     removeTasksFromList(taskToDelete.listId, [taskId]);
     setTasks(tasks.filter((task: Task) => task.id !== taskId));
-
-    // Deselect task if it's deleted
-    if (selectedTask && selectedTask.id === taskId) {
-      // Have to check and see if tasks.length > 1 here because it takes a second for tasks to be updated to show its correct length
-      setSelectedTask(tasks.length > 1 ? tasks[0] : undefined);
-
-      // TODO - make it so when a task is deleted, next one in list is selected. Above line of code can be commented out once solution below works.
-      // TODO - make it so if a task is the last one in a list and it's deleted, the task is reset and user is brought to add mode on that list.
-      //const taskList = lists.find((list) => list.id === taskListId);
-      //const positionInList = TODO;
-    }
   };
 
   const addTask = (newTask: Task) => {
@@ -510,9 +534,6 @@ const App = () => {
   // };
 
   /* End Debugging */
-
-  console.log("selectedList", selectedList);
-  console.log("selectedTask", selectedTask);
 
   return (
     <div className="App">
