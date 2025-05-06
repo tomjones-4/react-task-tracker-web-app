@@ -152,9 +152,34 @@
   }
 }
 
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(-8px);
+  }
+  30% {
+    transform: translateX(8px);
+  }
+  45% {
+    transform: translateX(-6px);
+  }
+  60% {
+    transform: translateX(6px);
+  }
+  75% {
+    transform: translateX(-4px);
+  }
+  90% {
+    transform: translateX(4px);
+  }
+}
+
 @keyframes slideUp {
   from {
-    transform: translateY(12px);
+    transform: translateY(8px);
     opacity: 0;
   }
   to {
@@ -163,30 +188,13 @@
   }
 }
 
-.animate-slide-up {
-  animation: slideUp 0.2s ease-out;
-}
-
-.delete-list {
-  margin-top: 16px;
-  padding: 16px;
-  background-color: #fef2f2;
-  border: 1px solid #fca5a5;
-  border-radius: 8px;
-  animation: slideUp 0.25s ease-out;
-}
-
 .delete-list .title {
   margin: 0 0 8px;
   font-weight: 600;
-  color: #991b1b;
-  font-size: 1rem;
 }
 
 .delete-list .message {
-  margin-bottom: 16px;
-  color: #7f1d1d;
-  font-size: 0.9rem;
+  margin-bottom: 18px;
 }
 
 .delete-list .actions {
@@ -752,47 +760,50 @@ textarea {
   background-color: #ffecec;
   border: 1px solid #ffbdbd;
   border-radius: 8px;
-  padding: 0.5rem;
-  font-size: 0.9rem;
-  animation: fadeInSlide 0.6s ease forwards;
-  margin-top: 0.25rem;
+  padding: 0.75rem;
+  font-size: 1rem;
+  animation: slideUp 0.3s ease-out;
+  margin-top: 1rem;
 }
 
-/* Animation for the error toast */
-@keyframes fadeInSlide {
-  0% {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.info-message {
+  display: flex;
+  align-items: center;
+  color: #3178c6;
+  background-color: #e6f0ff;
+  border: 1px solid #b3d1ff;
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  animation: slideUp 0.3s ease-in;
+  margin-top: 1rem;
+  position: relative;
 }
 
-@keyframes wiggle {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  15% {
-    transform: translateX(-8px);
-  }
-  30% {
-    transform: translateX(8px);
-  }
-  45% {
-    transform: translateX(-6px);
-  }
-  60% {
-    transform: translateX(6px);
-  }
-  75% {
-    transform: translateX(-4px);
-  }
-  90% {
-    transform: translateX(4px);
-  }
+.info-icon {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+}
+
+.info-text {
+  flex: 1;
+}
+
+/* To override Chrome style that add margin to top and bottom of <p> */
+.info-text p {
+  margin-block-end: 0;
+  margin-block-start: 0;
+}
+
+.info-dismiss {
+  background: none;
+  border: none;
+  color: #3178c6;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 1rem;
+  line-height: 1;
 }
 
 .modal-content.wiggle,
