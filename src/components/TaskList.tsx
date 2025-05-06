@@ -20,10 +20,10 @@ type TaskListProps = {
   tasks: Task[];
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   selectedListId: number;
-  selectedTaskId: number;
+  selectedTaskId: number | undefined;
   deleteTask: (taskId: number) => void;
   toggleCompleted: (taskId: number) => void;
-  setSelectedTask: React.Dispatch<React.SetStateAction<Task>>;
+  setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>;
   handleStartNewTask: (e: React.MouseEvent<HTMLDivElement>) => void;
   setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
@@ -78,7 +78,7 @@ const TaskList: React.FC<TaskListProps> = ({
   }, [selectedListId]);
 
   useEffect(() => {
-    if (listRef.current && scrollPositions[selectedListId] != null) {
+    if (listRef.current && scrollPositions[selectedListId]) {
       listRef.current.scrollTop = scrollPositions[selectedListId];
     }
   }, [selectedListId]);

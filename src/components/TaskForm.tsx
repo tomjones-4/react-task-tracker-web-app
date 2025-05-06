@@ -61,6 +61,7 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
 
     useEffect(() => {
       if (selectedTask) {
+        // TODO - might be able to remove the || and filler values for most of these below
         setTaskTitle(selectedTask.title || "");
         setTaskDescription(selectedTask.description || "");
         setTaskListId(selectedListId || 0);
@@ -119,7 +120,7 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
         showError("Task title cannot be empty.");
         return;
       }
-      const updatedTask = {
+      const updatedTask: Task = {
         ...selectedTask,
         title: taskTitle,
         description: taskDescription,

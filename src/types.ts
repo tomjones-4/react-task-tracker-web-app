@@ -11,7 +11,7 @@ export interface Task {
   title: string;
   description: string;
   listId: number;
-  dueDate: Date | undefined;
+  dueDate: Date | null;
   tagIds: number[];
 }
 

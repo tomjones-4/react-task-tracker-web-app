@@ -24,6 +24,7 @@ import { List, Task, Tag } from "./types";
 /* End Medium Priority */
 
 /* Low Priority */
+// See TODO in TaskForm.tsx for potentially removing some filler values after ||'s
 // Consider adding a reset task button on the task form.
 // Have the lists show up in a different way from the tags.
 // Refactor whatever logic is shared between lists and tags modals
@@ -56,7 +57,7 @@ const App = () => {
     title: "Tend to the garden",
     description: "Water the plants and remove weeds",
     listId: 0,
-    dueDate: undefined,
+    dueDate: null,
     tagIds: [],
   };
 
@@ -136,12 +137,10 @@ const App = () => {
     return storedTags;
   });
 
-  const [selectedList, setSelectedList] = useState<List | undefined>(lists[0]);
+  const [selectedList, setSelectedList] = useState<List>(lists[0]);
 
   const [selectedTask, setSelectedTask] = useState<Task | undefined>(
-    selectedList
-      ? tasks.find((task) => task.id === selectedList.id) || tasks[0]
-      : undefined
+    tasks.find((task) => task.id === selectedList.id) || undefined
   );
 
   const [isAddMode, setIsAddMode] = useState<boolean>(true);
@@ -167,7 +166,7 @@ const App = () => {
     if (listId == -1 || listId == 0) return; // don't allow deleting "All Tasks" or "Uncategorized" lists
 
     // Deselect list if it's deleted
-    if (selectedList && selectedList.id === listId) {
+    if (selectedList.id === listId) {
       changeSelectedList(lists[0]); // Select the first list in the updated lists array
       setSelectedTask(tasks[0]); // Select the first task in tasks array
     }
@@ -301,16 +300,14 @@ const App = () => {
     }
   };
 
-  const resetTask = (
-    newListId: number = selectedList ? selectedList.id : 0
-  ) => {
+  const resetTask = (newListId: number = selectedList.id) => {
     const newTask: Task = {
       id: Date.now(),
       completed: false,
       title: "",
       description: "",
       listId: newListId, // Set the listId to the currently selected list
-      dueDate: undefined,
+      dueDate: null,
       tagIds: [],
     };
     setSelectedTask(newTask);
@@ -467,13 +464,13 @@ const App = () => {
         addList={addList}
         deleteList={deleteList}
         changeSelectedList={changeSelectedList}
-        selectedListId={selectedList ? selectedList.id : -1}
+        selectedListId={selectedList.id}
         ripple={ripple}
         ref={searchInputRef}
       />
       <MainView
         selectedList={selectedList}
-        tasks={getTasksByListId(selectedList ? selectedList.id : -1)}
+        tasks={getTasksByListId(selectedList.id)}
         setTasks={setTasks}
         selectedTaskId={selectedTask?.id}
         deleteTask={deleteTask}
@@ -484,19 +481,21 @@ const App = () => {
         setIsAddMode={setIsAddMode}
         ripple={ripple}
       />
-      <TaskView
-        selectedListId={selectedList?.id === -1 ? 0 : selectedList?.id}
-        selectedTask={selectedTask}
-        lists={lists}
-        tags={tags}
-        deleteTask={deleteTask}
-        addTask={addTask}
-        editTask={editTask}
-        isAddMode={isAddMode}
-        addTag={addTag}
-        deleteTag={deleteTag}
-        ref={taskFormRef}
-      />
+      {selectedTask && (
+        <TaskView
+          selectedListId={selectedList.id === -1 ? 0 : selectedList.id}
+          selectedTask={selectedTask}
+          lists={lists}
+          tags={tags}
+          deleteTask={deleteTask}
+          addTask={addTask}
+          editTask={editTask}
+          isAddMode={isAddMode}
+          addTag={addTag}
+          deleteTag={deleteTag}
+          ref={taskFormRef}
+        />
+      )}
     </div>
   );
 };

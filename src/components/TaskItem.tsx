@@ -6,9 +6,9 @@ import { CSS } from "@dnd-kit/utilities";
 
 type TaskItemProps = {
   task: Task;
-  selectedTaskId: number;
+  selectedTaskId: number | undefined;
   toggleCompleted: (taskId: number) => void;
-  setSelectedTask: React.Dispatch<React.SetStateAction<Task>>;
+  setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>;
   setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
 };

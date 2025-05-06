@@ -3,7 +3,7 @@ import TaskList from "./TaskList";
 import { List, Task } from "../types";
 
 type MainViewProps = {
-  selectedList: List | undefined;
+  selectedList: List;
   tasks: Task[];
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   selectedTaskId: number | undefined;
