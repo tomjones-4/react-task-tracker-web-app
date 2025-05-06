@@ -8,13 +8,12 @@ import { List, Task, Tag } from "./types";
 // TODO
 
 /* High Priority */
-// Need to handle the case where there is no selected task. Right now the code assumes there will always be a selected task, which causes errors if there are no tasks.
+
 /* End High Priority */
 
 /* Medium Priority */
 // Add authentication - require a user to login. This will require Supabase.
 // Make it so when a user switches between lists, the selected task is the same per list. This might use logic similar to scroll positions.
-// I think the above 3 tasks all require keeping track of the task ids in each list, which will be a bit of a refactor. I can get rid of the count property, but I'll need to add a taskIds of type int[] to each list.
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
 // Add a tag filter when "All tasks" is selected in the sidebar
@@ -22,6 +21,7 @@ import { List, Task, Tag } from "./types";
 /* End Medium Priority */
 
 /* Low Priority */
+// Show some info that user is unable to delete All Tasks and Uncategorized lists. Currently it just shows the normal delete list modal.
 // See TODO in TaskForm.tsx for potentially removing some filler values after ||'s
 // Consider adding a reset task button on the task form.
 // Have the lists show up in a different way from the tags.
