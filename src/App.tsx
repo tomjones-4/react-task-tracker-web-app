@@ -46,9 +46,22 @@ const App = () => {
   // const LOCAL_STORAGE_KEY_SETTINGS = "todoApp.settings";
   // const LOCAL_STORAGE_KEY_THEME = "todoApp.theme";
 
+  const SPECIAL_LIST_ID_ALL_TASKS = -1;
+  const SPECIAL_LIST_ID_UNCATEGORIZED = 0;
+
   const SPECIAL_LISTS: List[] = [
-    { id: -1, name: "All Tasks", color: "black", taskIds: [-1] },
-    { id: 0, name: "Uncategorized", color: "gray", taskIds: [-1] },
+    {
+      id: SPECIAL_LIST_ID_ALL_TASKS,
+      name: "All Tasks",
+      color: "black",
+      taskIds: [-1],
+    },
+    {
+      id: SPECIAL_LIST_ID_UNCATEGORIZED,
+      name: "Uncategorized",
+      color: "gray",
+      taskIds: [-1],
+    },
   ];
 
   const dummyTask: Task = {
@@ -163,7 +176,13 @@ const App = () => {
   };
 
   const deleteList = (listId: number) => {
-    if (listId == -1 || listId == 0) return; // don't allow deleting "All Tasks" or "Uncategorized" lists
+    if (
+      listId === SPECIAL_LIST_ID_ALL_TASKS ||
+      listId === SPECIAL_LIST_ID_UNCATEGORIZED
+    )
+      return;
+    const deletedList = lists.find((list: List) => list.id === listId);
+    if (!deletedList) return;
 
     // Deselect list if it's deleted
     if (selectedList.id === listId) {
@@ -171,40 +190,82 @@ const App = () => {
       setSelectedTask(tasks[0]); // Select the first task in tasks array
     }
 
-    // Update tasks to remove the deleted list from them
-    let numUncategorizedTasks = 0;
-    const updatedTasks = tasks.map((task) => {
-      if (task.listId === listId) {
-        numUncategorizedTasks++;
-        return {
-          ...task,
-          listId: 0,
-        };
-      }
-      return task;
-    });
-
+    // Update tasks to remove the deleted list from them and assign their list ID as Uncategorized
+    const updatedTasks = tasks.map((task) =>
+      task.listId === deletedList.id
+        ? { ...task, listId: SPECIAL_LIST_ID_UNCATEGORIZED }
+        : task
+    );
     setTasks(updatedTasks);
 
-    changeListCount(0, numUncategorizedTasks, false); // Increment the count of the "Uncategorized" list
+    // Move tasks over to uncategorized list
+    addTasksToList(0, deletedList.taskIds, false);
 
-    setLists((prevLists) => {
-      const updatedLists = prevLists.filter((list) => list.id !== listId);
-      return updatedLists;
-    });
+    setLists((prevLists) =>
+      prevLists.filter((list: List) => list.id !== listId)
+    );
   };
 
-  // Pass in a negative number to decrement the count
-  const changeListCount = (
+  const addTasksToList = (
     listId: number,
-    numListsAdded: number,
+    taskIds: number[],
     changeAllTasksList: boolean = true
   ) => {
+    console.log("listId", listId);
+    console.log("taskIds", taskIds);
     const updatedLists: List[] = lists.map((list: List) => {
       if (list.id === listId || (list.id === -1 && changeAllTasksList)) {
         return {
           ...list,
-          count: list.taskIds.length + numListsAdded,
+          taskIds: [...list.taskIds, ...taskIds],
+        };
+      }
+      return list;
+    });
+    setLists(updatedLists);
+  };
+
+  const removeTasksFromList = (
+    listId: number,
+    taskIds: number[],
+    changeAllTasksList: boolean = true
+  ) => {
+    console.log("listId", listId);
+    console.log("taskIds", taskIds);
+    const updatedLists: List[] = lists.map((list: List) => {
+      if (
+        list.id === listId ||
+        (changeAllTasksList && list.id === SPECIAL_LIST_ID_ALL_TASKS)
+      ) {
+        return {
+          ...list,
+          taskIds: list.taskIds.filter(
+            (taskId: number) => !taskIds.includes(taskId)
+          ),
+        };
+      }
+      return list;
+    });
+    setLists(updatedLists);
+  };
+
+  const moveTasksBetweenLists = (
+    oldListId: number,
+    newListId: number,
+    taskIds: number[]
+  ) => {
+    const updatedLists: List[] = lists.map((list: List) => {
+      if (list.id === oldListId) {
+        return {
+          ...list,
+          taskIds: list.taskIds.filter(
+            (taskId: number) => !taskIds.includes(taskId)
+          ),
+        };
+      } else if (list.id === newListId) {
+        return {
+          ...list,
+          taskIds: [...list.taskIds, ...taskIds],
         };
       }
       return list;
@@ -246,12 +307,15 @@ const App = () => {
   const deleteTask = (taskId: number) => {
     const taskToDelete = tasks.find((task: Task) => task.id === taskId);
     if (!taskToDelete) return;
-    changeListCount(taskToDelete.listId, -1); // Decrement the count of the list
 
+    removeTasksFromList(taskToDelete.listId, [taskId]);
     setTasks(tasks.filter((task: Task) => task.id !== taskId));
+
     // Deselect task if it's deleted
     if (selectedTask && selectedTask.id === taskId) {
-      setSelectedTask(tasks.length > 0 ? tasks[0] : undefined);
+      // Have to check and see if tasks.length > 1 here because it takes a second for tasks to be updated to show its correct length
+      setSelectedTask(tasks.length > 1 ? tasks[0] : undefined);
+
       // TODO - make it so when a task is deleted, next one in list is selected. Above line of code can be commented out once solution below works.
       // TODO - make it so if a task is the last one in a list and it's deleted, the task is reset and user is brought to add mode on that list.
       //const taskList = lists.find((list) => list.id === taskListId);
@@ -262,7 +326,7 @@ const App = () => {
   const addTask = (newTask: Task) => {
     if (!newTask) return; // Prevent adding empty tasks
     setTasks([...tasks, newTask]);
-    changeListCount(newTask.listId, 1); // Increment the count of the list
+    addTasksToList(newTask.listId, [newTask.id]);
     const listForNewTask = lists.find(
       (list: List) => list.id === newTask.listId
     );
@@ -295,8 +359,9 @@ const App = () => {
     setTasks(updatedTasks);
     setSelectedTask(editedTask);
     if (editedTask.listId !== formerTask.listId) {
-      changeListCount(editedTask.listId, 1); // Increment the count of the new list
-      changeListCount(formerTask.listId, -1); // Decrement the count of the old list
+      moveTasksBetweenLists(formerTask.listId, editedTask.listId, [
+        editedTask.id,
+      ]);
     }
   };
 
@@ -346,7 +411,7 @@ const App = () => {
   const ripple = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.currentTarget;
     const ripple = target.querySelector(".ripple");
-    if (!(ripple instanceof HTMLDivElement)) {
+    if (!(ripple instanceof HTMLSpanElement)) {
       console.warn("Ripple not found or not an HTMLDivElement");
       return;
     }
@@ -364,13 +429,6 @@ const App = () => {
     ripple.classList.remove("ripple-animate");
     void ripple.offsetWidth; // reflow to restart animation
     ripple.classList.add("ripple-animate");
-
-    console.log("x", x);
-    console.log("y", y);
-    console.log("e.clientX", e.clientX);
-    console.log("e.clientY", e.clientY);
-    console.log("rect.left", rect.left);
-    console.log("rect.top", rect.top);
   };
 
   /* End front-end effects */
