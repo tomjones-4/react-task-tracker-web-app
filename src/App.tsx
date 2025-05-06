@@ -13,7 +13,6 @@ import { List, Task, Tag } from "./types";
 
 /* Medium Priority */
 // Add authentication - require a user to login. This will require Supabase.
-// Make it so when a list is deleted, the next list in the menu is highlighted rather than the first one
 // Make it so when a user switches between lists, the selected task is the same per list. This might use logic similar to scroll positions.
 // I think the above 3 tasks all require keeping track of the task ids in each list, which will be a bit of a refactor. I can get rid of the count property, but I'll need to add a taskIds of type int[] to each list.
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
@@ -181,12 +180,35 @@ const App = () => {
     )
       return;
     const deletedList = lists.find((list: List) => list.id === listId);
-    if (!deletedList) return;
+    if (!deletedList) {
+      console.warn("No list found to delete");
+      return;
+    }
 
     // Deselect list if it's deleted
     if (selectedList.id === listId) {
       changeSelectedList(lists[0]); // Select the first list in the updated lists array
       setSelectedTask(tasks[0]); // Select the first task in tasks array
+    }
+
+    // Select new list if selected list is deleted
+    if (selectedList.id === listId) {
+      const indexInList = lists.indexOf(deletedList);
+      if (indexInList === -1) {
+        console.warn("No position in list found when deleting list");
+        return;
+      }
+
+      if (lists.length <= 1) {
+        resetTask();
+      } else {
+        const listToSelect = lists[indexInList + 1];
+        if (!listToSelect) {
+          console.warn("No list found when looking to select new list");
+          return;
+        }
+        setSelectedList(listToSelect);
+      }
     }
 
     // Update tasks to remove the deleted list from them and assign their list ID as Uncategorized
@@ -338,7 +360,6 @@ const App = () => {
           console.warn("No task found when looking to select new task");
           return;
         }
-        console.log("taskToSelect.title", taskToSelect.title);
         setSelectedTask(taskToSelect);
       }
     }
