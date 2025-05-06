@@ -2,7 +2,8 @@ import "./App.css";
 import Menu from "./components/Menu.jsx";
 import MainView from "./components/MainView.jsx";
 import TaskView from "./components/TaskView.jsx";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { List, Task, Tag } from "./types";
 
 // TODO
 
@@ -37,91 +38,132 @@ import { useState, useEffect, useRef } from "react";
 const App = () => {
   /* Begin Constants */
 
+  const LOCAL_STORAGE_KEY_LISTS = "todoApp.lists";
   const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";
   const LOCAL_STORAGE_KEY_TAGS = "todoApp.tags";
-  const LOCAL_STORAGE_KEY_LISTS = "todoApp.lists";
+
   // const LOCAL_STORAGE_KEY_SETTINGS = "todoApp.settings";
   // const LOCAL_STORAGE_KEY_THEME = "todoApp.theme";
 
-  const SPECIAL_LISTS = [
-    { id: -1, name: "All Tasks", color: "black", count: 1 },
-    { id: 0, name: "Uncategorized", color: "gray", count: 1 },
+  const SPECIAL_LISTS: List[] = [
+    { id: -1, name: "All Tasks", color: "black", taskIds: [-1] },
+    { id: 0, name: "Uncategorized", color: "gray", taskIds: [-1] },
   ];
 
-  const dummyTask = {
-    id: Date.now(),
+  const dummyTask: Task = {
+    id: -1,
     completed: false,
     title: "Tend to the garden",
     description: "Water the plants and remove weeds",
     listId: 0,
-    dueDate: "",
+    dueDate: undefined,
     tagIds: [],
   };
 
   /* End Constants */
 
+  /* Begin Specific Types */
+
+  interface TaskFormRef {
+    focusTitleInput: () => void;
+  }
+
+  interface SearchInputRef {
+    focusSearchInput: () => void;
+  }
+
+  /* End Specific Types */
+
   /* Begin State Variables */
 
-  // Uncomment below lines and then refresh page to reset tags, tasks, and lists. This is helpful when the structures of these objects change, since it can cause errors.
-  // When uncommenting this line, comment out the blocks below it that sets the tasks, tags, and lists based on localStorage.
+  // Uncomment below lines and then refresh page to reset lists, tasks, and tags. This is helpful when the structures of these objects change, since it can cause errors.
+  // When uncommenting this line, comment out the blocks below it that sets the lists, tasks, and tags based on localStorage.
 
-  // const [tags, setTags] = useState([]);
-  // const [tasks, setTasks] = useState([dummyTask]);
   // const [lists, setLists] = useState(SPECIAL_LISTS);
+  // const [tasks, setTasks] = useState([dummyTask]);
+  // const [tags, setTags] = useState([]);
 
-  const [tags, setTags] = useState(() => {
-    const storedTags = localStorage.getItem(LOCAL_STORAGE_KEY_TAGS);
-    return storedTags ? JSON.parse(storedTags) : []; // Load from localStorage or default to []
-  });
+  const [lists, setLists] = useState<List[]>(() => {
+    const stored = localStorage.getItem(LOCAL_STORAGE_KEY_LISTS);
+    let storedLists: List[] = [];
 
-  const [tasks, setTasks] = useState(() => {
-    const storedTasks = localStorage.getItem(LOCAL_STORAGE_KEY_TASKS);
-    return storedTasks ? JSON.parse(storedTasks) : []; // Load from localStorage or default to []
-  });
-
-  const [lists, setLists] = useState(() => {
-    let storedLists = localStorage.getItem(LOCAL_STORAGE_KEY_LISTS);
-    storedLists = storedLists ? JSON.parse(storedLists) : []; // Load from localStorage or default to []
+    if (stored) {
+      try {
+        storedLists = JSON.parse(stored) as List[];
+      } catch (e) {
+        console.error("Failed to parse stored lists:", e);
+      }
+    }
 
     // Check if special lists are already in storedLists
     const specialListIds = SPECIAL_LISTS.map((list) => list.id);
     const hasSpecialLists = storedLists.some((list) =>
       specialListIds.includes(list.id)
     );
+
     if (!hasSpecialLists) {
-      return [...SPECIAL_LISTS, ...storedLists]; // Add special lists to the beginning
+      return [...SPECIAL_LISTS, ...storedLists];
     } else {
-      // If special lists are already in storedLists, just return storedLists
       return storedLists;
     }
   });
 
-  const [selectedList, setSelectedList] = useState(lists[0]);
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    const stored = localStorage.getItem(LOCAL_STORAGE_KEY_TASKS);
+    let storedTasks: Task[] = [];
 
-  const [selectedTask, setSelectedTask] = useState(
-    tasks.find((task) => task.id == selectedList.id) || tasks[0]
+    if (stored) {
+      try {
+        storedTasks = JSON.parse(stored) as Task[];
+      } catch (e) {
+        console.error("Failed to parse stored tasks:", e);
+      }
+    }
+    return storedTasks;
+  });
+
+  const [tags, setTags] = useState<Tag[]>(() => {
+    const stored = localStorage.getItem(LOCAL_STORAGE_KEY_TAGS);
+    let storedTags: Tag[] = [];
+
+    if (stored) {
+      try {
+        storedTags = JSON.parse(stored) as Tag[];
+      } catch (e) {
+        console.error("Failed to parse stored tags:", e);
+      }
+    }
+    return storedTags;
+  });
+
+  const [selectedList, setSelectedList] = useState<List | undefined>(lists[0]);
+
+  const [selectedTask, setSelectedTask] = useState<Task | undefined>(
+    selectedList
+      ? tasks.find((task) => task.id === selectedList.id) || tasks[0]
+      : undefined
   );
 
-  const [isAddMode, setIsAddMode] = useState(true);
+  const [isAddMode, setIsAddMode] = useState<boolean>(true);
 
   /* End State Variables */
 
   /* Begin Refs */
 
-  const taskFormRef = useRef(null);
-  const searchInputRef = useRef(null);
+  const taskFormRef = useRef<TaskFormRef>(null);
+  const searchInputRef = useRef<SearchInputRef>(null);
 
   /* End Refs */
 
   /* Begin Functions */
 
-  const addList = (newList) => {
+  const addList = (newList: List) => {
     setLists([...lists.slice(0, -1), newList, lists[lists.length - 1]]); // Add the new list before the last element (Uncategorized)
     setSelectedList(newList); // Select the newly added list
     resetTask(newList.id); // Reset the task view to add a new task
   };
 
-  const deleteList = (listId) => {
+  const deleteList = (listId: number) => {
     if (listId == -1 || listId == 0) return; // don't allow deleting "All Tasks" or "Uncategorized" lists
 
     // Deselect list if it's deleted
@@ -133,7 +175,7 @@ const App = () => {
     // Update tasks to remove the deleted list from them
     let numUncategorizedTasks = 0;
     const updatedTasks = tasks.map((task) => {
-      if (task.listId == listId) {
+      if (task.listId === listId) {
         numUncategorizedTasks++;
         return {
           ...task,
@@ -148,22 +190,22 @@ const App = () => {
     changeListCount(0, numUncategorizedTasks, false); // Increment the count of the "Uncategorized" list
 
     setLists((prevLists) => {
-      const updatedLists = prevLists.filter((list) => list.id != listId);
+      const updatedLists = prevLists.filter((list) => list.id !== listId);
       return updatedLists;
     });
   };
 
   // Pass in a negative number to decrement the count
   const changeListCount = (
-    listId,
-    numListsAdded,
-    changeAllTasksList = true
+    listId: number,
+    numListsAdded: number,
+    changeAllTasksList: boolean = true
   ) => {
-    const updatedLists = lists.map((list) => {
+    const updatedLists: List[] = lists.map((list: List) => {
       if (list.id === listId || (list.id === -1 && changeAllTasksList)) {
         return {
           ...list,
-          count: list.count + numListsAdded,
+          count: list.taskIds.length + numListsAdded,
         };
       }
       return list;
@@ -171,45 +213,46 @@ const App = () => {
     setLists(updatedLists);
   };
 
-  const changeSelectedList = (list) => {
+  const changeSelectedList = (list: List) => {
     setSelectedList(list);
-    if (list.count == 0) {
+    if (list.taskIds.length === 0) {
       resetTask(list.id);
     } else {
       setSelectedTask(
-        // find first task where listId matches selected list id or if listId is 0 (which means "All Tasks"), select the first task
-        tasks.find((task) => task.listId == list.id || list.id == -1)
+        tasks.find((task) => task.listId === list.id || list.id === -1) // find first task where listId matches selected list id or if listId is 0 (which means "All Tasks"), select the first task
       );
+
       setIsAddMode(false);
     }
   };
 
-  const addTag = (newTag) => {
+  const addTag = (newTag: Tag) => {
     setTags([...tags, newTag]);
   };
 
-  const deleteTag = (tagId) => {
+  const deleteTag = (tagId: number) => {
     // Remove the tag from all tasks that have it
-    const updatedTasks = tasks.map((task) => {
+    const updatedTasks = tasks.map((task: Task) => {
       return {
         ...task,
-        tagIds: task.tagIds.filter((id) => id != tagId),
+        tagIds: task.tagIds.filter((id: number) => id != tagId),
       };
     });
     setTasks(updatedTasks);
 
-    const updatedTags = tags.filter((tag) => tag.id !== tagId);
+    const updatedTags = tags.filter((tag: Tag) => tag.id !== tagId);
     setTags(updatedTags);
   };
 
-  const deleteTask = (taskId) => {
-    const taskListId = tasks.find((task) => task.id === taskId).listId;
-    changeListCount(taskListId, -1); // Decrement the count of the list
+  const deleteTask = (taskId: number) => {
+    const taskToDelete = tasks.find((task: Task) => task.id === taskId);
+    if (!taskToDelete) return;
+    changeListCount(taskToDelete.listId, -1); // Decrement the count of the list
 
-    setTasks(tasks.filter((task) => task.id !== taskId));
+    setTasks(tasks.filter((task: Task) => task.id !== taskId));
     // Deselect task if it's deleted
     if (selectedTask && selectedTask.id === taskId) {
-      setSelectedTask(tasks.length > 0 ? tasks[0] : null);
+      setSelectedTask(tasks.length > 0 ? tasks[0] : undefined);
       // TODO - make it so when a task is deleted, next one in list is selected. Above line of code can be commented out once solution below works.
       // TODO - make it so if a task is the last one in a list and it's deleted, the task is reset and user is brought to add mode on that list.
       //const taskList = lists.find((list) => list.id === taskListId);
@@ -217,17 +260,26 @@ const App = () => {
     }
   };
 
-  const addTask = (newTask) => {
+  const addTask = (newTask: Task) => {
     if (!newTask) return; // Prevent adding empty tasks
     setTasks([...tasks, newTask]);
     changeListCount(newTask.listId, 1); // Increment the count of the list
-    changeSelectedList(lists.find((list) => list.id === newTask.listId)); // Select the newly added task's list
+    const listForNewTask = lists.find(
+      (list: List) => list.id === newTask.listId
+    );
+    if (listForNewTask) {
+      changeSelectedList(listForNewTask); // Select the newly added task's list
+    }
     setIsAddMode(false);
     setSelectedTask(newTask); // Select the newly added task
   };
 
-  const editTask = (editedTask) => {
-    const formerListId = tasks.find((task) => task.id === editedTask.id).listId;
+  const editTask = (editedTask: Task) => {
+    const formerTask = tasks.find((task) => task.id === editedTask.id);
+    if (!formerTask) {
+      console.error("No task found in editTask method");
+      return;
+    }
     const updatedTasks = tasks.map((task) => {
       if (task.id === editedTask.id) {
         return {
@@ -243,36 +295,37 @@ const App = () => {
     });
     setTasks(updatedTasks);
     setSelectedTask(editedTask);
-    if (editedTask.listId !== formerListId) {
+    if (editedTask.listId !== formerTask.listId) {
       changeListCount(editedTask.listId, 1); // Increment the count of the new list
-      changeListCount(formerListId, -1); // Decrement the count of the old list
+      changeListCount(formerTask.listId, -1); // Decrement the count of the old list
     }
   };
 
-  const resetTask = (newListId = selectedList.id) => {
-    const newTask = {
+  const resetTask = (
+    newListId: number = selectedList ? selectedList.id : 0
+  ) => {
+    const newTask: Task = {
       id: Date.now(),
       completed: false,
       title: "",
       description: "",
-      // listId: 0,
       listId: newListId, // Set the listId to the currently selected list
-      dueDate: "",
+      dueDate: undefined,
       tagIds: [],
     };
     setSelectedTask(newTask);
     setIsAddMode(true);
   };
 
-  const handleStartNewTask = (e) => {
+  const handleStartNewTask = (e: React.MouseEvent<HTMLDivElement>) => {
     ripple(e);
     resetTask();
     taskFormRef.current?.focusTitleInput(); // Focus the title input
   };
 
-  const toggleCompleted = (taskId) => {
+  const toggleCompleted = (taskId: number) => {
     setTasks(
-      tasks.map((task) => {
+      tasks.map((task: Task) => {
         if (task.id === taskId) {
           return { ...task, completed: !task.completed };
         } else {
@@ -282,8 +335,8 @@ const App = () => {
     );
   };
 
-  const getTasksByListId = (listId) => {
-    if (listId == -1) {
+  const getTasksByListId = (listId: number) => {
+    if (listId === -1) {
       return tasks; // Return all tasks for "All Tasks" list
     }
     return tasks.filter((task) => task.listId === listId);
@@ -293,10 +346,13 @@ const App = () => {
 
   /* Begin front-end effects */
 
-  const ripple = (e) => {
-    //const ripple = (e: React.MouseEvent<HTMLDivElement>) => {
+  const ripple = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.currentTarget;
     const ripple = target.querySelector(".ripple");
+    if (!(ripple instanceof HTMLDivElement)) {
+      console.warn("Ripple not found or not an HTMLDivElement");
+      return;
+    }
 
     // Get click coordinates relative to the target element
     const rect = target.getBoundingClientRect();
@@ -358,12 +414,15 @@ const App = () => {
   }, [lists]);
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "/") {
-        const tag = e.target.tagName.toLowerCase();
-        const isEditable = e.target.isContentEditable;
-
-        if (tag === "input" || tag === "textarea" || isEditable) {
+        const target = e.target as HTMLElement | null;
+        if (
+          target &&
+          (target.tagName.toLowerCase() === "input" ||
+            target.tagName.toLowerCase() === "textarea" ||
+            target.isContentEditable)
+        ) {
           // Don't trigger shortcut if focused on input, textarea, or contenteditable
           return;
         }
@@ -408,15 +467,15 @@ const App = () => {
         addList={addList}
         deleteList={deleteList}
         changeSelectedList={changeSelectedList}
-        selectedListId={selectedList.id}
+        selectedListId={selectedList ? selectedList.id : -1}
         ripple={ripple}
         ref={searchInputRef}
       />
       <MainView
         selectedList={selectedList}
-        tasks={getTasksByListId(selectedList.id)}
+        tasks={getTasksByListId(selectedList ? selectedList.id : -1)}
         setTasks={setTasks}
-        selectedTaskId={selectedTask.id}
+        selectedTaskId={selectedTask?.id}
         deleteTask={deleteTask}
         toggleCompleted={toggleCompleted}
         setSelectedTask={setSelectedTask}
@@ -426,7 +485,7 @@ const App = () => {
         ripple={ripple}
       />
       <TaskView
-        selectedListId={selectedList.id === -1 ? 0 : selectedList.id}
+        selectedListId={selectedList?.id === -1 ? 0 : selectedList?.id}
         selectedTask={selectedTask}
         lists={lists}
         tags={tags}

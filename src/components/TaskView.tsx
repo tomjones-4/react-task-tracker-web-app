@@ -4,8 +4,8 @@ import { useState, useEffect, forwardRef } from "react";
 import { List, Task, Tag } from "../types";
 
 type TaskViewProps = {
-  selectedListId: number;
-  selectedTask: Task;
+  selectedListId: number | undefined;
+  selectedTask: Task | undefined;
   lists: List[];
   tags: Tag[];
   deleteTask: (taskId: number) => void;

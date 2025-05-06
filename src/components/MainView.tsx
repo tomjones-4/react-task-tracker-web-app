@@ -3,15 +3,15 @@ import TaskList from "./TaskList";
 import { List, Task } from "../types";
 
 type MainViewProps = {
-  selectedList: List;
+  selectedList: List | undefined;
   tasks: Task[];
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
-  selectedTaskId: number;
+  selectedTaskId: number | undefined;
   deleteTask: (taskId: number) => void;
   toggleCompleted: (taskId: number) => void;
-  setSelectedTask: React.Dispatch<React.SetStateAction<Task>>;
+  setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>;
   handleStartNewTask: (e: React.MouseEvent<HTMLDivElement>) => void;
-  selectedTaskForDebug: Task;
+  selectedTaskForDebug: Task | undefined;
   setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
