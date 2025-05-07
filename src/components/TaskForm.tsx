@@ -62,12 +62,11 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
 
     useEffect(() => {
       if (selectedTask) {
-        // TODO - might be able to remove the || and filler values for most of these below
-        setTaskTitle(selectedTask.title || "");
-        setTaskDescription(selectedTask.description || "");
-        setTaskListId(selectedListId || 0);
-        setTaskDueDate(selectedTask.dueDate || null);
-        setTaskTagIds(selectedTask.tagIds || []);
+        setTaskTitle(selectedTask.title);
+        setTaskDescription(selectedTask.description);
+        setTaskListId(selectedListId);
+        setTaskDueDate(selectedTask.dueDate);
+        setTaskTagIds(selectedTask.tagIds);
       }
     }, [selectedTask]);
 

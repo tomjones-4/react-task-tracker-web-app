@@ -17,20 +17,16 @@ import { List, Task, Tag } from "./types";
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
 // Add a tag filter when "All tasks" is selected in the sidebar
-// Fix error where clicking outside of lists modal on task form doesn't close it. See commits because I tried to fix this earlier and changed some z-indexes.
 // Fix the UX when a user adds a bunch of tags. It looks gross on the task form.
 // When the modal shrinks it doesn't show all the content.
 /* End Medium Priority */
 
 /* Low Priority */
-// Show some info that user is unable to delete All Tasks and Uncategorized lists. Currently it just shows the normal delete list modal.
-// See TODO in TaskForm.tsx for potentially removing some filler values after ||'s
 // Consider adding a reset task button on the task form.
 // Have the lists show up in a different way from the tags. Refactor whatever logic is shared between lists and tags modals
 // Consider using Headless UI for the modal and dropdown components. This would make it easier to style them and make them more accessible.
 // Use highlights to show tasks that are getting old or are due urgently.
-// Allow users to take advantage of keyboard shortcuts like "Enter" to submit a task, "/" to search, and "Esc" to clear inputs or exit modes.
-// The grid of preset colors should resize when screen size changes. The number of rows/columns in the grid should change.
+// Allow users to take advantage of keyboard shortcuts like "Esc" to clear inputs or exit modes.
 
 /* End Low Priority */
 

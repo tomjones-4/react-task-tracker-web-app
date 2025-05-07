@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { FaPlus } from "react-icons/fa";
 import { useState } from "react";
 import ListModal from "./ListModal";

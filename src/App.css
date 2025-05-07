@@ -24,6 +24,7 @@ input[type="text"] {
 .menu-container {
   display: flex;
   flex-direction: column;
+  flex: 1;
   position: fixed;
   top: 12px;
   left: 12px;
@@ -196,8 +197,13 @@ input[type="text"] {
   }
 }
 
+.delete-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .delete-list .title {
-  margin: 0 0 8px;
+  margin: 0px;
   font-weight: 600;
 }
 
@@ -331,10 +337,10 @@ input[type="text"] {
 
 .swatch-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(2rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(1.5rem, 1fr));
   gap: 1rem;
   margin-bottom: 0.5rem;
-  max-width: 12rem;
+  width: 100%;
 }
 
 .color-swatch {
@@ -427,7 +433,6 @@ input[type="text"] {
   flex-grow: 1;
   width: calc(100% - 850px); /* Adjust for menu and task view */
   height: 100vh; /* Full height */
-  flex-grow: 1;
   box-sizing: border-box;
 }
 
@@ -735,7 +740,7 @@ textarea {
   padding: 20px;
   border-radius: 8px;
   width: 100%;
-  max-width: 300px;
+  max-width: 400px;
   position: relative;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   transition: max-height 0.3s ease, padding 0.3s ease;
