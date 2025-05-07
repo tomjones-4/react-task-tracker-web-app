@@ -61,7 +61,7 @@ const ListModal: React.FC<ListModalProps> = ({
         (list) => list.name.toLowerCase() == trimmedListName.toLowerCase()
       )
     ) {
-      showError("A list with this name already exists.");
+      showError("A list with this name already exists: ");
       return;
     }
 
@@ -106,6 +106,7 @@ const ListModal: React.FC<ListModalProps> = ({
                     e.preventDefault();
                     if (list.id === -1 || list.id === 0) {
                       setListToDelete(undefined);
+                      setError("");
                       setInfo({
                         list: list.name,
                         message: "list cannot be deleted.",
@@ -131,24 +132,29 @@ const ListModal: React.FC<ListModalProps> = ({
             type="text"
             placeholder="New list name"
             value={newListName}
-            onChange={(e) => setNewListName(e.target.value)}
-            // className={`new-list-name ${error ? "error" : ""}`}
-            className="list-name-input"
+            onChange={(e) => {
+              setNewListName(e.target.value);
+              setError("");
+            }}
+            className={`list-name-input ${error ? "error" : ""}`}
           />
-
-          <ColorPickerWithPresets
-            color="blue"
-            onChange={() => console.log("test")}
-          />
+          <ColorPickerWithPresets color="" onChange={(e) => setColor(e)} />
         </div>
         <div className="new-list-button">
-          <button className="add-button" onClick={handleAddList}>
+          <button
+            className="add-button"
+            onClick={(e) => {
+              setInfo({ list: "", message: "" });
+              handleAddList(e);
+            }}
+          >
             Add
           </button>
           <button onClick={() => console.log(getRandomPastelColor())}>
             Color generator
           </button>
         </div>
+
         {info.message && (
           <div className="info-message" role="alert">
             <svg
@@ -171,7 +177,7 @@ const ListModal: React.FC<ListModalProps> = ({
               </p>
             </span>
             <button
-              className="info-dismiss"
+              className="info dismiss"
               aria-label="Dismiss message"
               onClick={() => setInfo({ list: "", message: "" })}
             >
@@ -194,7 +200,39 @@ const ListModal: React.FC<ListModalProps> = ({
             </button>
           </div>
         )}
-        {error && <div className="error-message">{error}</div>}
+
+        {error && (
+          <div className="error-message" role="alert">
+            <span className="error-text">
+              <p>
+                {error} <strong>{newListName}</strong>
+              </p>
+            </span>
+            <button
+              className="error dismiss"
+              aria-label="Dismiss message"
+              onClick={() => setError("")}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="dismiss-icon"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M18 6L6 18M6 6l12 12"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        )}
+
         {listToDelete && (
           // <div className="mt-4 p-4 bg-red-50 border border-red-300 rounded-lg animate-slide-up">
           <div className="error-message delete-list">
