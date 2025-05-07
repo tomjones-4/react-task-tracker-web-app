@@ -732,9 +732,10 @@ textarea {
 
 .modal-content {
   background: white;
-  padding: 24px;
+  padding: 20px;
   border-radius: 8px;
-  width: 25vw;
+  width: 100%;
+  max-width: 300px;
   position: relative;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   transition: max-height 0.3s ease, padding 0.3s ease;
@@ -863,8 +864,7 @@ textarea {
   line-height: 1;
 }
 
-.modal-content.wiggle,
-.task-form.wiggle {
+.wiggle {
   animation: wiggle 0.4s ease;
 }
 

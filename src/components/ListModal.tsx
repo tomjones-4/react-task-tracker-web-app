@@ -22,6 +22,7 @@ interface ListModalProps {
   addList: (newList: List) => void;
   deleteList: (listId: number) => void;
   closeModal: () => void;
+  setWiggle: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ListModal: React.FC<ListModalProps> = ({
@@ -29,6 +30,7 @@ const ListModal: React.FC<ListModalProps> = ({
   addList,
   deleteList,
   closeModal,
+  setWiggle,
 }) => {
   const [newListName, setNewListName] = useState<string>("");
   const [color, setColor] = useState<string>("");
@@ -43,7 +45,6 @@ const ListModal: React.FC<ListModalProps> = ({
     message: "",
   });
   const [error, setError] = useState<string>("");
-  const [wiggle, setWiggle] = useState<boolean>(false);
   const [listToDelete, setListToDelete] = useState<List | undefined>();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -75,7 +76,6 @@ const ListModal: React.FC<ListModalProps> = ({
       return;
     }
 
-    //let color = getRandomPastelColor();
     const newList: List = {
       id: Date.now(),
       name: trimmedListName,
@@ -89,187 +89,182 @@ const ListModal: React.FC<ListModalProps> = ({
   };
 
   return (
-    <div className="modal-backdrop" onClick={closeModal}>
-      <div
-        className={`modal-content ${wiggle ? "wiggle" : ""}`}
-        onClick={(e) => e.stopPropagation()} // prevent backdrop close
-      >
-        <button className="close-modal-button" onClick={closeModal}>
-          &times;
-        </button>
-        <h2 className="modal-title">Manage Lists</h2>
+    <>
+      <button className="close-modal-button" onClick={closeModal}>
+        &times;
+      </button>
+      <h2 className="modal-title">Manage Lists</h2>
 
-        <div className="lists">
-          {lists.length > 0 ? (
-            lists.map((list) => (
-              <span
-                key={list.id}
-                className="list"
-                style={{
-                  backgroundColor: list.color,
+      <div className="lists">
+        {lists.length > 0 ? (
+          lists.map((list) => (
+            <span
+              key={list.id}
+              className="list"
+              style={{
+                backgroundColor: list.color,
+              }}
+            >
+              {list.name}
+              <button
+                className="delete-tag-button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (list.id === -1 || list.id === 0) {
+                    setListToDelete(undefined);
+                    setError("");
+                    setInfo({
+                      list: list.name,
+                      message: "list cannot be deleted.",
+                    });
+                  } else {
+                    setInfo({ list: "", message: "" });
+                    setListToDelete(list);
+                  }
                 }}
               >
-                {list.name}
-                <button
-                  className="delete-tag-button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (list.id === -1 || list.id === 0) {
-                      setListToDelete(undefined);
-                      setError("");
-                      setInfo({
-                        list: list.name,
-                        message: "list cannot be deleted.",
-                      });
-                    } else {
-                      setInfo({ list: "", message: "" });
-                      setListToDelete(list);
-                    }
-                  }}
-                >
-                  <FaTrashAlt className="delete-tag-icon" />
-                </button>
-              </span>
-            ))
-          ) : (
-            <p>No lists yet. Add some below!</p>
-          )}
-        </div>
+                <FaTrashAlt className="delete-tag-icon" />
+              </button>
+            </span>
+          ))
+        ) : (
+          <p>No lists yet. Add some below!</p>
+        )}
+      </div>
 
-        <div className="new-list-input">
-          <input
-            ref={inputRef}
-            className={`list-name-input ${error ? "error" : ""}`}
-            type="text"
-            placeholder="New list name"
-            value={newListName}
-            onChange={(e) => {
-              setNewListName(e.target.value);
-              setError("");
-            }}
-          />
-          <ColorPickerWithPresets
-            color={color}
-            setColor={(e) => setColor(e)}
-            presetColors={PRESET_LIST_COLORS}
-          />
-        </div>
-        <div className="add-list-button">
-          <button className="add-button" onClick={handleAddList}>
-            Add
-          </button>
-        </div>
+      <div className="new-list-input">
+        <input
+          ref={inputRef}
+          className={`list-name-input ${error ? "error" : ""}`}
+          type="text"
+          placeholder="New list name"
+          value={newListName}
+          onChange={(e) => {
+            setNewListName(e.target.value);
+            setError("");
+          }}
+        />
+        <ColorPickerWithPresets
+          color={color}
+          setColor={(e) => setColor(e)}
+          presetColors={PRESET_LIST_COLORS}
+        />
+      </div>
+      <div className="add-list-button">
+        <button className="add-button" onClick={handleAddList}>
+          Add
+        </button>
+      </div>
 
-        {info.message && (
-          <div className="info-message" role="alert">
+      {info.message && (
+        <div className="info-message" role="alert">
+          <svg
+            className="info-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 
+       10-4.477 10-10S17.523 2 12 2zm0 3a1.25 1.25 0 1 1 0 2.5 
+       1.25 1.25 0 0 1 0-2.5zm1 14h-2v-2h2v2zm0-4h-2V9h2v6z"
+            />
+          </svg>
+          <span className="info-text">
+            <p>
+              <strong>{info.list}</strong> {info.message}
+            </p>
+          </span>
+          <button
+            className="info dismiss"
+            aria-label="Dismiss message"
+            onClick={() => setInfo({ list: "", message: "" })}
+          >
             <svg
-              className="info-icon"
               xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
+              className="dismiss-icon"
+              width="16"
+              height="16"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
               <path
-                d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 
-             10-4.477 10-10S17.523 2 12 2zm0 3a1.25 1.25 0 1 1 0 2.5 
-             1.25 1.25 0 0 1 0-2.5zm1 14h-2v-2h2v2zm0-4h-2V9h2v6z"
+                d="M18 6L6 18M6 6l12 12"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               />
             </svg>
-            <span className="info-text">
-              <p>
-                <strong>{info.list}</strong> {info.message}
-              </p>
-            </span>
-            <button
-              className="info dismiss"
-              aria-label="Dismiss message"
-              onClick={() => setInfo({ list: "", message: "" })}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="dismiss-icon"
-                width="16"
-                height="16"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M18 6L6 18M6 6l12 12"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </button>
-          </div>
-        )}
+          </button>
+        </div>
+      )}
 
-        {error && (
-          <div className="error-message" role="alert">
-            <span className="error-text">
-              <p>
-                {error} <strong>{newListName}</strong>
-              </p>
-            </span>
-            <button
-              className="error dismiss"
-              aria-label="Dismiss message"
-              onClick={() => setError("")}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="dismiss-icon"
-                width="16"
-                height="16"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M18 6L6 18M6 6l12 12"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </button>
-          </div>
-        )}
-
-        {listToDelete && (
-          <div className="error-message delete-list">
-            <h3 className="title">Delete list "{listToDelete.name}"?</h3>
-            <p className="message">
-              Tasks in this list will be preserved and moved to the{" "}
-              <strong>Uncategorized</strong> list.
+      {error && (
+        <div className="error-message" role="alert">
+          <span className="error-text">
+            <p>
+              {error} <strong>{newListName}</strong>
             </p>
-            <div className="actions">
-              <button
-                onClick={() => {
-                  setListToDelete(undefined);
-                  setError("");
-                }}
-                className="cancel-button"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  deleteList(listToDelete.id);
-                  setListToDelete(undefined);
-                  setError("");
-                }}
-                className="delete-button"
-              >
-                Delete
-              </button>
-            </div>
+          </span>
+          <button
+            className="error dismiss"
+            aria-label="Dismiss message"
+            onClick={() => setError("")}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="dismiss-icon"
+              width="16"
+              height="16"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M18 6L6 18M6 6l12 12"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+      )}
+
+      {listToDelete && (
+        <div className="error-message delete-list">
+          <h3 className="title">Delete list "{listToDelete.name}"?</h3>
+          <p className="message">
+            Tasks in this list will be preserved and moved to the{" "}
+            <strong>Uncategorized</strong> list.
+          </p>
+          <div className="actions">
+            <button
+              onClick={() => {
+                setListToDelete(undefined);
+                setError("");
+              }}
+              className="cancel-button"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => {
+                deleteList(listToDelete.id);
+                setListToDelete(undefined);
+                setError("");
+              }}
+              className="delete-button"
+            >
+              Delete
+            </button>
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 };
 
