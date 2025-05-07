@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { List } from "../types";
 import { FaTrashAlt } from "react-icons/fa";
+import ColorPickerWithPresets from "./ColorPickerWithPresets";
 
 type ListModalProps = {
   lists: List[];
@@ -9,21 +10,19 @@ type ListModalProps = {
   closeModal: () => void;
 };
 
+const getRandomPastelColor = () => {
+  const hue = Math.floor(Math.random() * 360); // any hue
+  return `hsl(${hue}, 70%, 85%)`; // pastel tone
+};
+
 const ListModal: React.FC<ListModalProps> = ({
   lists,
   addList,
   deleteList,
   closeModal,
 }) => {
-  const getRandomPastelColor = () => {
-    const hue = Math.floor(Math.random() * 360); // any hue
-    return `hsl(${hue}, 70%, 85%)`; // pastel tone
-  };
-
   const [newListName, setNewListName] = useState<string>("");
-  const [newListColor, setNewListColor] = useState<string>(
-    getRandomPastelColor()
-  );
+  const [color, setColor] = useState<string>("");
 
   type infoMessage = {
     list: string;
@@ -71,7 +70,7 @@ const ListModal: React.FC<ListModalProps> = ({
       id: Date.now(),
       name: trimmedListName,
       //color: color,
-      color: newListColor,
+      color: color,
       taskIds: [],
     };
     addList(newList);
@@ -126,25 +125,28 @@ const ListModal: React.FC<ListModalProps> = ({
           )}
         </div>
 
-        <div className="new-list-section">
+        <div className="new-list-input">
           <input
             ref={inputRef}
             type="text"
             placeholder="New list name"
             value={newListName}
             onChange={(e) => setNewListName(e.target.value)}
-            className={`new-list-input ${error ? "error" : ""}`}
+            // className={`new-list-name ${error ? "error" : ""}`}
+            className="list-name-input"
           />
-          <input
-            type="color"
-            value={newListColor}
-            onChange={(e) => {
-              console.log("color", newListColor);
-              setNewListColor(e.target.value);
-            }}
+
+          <ColorPickerWithPresets
+            color="blue"
+            onChange={() => console.log("test")}
           />
-          <button className="add-list-button" onClick={handleAddList}>
+        </div>
+        <div className="new-list-button">
+          <button className="add-button" onClick={handleAddList}>
             Add
+          </button>
+          <button onClick={() => console.log(getRandomPastelColor())}>
+            Color generator
           </button>
         </div>
         {info.message && (

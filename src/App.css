@@ -310,16 +310,85 @@
   align-items: center;
 }
 
-.new-list-section {
+.new-list-input {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 8px;
+  width: 100%;
 }
 
-.new-list-input {
-  flex: 1;
+.list-name-input {
   padding: 6px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  width: 40%;
+}
+
+.color-picker-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px 6px 6px;
+  margin: 16px;
+}
+
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(2rem, 1fr));
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  max-width: 12rem;
+}
+
+.color-swatch {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 0 1px #ccc;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.color-swatch:hover {
+  transform: scale(1.3);
+}
+
+.color-swatch.custom {
+  background: linear-gradient(45deg, #e5e5e5, #ccc);
+  font-size: 1.25rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-picker {
+  width: 100%;
+  max-width: 240px;
+  margin-top: 0.5rem;
+}
+
+.new-list-button {
+  display: flex;
+  justify-content: end;
+}
+
+.add-button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 9999px;
+  background-color: #4f46e5;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-button:hover {
+  background-color: #3730a3;
 }
 
 .menu-footer {
@@ -496,7 +565,6 @@
 
 /* Style the input field for new tasks */
 input[type="text"] {
-  width: calc(100% - 22px);
   padding: 10px;
   margin-top: 10px;
   border: 1px solid #ddd;
@@ -525,6 +593,7 @@ textarea {
 .task-form {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 16px;
   padding: 24px;
   background-color: #ffffff;
@@ -548,21 +617,6 @@ textarea {
 .task-form select:focus {
   border-color: #4f46e5; /* Indigo */
   box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
-}
-
-.task-form .add-tag-button {
-  padding: 10px 16px;
-  border: none;
-  border-radius: 9999px;
-  background-color: #4f46e5;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.task-form .add-tag-button:hover {
-  background-color: #3730a3;
 }
 
 .task-form-item {
@@ -698,7 +752,7 @@ textarea {
   background: white;
   padding: 24px;
   border-radius: 8px;
-  width: 300px;
+  width: 20vw;
   position: relative;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   transition: max-height 0.3s ease, padding 0.3s ease;
@@ -743,6 +797,7 @@ textarea {
 
 .new-tag-section {
   display: flex;
+  align-items: center;
   gap: 8px;
 }
 

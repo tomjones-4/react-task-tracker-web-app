@@ -143,7 +143,7 @@ const TagModal: React.FC<TagModalProps> = ({
               setNewTagColor(e.target.value);
             }}
           />
-          <button className="add-tag-button" onClick={handleAddTag}>
+          <button className="add-button" onClick={handleAddTag}>
             Add
           </button>
         </div>

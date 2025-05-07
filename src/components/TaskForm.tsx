@@ -248,7 +248,7 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
                 </span>
               ))}
             <button
-              className="add-tag-button"
+              className="add-button"
               type="button"
               onClick={(e) => {
                 e.preventDefault();
