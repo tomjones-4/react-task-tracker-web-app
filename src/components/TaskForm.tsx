@@ -6,6 +6,7 @@ import {
   useImperativeHandle,
 } from "react";
 import TagModal from "./TagModal";
+import Modal from "./Modal";
 import TaskFormButtons from "./TaskFormButtons";
 import { List, Task, Tag } from "../types";
 import DatePicker from "react-datepicker";
@@ -259,14 +260,17 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
             </button>
           </span>
           {isTagModalOpen && (
-            <TagModal
-              tags={tags}
-              addTag={addTag}
-              deleteTag={deleteTag}
-              addTaskTag={addTaskTag}
-              taskTagIds={taskTagIds}
-              closeModal={closeModal}
-            />
+            <Modal closeModal={closeModal} wiggle={wiggle}>
+              <TagModal
+                tags={tags}
+                addTag={addTag}
+                deleteTag={deleteTag}
+                addTaskTag={addTaskTag}
+                taskTagIds={taskTagIds}
+                closeModal={closeModal}
+                setWiggle={setWiggle}
+              />
+            </Modal>
           )}
         </span>
         <TaskFormButtons

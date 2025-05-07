@@ -23,6 +23,7 @@ interface TagModalProps {
   addTaskTag: (newTaskTagId: number) => void;
   taskTagIds: number[];
   closeModal: () => void;
+  setWiggle: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const TagModal: React.FC<TagModalProps> = ({
@@ -32,11 +33,11 @@ const TagModal: React.FC<TagModalProps> = ({
   addTaskTag,
   taskTagIds,
   closeModal,
+  setWiggle,
 }) => {
   const [newTagName, setNewTagName] = useState<string>("");
   const [color, setColor] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const [wiggle, setWiggle] = useState<boolean>(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -86,70 +87,63 @@ const TagModal: React.FC<TagModalProps> = ({
   };
 
   return (
-    <div className="modal-backdrop" onClick={closeModal}>
-      <div
-        className={`modal-content ${wiggle ? "wiggle" : ""}`}
-        onClick={(e) => e.stopPropagation()} // prevent backdrop close
-      >
-        <button className="close-modal-button" onClick={closeModal}>
-          &times;
-        </button>
-        <h2 className="modal-title">Manage Tags</h2>
+    <>
+      <button className="close-modal-button" onClick={closeModal}>
+        &times;
+      </button>
+      <h2 className="modal-title">Manage Tags</h2>
 
-        <div className="tags">
-          {tags.length > 0 ? (
-            tags.map((tag) => (
-              <span
-                key={tag.id}
-                className={`tag ${
-                  taskTagIds.includes(tag.id) ? "selected" : ""
-                }`}
-                style={{
-                  backgroundColor: tag.color,
+      <div className="tags">
+        {tags.length > 0 ? (
+          tags.map((tag) => (
+            <span
+              key={tag.id}
+              className={`tag ${taskTagIds.includes(tag.id) ? "selected" : ""}`}
+              style={{
+                backgroundColor: tag.color,
+              }}
+              onClick={(e) => handleAddTaskTag(e, tag.id)}
+            >
+              {tag.name}
+              <button
+                className="delete-tag-button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation(); // prevent tag click event from firing
+                  deleteTag(tag.id);
                 }}
-                onClick={(e) => handleAddTaskTag(e, tag.id)}
               >
-                {tag.name}
-                <button
-                  className="delete-tag-button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation(); // prevent tag click event from firing
-                    deleteTag(tag.id);
-                  }}
-                >
-                  <FaTrashAlt className="delete-tag-icon" />
-                </button>
-              </span>
-            ))
-          ) : (
-            <p>No tags yet. Add some below!</p>
-          )}
-        </div>
-
-        <div className="new-tag-input">
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder="New tag name"
-            value={newTagName}
-            onChange={(e) => setNewTagName(e.target.value)}
-            className="tag-name-input"
-          />
-          <ColorPickerWithPresets
-            color={color}
-            setColor={(e) => setColor(e)}
-            presetColors={PRESET_TAG_COLORS}
-          />
-        </div>
-        <div className="add-tag-button">
-          <button className="add-button" onClick={handleAddTag}>
-            Add
-          </button>
-        </div>
-        {error && <div className="error-message">{error}</div>}
+                <FaTrashAlt className="delete-tag-icon" />
+              </button>
+            </span>
+          ))
+        ) : (
+          <p>No tags yet. Add some below!</p>
+        )}
       </div>
-    </div>
+
+      <div className="new-tag-input">
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder="New tag name"
+          value={newTagName}
+          onChange={(e) => setNewTagName(e.target.value)}
+          className="tag-name-input"
+        />
+        <ColorPickerWithPresets
+          color={color}
+          setColor={(e) => setColor(e)}
+          presetColors={PRESET_TAG_COLORS}
+        />
+      </div>
+      <div className="add-tag-button">
+        <button className="add-button" onClick={handleAddTag}>
+          Add
+        </button>
+      </div>
+      {error && <div className="error-message">{error}</div>}
+    </>
   );
 };
 
