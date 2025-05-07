@@ -3,17 +3,26 @@ import { List } from "../types";
 import { FaTrashAlt } from "react-icons/fa";
 import ColorPickerWithPresets from "./ColorPickerWithPresets";
 
-type ListModalProps = {
+const PRESET_LIST_COLORS = [
+  "#FF4C4C", // bright red
+  "#FF9900", // orange
+  "#FFD700", // golden yellow
+  "#66DD00", // lime green
+  "#00CC66", // emerald green
+  "#00CFCF", // aqua / teal
+  "#3399FF", // sky blue
+  "#3366FF", // royal blue
+  "#9966FF", // violet
+  "#FF33CC", // magenta
+  "#FF3399", // hot pink
+];
+
+interface ListModalProps {
   lists: List[];
   addList: (newList: List) => void;
   deleteList: (listId: number) => void;
   closeModal: () => void;
-};
-
-const getRandomPastelColor = () => {
-  const hue = Math.floor(Math.random() * 360); // any hue
-  return `hsl(${hue}, 70%, 85%)`; // pastel tone
-};
+}
 
 const ListModal: React.FC<ListModalProps> = ({
   lists,
@@ -51,6 +60,7 @@ const ListModal: React.FC<ListModalProps> = ({
     e.preventDefault();
 
     setListToDelete(undefined);
+    setInfo({ list: "", message: "" });
 
     const trimmedListName = newListName.trim();
     if (!trimmedListName) return; // Prevent adding empty lists
@@ -84,7 +94,7 @@ const ListModal: React.FC<ListModalProps> = ({
         className={`modal-content ${wiggle ? "wiggle" : ""}`}
         onClick={(e) => e.stopPropagation()} // prevent backdrop close
       >
-        <button className="close-list-modal-button" onClick={closeModal}>
+        <button className="close-modal-button" onClick={closeModal}>
           &times;
         </button>
         <h2 className="modal-title">Manage Lists</h2>
@@ -129,6 +139,7 @@ const ListModal: React.FC<ListModalProps> = ({
         <div className="new-list-input">
           <input
             ref={inputRef}
+            className={`list-name-input ${error ? "error" : ""}`}
             type="text"
             placeholder="New list name"
             value={newListName}
@@ -136,23 +147,16 @@ const ListModal: React.FC<ListModalProps> = ({
               setNewListName(e.target.value);
               setError("");
             }}
-            className={`list-name-input ${error ? "error" : ""}`}
           />
-          <ColorPickerWithPresets color={color} onChange={(e) => setColor(e)} />
+          <ColorPickerWithPresets
+            color={color}
+            setColor={(e) => setColor(e)}
+            presetColors={PRESET_LIST_COLORS}
+          />
         </div>
-        <div className="new-list-button">
-          <button
-            className="add-button"
-            onClick={(e) => {
-              setInfo({ list: "", message: "" });
-              console.log("color", color);
-              handleAddList(e);
-            }}
-          >
+        <div className="add-list-button">
+          <button className="add-button" onClick={handleAddList}>
             Add
-          </button>
-          <button onClick={() => console.log(getRandomPastelColor())}>
-            Color generator
           </button>
         </div>
 
@@ -235,7 +239,6 @@ const ListModal: React.FC<ListModalProps> = ({
         )}
 
         {listToDelete && (
-          // <div className="mt-4 p-4 bg-red-50 border border-red-300 rounded-lg animate-slide-up">
           <div className="error-message delete-list">
             <h3 className="title">Delete list "{listToDelete.name}"?</h3>
             <p className="message">

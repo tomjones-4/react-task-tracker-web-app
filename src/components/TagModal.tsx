@@ -1,16 +1,29 @@
 import { useState, useRef } from "react";
+import ColorPickerWithPresets from "./ColorPickerWithPresets";
 import { Tag } from "../types";
 import { FaTrashAlt } from "react-icons/fa";
 
-type TagModalProps = {
+const PRESET_TAG_COLORS = [
+  "#F8BBD0", // pastel pink
+  "#FFDAB9", // peach
+  "#FFCCB6", // pastel orange
+  "#FFFACD", // light yellow
+  "#C1F0C1", // mint green
+  "#B2DFDB", // pastel teal
+  "#B3E5FC", // powder blue
+  "#E1BEE7", // lavendar
+  "#D7BDE2", // mauve
+  "#DCC6E0", // pastel lilac
+  "#D0E1F9", // baby blue
+];
+interface TagModalProps {
   tags: Tag[];
-
   addTag: (newTag: Tag) => void;
   deleteTag: (tagId: number) => void;
   addTaskTag: (newTaskTagId: number) => void;
   taskTagIds: number[];
   closeModal: () => void;
-};
+}
 
 const TagModal: React.FC<TagModalProps> = ({
   tags,
@@ -20,15 +33,8 @@ const TagModal: React.FC<TagModalProps> = ({
   taskTagIds,
   closeModal,
 }) => {
-  const getRandomPastelColor = () => {
-    const hue = Math.floor(Math.random() * 360); // any hue
-    return `hsl(${hue}, 70%, 85%)`; // pastel tone
-  };
-
   const [newTagName, setNewTagName] = useState<string>("");
-  const [newTagColor, setNewTagColor] = useState<string>(
-    getRandomPastelColor()
-  );
+  const [color, setColor] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [wiggle, setWiggle] = useState<boolean>(false);
 
@@ -55,13 +61,10 @@ const TagModal: React.FC<TagModalProps> = ({
       showError("A tag with this name already exists.");
       return;
     }
-
-    let color = getRandomPastelColor();
     const newTag = {
       id: Date.now(),
       name: trimmedTagName,
-      color: newTagColor,
-      //color: color,
+      color: color,
     };
     addTag(newTag);
     setNewTagName(""); // Clear input field after adding
@@ -85,12 +88,10 @@ const TagModal: React.FC<TagModalProps> = ({
   return (
     <div className="modal-backdrop" onClick={closeModal}>
       <div
-        className={`modal-content ${error ? "error" : ""} ${
-          wiggle ? "wiggle" : ""
-        }`}
+        className={`modal-content ${wiggle ? "wiggle" : ""}`}
         onClick={(e) => e.stopPropagation()} // prevent backdrop close
       >
-        <button className="close-tag-modal-button" onClick={closeModal}>
+        <button className="close-modal-button" onClick={closeModal}>
           &times;
         </button>
         <h2 className="modal-title">Manage Tags</h2>
@@ -126,23 +127,22 @@ const TagModal: React.FC<TagModalProps> = ({
           )}
         </div>
 
-        <div className="new-tag-section">
+        <div className="new-tag-input">
           <input
             ref={inputRef}
             type="text"
             placeholder="New tag name"
             value={newTagName}
             onChange={(e) => setNewTagName(e.target.value)}
-            className="new-tag-input"
+            className="tag-name-input"
           />
-          <input
-            type="color"
-            value={newTagColor}
-            onChange={(e) => {
-              console.log("color", newTagColor);
-              setNewTagColor(e.target.value);
-            }}
+          <ColorPickerWithPresets
+            color={color}
+            setColor={(e) => setColor(e)}
+            presetColors={PRESET_TAG_COLORS}
           />
+        </div>
+        <div className="add-tag-button">
           <button className="add-button" onClick={handleAddTag}>
             Add
           </button>
