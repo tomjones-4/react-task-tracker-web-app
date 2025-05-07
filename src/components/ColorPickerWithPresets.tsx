@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import { RgbaStringColorPicker } from "react-colorful";
 
 const PRESET_COLORS = [
-  "#FF4B4B",
-  "#F59E0B",
-  "#FACC15",
-  "#22C55E",
-  "#3B82F6",
-  "#8B5CF6",
-  "#EC4899",
-  "#6B7280",
-  "#DDBEF4",
-  "#F4EEBE",
-  "#BEF4E8",
+  "#FF4C4C", // bright red
+  "#FF9900", // orange
+  "#FFD700", // golden yellow
+  "#66DD00", // lime green
+  "#00CC66", // emerald green
+  "#00CFCF", // aqua / teal
+  "#3399FF", // sky blue
+  "#3366FF", // royal blue
+  "#9966FF", // violet
+  "#FF33CC", // magenta
+  "#FF3399", // hot pink
 ];
 
 interface ColorPickerWithPresetsProps {
