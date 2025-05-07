@@ -358,6 +358,10 @@ input[type="text"] {
   transition: transform 0.15s ease;
 }
 
+.color-swatch.selected {
+  transform: scale(1.3);
+}
+
 .color-swatch:hover {
   transform: scale(1.3);
 }
@@ -369,10 +373,6 @@ input[type="text"] {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.color-swatch-selected {
-  transform: scale(1.3);
 }
 
 .custom-picker {

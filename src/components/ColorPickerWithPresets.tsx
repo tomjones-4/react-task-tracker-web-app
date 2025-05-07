@@ -25,6 +25,7 @@ const ColorPickerWithPresets: React.FC<ColorPickerWithPresetsProps> = ({
   onChange,
 }) => {
   const [showCustomPicker, setShowCustomPicker] = useState<boolean>(false);
+
   const handlePresetClick = (preset: string) => {
     onChange(preset);
     setShowCustomPicker(false);
@@ -37,14 +38,16 @@ const ColorPickerWithPresets: React.FC<ColorPickerWithPresetsProps> = ({
         {PRESET_COLORS.map((preset) => (
           <button
             key={preset}
-            className="color-swatch"
+            className={`color-swatch ${color === preset ? "selected" : ""}`}
             style={{ backgroundColor: preset }}
             onClick={() => handlePresetClick(preset)}
             aria-label={`Select color ${preset}`}
           />
         ))}
         <button
-          className="color-swatch custom"
+          className={`color-swatch custom ${
+            showCustomPicker ? "selected" : ""
+          }`}
           onClick={() => setShowCustomPicker(!showCustomPicker)}
         >
           +
@@ -53,7 +56,7 @@ const ColorPickerWithPresets: React.FC<ColorPickerWithPresetsProps> = ({
 
       {showCustomPicker && (
         <div className="custom-picker">
-          <RgbaStringColorPicker color="color" onChange={onChange} />
+          <RgbaStringColorPicker color={color} onChange={onChange} />
         </div>
       )}
     </div>

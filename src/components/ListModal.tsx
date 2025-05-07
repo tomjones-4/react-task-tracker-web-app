@@ -138,13 +138,14 @@ const ListModal: React.FC<ListModalProps> = ({
             }}
             className={`list-name-input ${error ? "error" : ""}`}
           />
-          <ColorPickerWithPresets color="" onChange={(e) => setColor(e)} />
+          <ColorPickerWithPresets color={color} onChange={(e) => setColor(e)} />
         </div>
         <div className="new-list-button">
           <button
             className="add-button"
             onClick={(e) => {
               setInfo({ list: "", message: "" });
+              console.log("color", color);
               handleAddList(e);
             }}
           >
