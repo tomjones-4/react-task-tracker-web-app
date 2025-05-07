@@ -18,7 +18,6 @@ import { List, Task, Tag } from "./types";
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
 // Add a tag filter when "All tasks" is selected in the sidebar
 // Fix the UX when a user adds a bunch of tags. It looks gross on the task form.
-// When the modal shrinks it doesn't show all the content.
 /* End Medium Priority */
 
 /* Low Priority */

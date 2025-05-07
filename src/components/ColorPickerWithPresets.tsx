@@ -20,7 +20,7 @@ const ColorPickerWithPresets: React.FC<ColorPickerWithPresetsProps> = ({
 
   return (
     <div className="color-picker-wrapper">
-      <h3>Pick list color</h3>
+      <h3>Pick color</h3>
       <div className="swatch-grid">
         {presetColors.map((preset) => (
           <button
