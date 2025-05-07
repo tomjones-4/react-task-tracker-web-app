@@ -1,10 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
-
-const modalRoot = document.getElementById("modal-root"); // usually at the end of body
-if (!modalRoot) {
-  throw new Error("#modal-root not found in the DOM");
-}
 
 interface ModalProps {
   closeModal: () => void;
@@ -13,6 +8,22 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ closeModal, wiggle, children }) => {
+  const modalRoot = document.getElementById("modal-root"); // usually at the end of body
+  if (!modalRoot) {
+    throw new Error("#modal-root not found in the DOM");
+  }
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [closeModal]);
+
   return createPortal(
     <div className="modal-backdrop" onClick={closeModal}>
       <div
