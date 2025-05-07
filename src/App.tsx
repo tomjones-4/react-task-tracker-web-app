@@ -20,11 +20,9 @@ import { List, Task, Tag } from "./types";
 // Fix error where clicking outside of lists modal on task form doesn't close it. See commits because I tried to fix this earlier and changed some z-indexes.
 // Fix the UX when a user adds a bunch of tags. It looks gross on the task form.
 // When the modal shrinks it doesn't show all the content.
-// Add "ESC" as option to exit out of modal
 /* End Medium Priority */
 
 /* Low Priority */
-// Change the default colors for the All Tasks and Uncategorized lists
 // Show some info that user is unable to delete All Tasks and Uncategorized lists. Currently it just shows the normal delete list modal.
 // See TODO in TaskForm.tsx for potentially removing some filler values after ||'s
 // Consider adding a reset task button on the task form.
@@ -53,7 +51,7 @@ const App = () => {
     {
       id: SPECIAL_LIST_ID_ALL_TASKS,
       name: "All Tasks",
-      color: "black",
+      color: "white",
       taskIds: [-1],
     },
     {

@@ -97,7 +97,7 @@ const ListModal: React.FC<ListModalProps> = ({
 
       <div className="lists">
         {lists.length > 0 ? (
-          lists.map((list) => (
+          lists.slice(1).map((list) => (
             <span
               key={list.id}
               className="list"
