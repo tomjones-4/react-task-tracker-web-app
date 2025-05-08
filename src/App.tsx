@@ -180,12 +180,6 @@ const App = () => {
       return;
     }
 
-    // Deselect list if it's deleted
-    if (selectedList.id === listId) {
-      changeSelectedList(lists[0]); // Select the first list in the updated lists array
-      setSelectedTask(tasks[0]); // Select the first task in tasks array
-    }
-
     // Select new list if selected list is deleted
     if (selectedList.id === listId) {
       const indexInList = lists.indexOf(deletedList);
@@ -294,10 +288,6 @@ const App = () => {
     if (list.taskIds.length === 0) {
       resetTask(list.id);
     } else {
-      setSelectedTask(
-        tasks.find((task) => task.listId === list.id || list.id === -1) // find first task where listId matches selected list id or if listId is 0 (which means "All Tasks"), select the first task
-      );
-
       setIsAddMode(false);
     }
   };

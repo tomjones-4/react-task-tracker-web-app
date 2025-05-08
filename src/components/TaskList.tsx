@@ -59,7 +59,17 @@ const TaskList: React.FC<TaskListProps> = ({
   };
 
   const listRef = useRef<HTMLDivElement>(null);
+  const [listSelectedTasksIds, setListSelectedTaskIds] = useState<number[]>([]);
   const [scrollPositions, setScrollPositions] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (selectedTaskId) {
+      setListSelectedTaskIds((prevIds) => ({
+        ...prevIds,
+        [selectedListId]: selectedTaskId,
+      }));
+    }
+  }, [selectedTaskId]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,8 +88,13 @@ const TaskList: React.FC<TaskListProps> = ({
   }, [selectedListId]);
 
   useEffect(() => {
-    if (listRef.current && scrollPositions[selectedListId]) {
+    if (listRef.current && scrollPositions[selectedListId] !== undefined) {
       listRef.current.scrollTop = scrollPositions[selectedListId];
+    }
+    if (listSelectedTasksIds[selectedListId]) {
+      console.log("setting task");
+      const id = listSelectedTasksIds[selectedListId];
+      setSelectedTask(tasks.find((task: Task) => task.id === id));
     }
   }, [selectedListId]);
 
