@@ -222,8 +222,10 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
         </span>
 
         <span className="task-form-item">
-          <label htmlFor="tags">Tags</label>
-          <span>
+          <label htmlFor="tags" className="tags-label">
+            Tags
+          </label>
+          <span className="tags">
             {taskTagIds
               .filter((id) => tags.some((tag) => tag.id === id)) // do this filter to avoid state sync issue where tag still exists in taskTagIds but not in tags, which happens briefly after tag is deleted
               .map((id) => tags.find((tag) => tag.id === id))
@@ -247,17 +249,19 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
                   </button>
                 </span>
               ))}
-            <button
-              className="add-button"
-              type="button"
+            <span
+              key={0}
+              className="tag"
+              style={{ backgroundColor: "lightskyblue", fontWeight: "bold" }}
               onClick={(e) => {
                 e.preventDefault();
                 setIsTagModalOpen(true);
               }}
             >
-              Add Tag
-            </button>
+              Add tag
+            </span>
           </span>
+
           {isTagModalOpen && (
             <Modal closeModal={closeModal} wiggle={wiggle}>
               <TagModal

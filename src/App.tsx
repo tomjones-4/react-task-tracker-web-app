@@ -2,7 +2,8 @@
 
 /* High Priority */
 // Allow tasks to have subtasks. (See the mockup on Github)
-// Fix the UX when a user adds a bunch of tags. It looks gross on the task form.
+// Change the button for deleting tags on the task form and add a hover to it that makes it clear it's being hovered. Use the text color and trash can icon from TagsModal.
+// Fix the expanding/shrinking of the 3 main components: Menu, TaskView, and MainView. MainView gets totally cut off.
 /* End High Priority */
 
 /* Medium Priority */
@@ -10,6 +11,7 @@
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
 // Add a tag filter when "All tasks" is selected in the sidebar
+// Consider adding a calendar view in place of the task list. This would probably be a very large code change, but it would be a sweet feature.
 /* End Medium Priority */
 
 /* Low Priority */
