@@ -64,7 +64,18 @@ const TaskList: React.FC<TaskListProps> = ({
   const [scrollPositions, setScrollPositions] = useState<number[]>([]);
 
   useEffect(() => {
-    if (selectedListId === SPECIAL_LIST_ID_ALL_TASKS) return;
+    if (selectedTaskId && selectedListId === SPECIAL_LIST_ID_ALL_TASKS) {
+      const listIdForTask = tasks.find(
+        (task: Task) => task.id === selectedTaskId
+      )?.listId;
+      if (listIdForTask) {
+        setListSelectedTaskIds((prevIds) => ({
+          ...prevIds,
+          [selectedListId]: selectedTaskId,
+        }));
+      }
+      return;
+    }
     if (selectedTaskId) {
       setListSelectedTaskIds((prevIds) => ({
         ...prevIds,
