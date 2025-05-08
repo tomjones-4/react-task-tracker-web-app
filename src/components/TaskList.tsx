@@ -71,7 +71,7 @@ const TaskList: React.FC<TaskListProps> = ({
       if (listIdForTask) {
         setListSelectedTaskIds((prevIds) => ({
           ...prevIds,
-          [selectedListId]: selectedTaskId,
+          [listIdForTask]: selectedTaskId,
         }));
       }
       return;
@@ -110,6 +110,9 @@ const TaskList: React.FC<TaskListProps> = ({
     if (selectedListId === SPECIAL_LIST_ID_ALL_TASKS) return;
     if (listSelectedTasksIds[selectedListId]) {
       const id = listSelectedTasksIds[selectedListId];
+      console.log("selectedListId", selectedListId);
+      console.log("selectedTaskId", selectedTaskId);
+      console.log("listSelectedTasksIds[selectedListId]", id);
       setSelectedTask(tasks.find((task: Task) => task.id === id));
     }
   }, [selectedListId]);
