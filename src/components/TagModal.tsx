@@ -106,7 +106,7 @@ const TagModal: React.FC<TagModalProps> = ({
             >
               {tag.name}
               <button
-                className="delete-tag-button"
+                className="trash-can-button"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation(); // prevent tag click event from firing

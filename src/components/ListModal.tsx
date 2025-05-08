@@ -107,7 +107,7 @@ const ListModal: React.FC<ListModalProps> = ({
             >
               {list.name}
               <button
-                className="delete-tag-button"
+                className="trash-can-button"
                 onClick={(e) => {
                   e.preventDefault();
                   if (list.id === -1 || list.id === 0) {

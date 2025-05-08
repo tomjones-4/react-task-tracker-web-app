@@ -11,6 +11,7 @@ import TaskFormButtons from "./TaskFormButtons";
 import { List, Task, Tag } from "../types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { FaTrashAlt } from "react-icons/fa";
 
 type TaskFormProps = {
   lists: List[];
@@ -238,14 +239,14 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
                 >
                   {tag.name}
                   <button
-                    className="delete-tag-button"
+                    className="trash-can-button"
                     type="button"
                     onClick={(e) => {
                       e.preventDefault();
                       deleteTaskTag(tag.id);
                     }}
                   >
-                    &times;
+                    <FaTrashAlt className="delete-tag-icon" />
                   </button>
                 </span>
               ))}
