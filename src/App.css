@@ -12,6 +12,32 @@
   overflow: hidden;
 }
 
+.split-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.split-pane {
+  height: 100%;
+  overflow: auto;
+}
+
+.resizer {
+  width: 6px;
+  border-radius: 6px;
+  background-color: #ccc;
+  cursor: col-resize;
+  z-index: 10;
+  transition: background-color 0.2s;
+}
+
+.resizer:hover {
+  background-color: #999;
+}
+
 /* Style the input field for new tasks and other inputs throughout App */
 input[type="text"] {
   padding: 10px;
@@ -22,14 +48,17 @@ input[type="text"] {
 }
 
 .menu-container {
+  margin: 20px;
   display: flex;
   flex-direction: column;
   flex: 1;
-  position: fixed;
+  overflow: hidden;
   top: 12px;
   left: 12px;
   bottom: 12px;
-  width: 355px;
+  min-width: 350px;
+  max-width: 350px;
+  height: calc(100vh - 40px);
   background-color: #f7f7f7;
   padding: 10px;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
@@ -65,6 +94,7 @@ input[type="text"] {
 
 .search-input {
   flex: 1; /* Take remaining space */
+  width: 100%;
   padding: 10px; /* Adjust left padding for icon */
   border: none;
   font-size: 18px;
@@ -77,7 +107,7 @@ input[type="text"] {
   padding-right: 5px;
   flex: 1 1 auto;
   min-height: 0; /* fix for Firefox scroll bug */
-  max-height: 45vh;
+  max-height: 55vh;
 }
 
 .menu-list {
@@ -404,6 +434,7 @@ input[type="text"] {
   justify-content: end;
   flex: 1;
   margin-top: auto; /* pushes to bottom if space */
+  margin-bottom: 16px;
 }
 
 .menu-footer span {
@@ -429,13 +460,16 @@ input[type="text"] {
 }
 
 .main-view {
-  margin-left: 350px; /* match menu width */
-  margin-right: 500px; /* match task view width */
   padding: 20px 30px;
-  flex-grow: 1;
-  width: calc(100% - 850px); /* Adjust for menu and task view */
+  flex: 1;
+  min-width: 0;
   height: 100vh; /* Full height */
   box-sizing: border-box;
+}
+
+.debug {
+  width: 700px;
+  overflow: hidden;
 }
 
 .main-view h1 {
@@ -553,15 +587,16 @@ input[type="text"] {
 }
 
 .task-view {
-  position: fixed;
-  right: 12px;
-  top: 12px;
-  bottom: 12px;
-  width: 450px;
-  flex-grow: 1;
-  padding: 20px;
   display: flex;
   flex-direction: column;
+  margin: 20px;
+  /* width: 100%; */
+  width: calc(100% - 40px);
+  min-width: 0;
+  height: calc(100vh - 40px);
+  overflow: auto;
+  flex: 1;
+  padding: 20px;
   background-color: #f7f7f7; /* Light background */
   border-radius: 20px; /* Rounded edges */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */

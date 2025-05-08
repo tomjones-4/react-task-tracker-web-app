@@ -2,8 +2,8 @@
 
 /* High Priority */
 // Allow tasks to have subtasks. (See the mockup on Github)
-// Change the button for deleting tags on the task form and add a hover to it that makes it clear it's being hovered. Use the text color and trash can icon from TagsModal.
 // Fix the expanding/shrinking of the 3 main components: Menu, TaskView, and MainView. MainView gets totally cut off.
+// Need to fix the bottom of menu too. It should be rounded like Task View
 /* End High Priority */
 
 /* Medium Priority */
@@ -27,6 +27,7 @@
 
 import "./App.css";
 import Menu from "./components/Menu.jsx";
+import ResizableSplitView from "./components/ResizableSplitView";
 import MainView from "./components/MainView.jsx";
 import TaskView from "./components/TaskView.jsx";
 import React, { useState, useEffect, useRef } from "react";
@@ -543,42 +544,65 @@ const App = () => {
 
   return (
     <div className="App">
-      <Menu
-        lists={lists}
-        setLists={setLists}
-        addList={addList}
-        deleteList={deleteList}
-        changeSelectedList={changeSelectedList}
-        selectedListId={selectedList.id}
-        ripple={ripple}
-        ref={searchInputRef}
-      />
-      <MainView
-        selectedList={selectedList}
-        tasks={getTasksByListId(selectedList.id)}
-        setTasks={setTasks}
-        selectedTaskId={selectedTask?.id}
-        deleteTask={deleteTask}
-        toggleCompleted={toggleCompleted}
-        setSelectedTask={setSelectedTask}
-        handleStartNewTask={handleStartNewTask}
-        selectedTaskForDebug={selectedTask}
-        setIsAddMode={setIsAddMode}
-        ripple={ripple}
-      />
-      {selectedTask && (
-        <TaskView
-          selectedListId={selectedList.id === -1 ? 0 : selectedList.id}
-          selectedTask={selectedTask}
+      <aside>
+        <Menu
           lists={lists}
-          tags={tags}
+          setLists={setLists}
+          addList={addList}
+          deleteList={deleteList}
+          changeSelectedList={changeSelectedList}
+          selectedListId={selectedList.id}
+          ripple={ripple}
+          ref={searchInputRef}
+        />
+      </aside>
+
+      {selectedTask ? (
+        <ResizableSplitView
+          left={
+            <MainView
+              selectedList={selectedList}
+              tasks={getTasksByListId(selectedList.id)}
+              setTasks={setTasks}
+              selectedTaskId={selectedTask?.id}
+              deleteTask={deleteTask}
+              toggleCompleted={toggleCompleted}
+              setSelectedTask={setSelectedTask}
+              handleStartNewTask={handleStartNewTask}
+              selectedTaskForDebug={selectedTask}
+              setIsAddMode={setIsAddMode}
+              ripple={ripple}
+            />
+          }
+          right={
+            <TaskView
+              selectedListId={selectedList.id === -1 ? 0 : selectedList.id}
+              selectedTask={selectedTask}
+              lists={lists}
+              tags={tags}
+              deleteTask={deleteTask}
+              addTask={addTask}
+              editTask={editTask}
+              isAddMode={isAddMode}
+              addTag={addTag}
+              deleteTag={deleteTag}
+              ref={taskFormRef}
+            />
+          }
+        />
+      ) : (
+        <MainView
+          selectedList={selectedList}
+          tasks={getTasksByListId(selectedList.id)}
+          setTasks={setTasks}
+          selectedTaskId={undefined}
           deleteTask={deleteTask}
-          addTask={addTask}
-          editTask={editTask}
-          isAddMode={isAddMode}
-          addTag={addTag}
-          deleteTag={deleteTag}
-          ref={taskFormRef}
+          toggleCompleted={toggleCompleted}
+          setSelectedTask={setSelectedTask}
+          handleStartNewTask={handleStartNewTask}
+          selectedTaskForDebug={selectedTask}
+          setIsAddMode={setIsAddMode}
+          ripple={ripple}
         />
       )}
     </div>

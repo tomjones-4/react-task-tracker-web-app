@@ -46,7 +46,7 @@ const MainView: React.FC<MainViewProps> = ({
         ripple={ripple}
       />
 
-      <div>
+      <div className="debug">
         <h2>Debug</h2>
         <p>Selected Task: {JSON.stringify(selectedTaskForDebug)}</p>
         <p>Selected List: {JSON.stringify(selectedList)}</p>
