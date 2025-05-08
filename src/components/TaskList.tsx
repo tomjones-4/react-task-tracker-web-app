@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import TaskItem from "./TaskItem.jsx";
 import AddTaskItem from "./AddTaskItem.jsx";
 import { Task } from "../types";
+import { SPECIAL_LIST_ID_ALL_TASKS } from "../App";
 import {
   DndContext,
   closestCenter,
@@ -63,6 +64,7 @@ const TaskList: React.FC<TaskListProps> = ({
   const [scrollPositions, setScrollPositions] = useState<number[]>([]);
 
   useEffect(() => {
+    if (selectedListId === SPECIAL_LIST_ID_ALL_TASKS) return;
     if (selectedTaskId) {
       setListSelectedTaskIds((prevIds) => ({
         ...prevIds,
@@ -87,12 +89,15 @@ const TaskList: React.FC<TaskListProps> = ({
     return () => el?.removeEventListener("scroll", handleScroll);
   }, [selectedListId]);
 
+  // TODO - fix the bug where task jumps from most recently selected to last one selected on list
+  // way to fix it is by not saving selected task ID for All Tasks list
+
   useEffect(() => {
     if (listRef.current && scrollPositions[selectedListId] !== undefined) {
       listRef.current.scrollTop = scrollPositions[selectedListId];
     }
+    if (selectedListId === SPECIAL_LIST_ID_ALL_TASKS) return;
     if (listSelectedTasksIds[selectedListId]) {
-      console.log("setting task");
       const id = listSelectedTasksIds[selectedListId];
       setSelectedTask(tasks.find((task: Task) => task.id === id));
     }

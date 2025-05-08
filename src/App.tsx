@@ -1,23 +1,15 @@
-import "./App.css";
-import Menu from "./components/Menu.jsx";
-import MainView from "./components/MainView.jsx";
-import TaskView from "./components/TaskView.jsx";
-import React, { useState, useEffect, useRef } from "react";
-import { List, Task, Tag } from "./types";
-
 // TODO
 
 /* High Priority */
 // Allow tasks to have subtasks. (See the mockup on Github)
+// Fix the UX when a user adds a bunch of tags. It looks gross on the task form.
 /* End High Priority */
 
 /* Medium Priority */
 // Add authentication - require a user to login. This will require Supabase.
-// Make it so when a user switches between lists, the selected task is the same per list. This might use logic similar to scroll positions.
-// Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
+// Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
 // Add a tag filter when "All tasks" is selected in the sidebar
-// Fix the UX when a user adds a bunch of tags. It looks gross on the task form.
 /* End Medium Priority */
 
 /* Low Priority */
@@ -29,46 +21,52 @@ import { List, Task, Tag } from "./types";
 
 /* End Low Priority */
 
+/* Begin Constants */
+
+import "./App.css";
+import Menu from "./components/Menu.jsx";
+import MainView from "./components/MainView.jsx";
+import TaskView from "./components/TaskView.jsx";
+import React, { useState, useEffect, useRef } from "react";
+import { List, Task, Tag } from "./types";
+
+export const SPECIAL_LIST_ID_ALL_TASKS = -1;
+const SPECIAL_LIST_ID_UNCATEGORIZED = 0;
+
+const SPECIAL_LISTS: List[] = [
+  {
+    id: SPECIAL_LIST_ID_ALL_TASKS,
+    name: "All Tasks",
+    color: "white",
+    taskIds: [-1],
+  },
+  {
+    id: SPECIAL_LIST_ID_UNCATEGORIZED,
+    name: "Uncategorized",
+    color: "gray",
+    taskIds: [-1],
+  },
+];
+
+const LOCAL_STORAGE_KEY_LISTS = "todoApp.lists";
+const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";
+const LOCAL_STORAGE_KEY_TAGS = "todoApp.tags";
+// const LOCAL_STORAGE_KEY_SETTINGS = "todoApp.settings";
+// const LOCAL_STORAGE_KEY_THEME = "todoApp.theme";
+
+const dummyTask: Task = {
+  id: -1,
+  completed: false,
+  title: "Tend to the garden",
+  description: "Water the plants and remove weeds",
+  listId: 0,
+  dueDate: null,
+  tagIds: [],
+};
+
+/* End Constants */
+
 const App = () => {
-  /* Begin Constants */
-
-  const LOCAL_STORAGE_KEY_LISTS = "todoApp.lists";
-  const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";
-  const LOCAL_STORAGE_KEY_TAGS = "todoApp.tags";
-
-  // const LOCAL_STORAGE_KEY_SETTINGS = "todoApp.settings";
-  // const LOCAL_STORAGE_KEY_THEME = "todoApp.theme";
-
-  const SPECIAL_LIST_ID_ALL_TASKS = -1;
-  const SPECIAL_LIST_ID_UNCATEGORIZED = 0;
-
-  const SPECIAL_LISTS: List[] = [
-    {
-      id: SPECIAL_LIST_ID_ALL_TASKS,
-      name: "All Tasks",
-      color: "white",
-      taskIds: [-1],
-    },
-    {
-      id: SPECIAL_LIST_ID_UNCATEGORIZED,
-      name: "Uncategorized",
-      color: "gray",
-      taskIds: [-1],
-    },
-  ];
-
-  const dummyTask: Task = {
-    id: -1,
-    completed: false,
-    title: "Tend to the garden",
-    description: "Water the plants and remove weeds",
-    listId: 0,
-    dueDate: null,
-    tagIds: [],
-  };
-
-  /* End Constants */
-
   /* Begin Specific Types */
 
   interface TaskFormRef {
