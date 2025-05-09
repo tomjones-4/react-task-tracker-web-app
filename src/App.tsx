@@ -2,8 +2,6 @@
 
 /* High Priority */
 // Allow tasks to have subtasks. (See the mockup on Github)
-// Fix the expanding/shrinking of the 3 main components: Menu, TaskView, and MainView. MainView gets totally cut off.
-// Need to fix the bottom of menu too. It should be rounded like Task View
 /* End High Priority */
 
 /* Medium Priority */

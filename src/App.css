@@ -23,19 +23,18 @@
 .split-pane {
   height: 100%;
   overflow: auto;
+  overflow-y: hidden;
 }
 
 .resizer {
-  width: 6px;
+  width: 10px;
+  margin-top: 20px;
+  height: calc(100vh - 40px);
   border-radius: 6px;
-  background-color: #ccc;
+  background-color: white;
   cursor: col-resize;
   z-index: 10;
   transition: background-color 0.2s;
-}
-
-.resizer:hover {
-  background-color: #999;
 }
 
 /* Style the input field for new tasks and other inputs throughout App */
@@ -589,19 +588,22 @@ input[type="text"] {
 .task-view {
   display: flex;
   flex-direction: column;
-  margin: 20px;
-  /* width: 100%; */
-  width: calc(100% - 40px);
+  margin-top: 20px;
+  width: calc(100% - 20px);
   min-width: 0;
   height: calc(100vh - 40px);
   overflow: auto;
   flex: 1;
   padding: 20px;
-  background-color: #f7f7f7; /* Light background */
+  background-color: #f7f7f7;
   border-radius: 20px; /* Rounded edges */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   box-sizing: border-box;
   overflow-y: auto; /* Scroll if needed */
+}
+
+.task-view h1 {
+  margin: 0px;
 }
 
 textarea {
@@ -618,10 +620,8 @@ textarea {
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  padding: 24px;
-  background-color: #ffffff;
+  margin: 10px 20px;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .task-form input,
@@ -721,12 +721,9 @@ textarea {
   transition: background-color 0.2s;
 }
 
-/* .task-form button:hover {
-  background-color: #3730a3;
-} */
-
 .task-button {
-  color: white;
+  font-weight: bold;
+  font-size: medium;
   padding: 10px 20px;
   border-radius: 10px;
   margin: 0 5px;
@@ -736,30 +733,21 @@ textarea {
   outline: none; /* Remove default focus outline */
 }
 
-.delete-task-button {
-  background-color: #ff4d4d; /* Red background */
-}
 .delete-task-button:hover {
-  background-color: #ff1a1a; /* Darker red on hover */
+  background-color: #ff1a1a;
 }
 .delete-task-button:focus {
   box-shadow: 0 0 0 2px rgba(255, 77, 77, 0.5); /* Custom focus outline */
 }
-.delete-task-button:active {
-  background-color: #e60000; /* Even darker red when active */
-}
 
 .save-task-button {
-  background-color: #398219; /* Blue background */
+  background-color: #2da537;
 }
 .save-task-button:hover {
-  background-color: #074e05; /* Darker blue on hover */
+  background-color: #0b8607;
 }
 .save-task-button:focus {
   box-shadow: 0 0 0 2px rgba(12, 90, 29, 0.5); /* Custom focus outline */
-}
-.save-task-button:active {
-  background-color: #02280e; /* Even darker blue when active */
 }
 
 .modal-backdrop {
