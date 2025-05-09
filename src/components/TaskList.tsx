@@ -100,9 +100,6 @@ const TaskList: React.FC<TaskListProps> = ({
     return () => el?.removeEventListener("scroll", handleScroll);
   }, [selectedListId]);
 
-  // TODO - fix the bug where task jumps from most recently selected to last one selected on list
-  // way to fix it is by not saving selected task ID for All Tasks list
-
   useEffect(() => {
     if (listRef.current && scrollPositions[selectedListId] !== undefined) {
       listRef.current.scrollTop = scrollPositions[selectedListId];

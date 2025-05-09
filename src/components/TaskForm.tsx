@@ -8,11 +8,12 @@ import {
 import TagModal from "./TagModal";
 import Modal from "./Modal";
 import TaskFormButtons from "./TaskFormButtons";
-import { List, Task, Tag } from "../types";
+import { List, Task, Subtask, Tag } from "../types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaTrashAlt } from "react-icons/fa";
 import SubtaskList from "./SubtaskList";
+import Subtasks from "./Subtasks";
 
 type TaskFormProps = {
   lists: List[];
@@ -25,6 +26,15 @@ type TaskFormProps = {
   editTask: (editedTask: Task) => void;
   addTag: (newTag: Tag) => void;
   deleteTag: (tagId: number) => void;
+  subtasks: Subtask[];
+  setSubtasks: React.Dispatch<React.SetStateAction<Subtask[]>>;
+  // setSelectedSubtask: React.Dispatch<React.SetStateAction<Subtask | undefined>>;
+  // selectedSubtaskId: number | undefined;
+  deleteSubtask: (subtaskId: number) => void;
+  toggleSubtaskCompleted: (subtaskId: number) => void;
+  handleStartNewSubtask: (e: React.MouseEvent<HTMLDivElement>) => void;
+  ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
+  // addSubtask: (newSubtask: Subtask) => void;
 };
 
 export type TaskFormRef = {
@@ -44,6 +54,15 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
       editTask,
       addTag,
       deleteTag,
+      subtasks,
+      setSubtasks,
+      // setSelectedSubtask,
+      // selectedSubtaskId,
+      deleteSubtask,
+      toggleSubtaskCompleted,
+      handleStartNewSubtask,
+      ripple,
+      // addSubtask,
     },
     ref
   ) => {
@@ -278,7 +297,19 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
             </Modal>
           )}
         </span>
-        <SubtaskList />
+        <Subtasks
+          subtasks={subtasks}
+          setSubtasks={setSubtasks}
+          // setSelectedSubtask={setSelectedSubtask}
+          // addSubtask={addSubtask}
+          // selectedSubtaskId={selectedSubtaskId}
+          selectedTaskId={selectedTask.id}
+          deleteSubtask={deleteSubtask}
+          toggleSubtaskCompleted={toggleSubtaskCompleted}
+          handleStartNewSubtask={handleStartNewSubtask}
+          // setIsAddMode={setIsAddMode}
+          ripple={ripple}
+        />
         <TaskFormButtons
           deleteTask={deleteTask}
           selectedTaskId={selectedTask.id}

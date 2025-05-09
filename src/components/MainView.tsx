@@ -48,8 +48,17 @@ const MainView: React.FC<MainViewProps> = ({
 
       <div className="debug">
         <h2>Debug</h2>
-        <p>Selected Task: {JSON.stringify(selectedTaskForDebug)}</p>
-        <p>Selected List: {JSON.stringify(selectedList)}</p>
+        {/* <p>Selected Task: {JSON.stringify(selectedTaskForDebug)}</p> */}
+        {/* <p>Selected List: {JSON.stringify(selectedList.name)}</p> */}
+        <p>
+          Selected Task:{" "}
+          {selectedTaskForDebug
+            ? `${selectedTaskForDebug.title} (ID: ${selectedTaskForDebug.id}), (List ID: ${selectedTaskForDebug.listId})`
+            : "No task selected"}
+        </p>
+        <p>
+          Selected List: {selectedList.name} (ID: {selectedList.id})
+        </p>
       </div>
     </div>
   );

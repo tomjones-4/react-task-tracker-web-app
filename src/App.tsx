@@ -1,7 +1,8 @@
 // TODO
 
 /* High Priority */
-// Allow tasks to have subtasks. (See the mockup on Github)
+// Allow tasks to have subtasks. (See the mockup on Github.) Consider - do I need selected subtask? I'm thinking no.
+// Make it so subtasks can be saved by hitting "Enter"
 /* End High Priority */
 
 /* Medium Priority */
@@ -29,7 +30,7 @@ import ResizableSplitView from "./components/ResizableSplitView";
 import MainView from "./components/MainView.jsx";
 import TaskView from "./components/TaskView.jsx";
 import React, { useState, useEffect, useRef } from "react";
-import { List, Task, Tag } from "./types";
+import { List, Task, Subtask, Tag } from "./types";
 
 export const SPECIAL_LIST_ID_ALL_TASKS = -1;
 const SPECIAL_LIST_ID_UNCATEGORIZED = 0;
@@ -51,6 +52,7 @@ const SPECIAL_LISTS: List[] = [
 
 const LOCAL_STORAGE_KEY_LISTS = "todoApp.lists";
 const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";
+const LOCAL_STORAGE_KEY_SUBTASKS = "todoApp.subtasks";
 const LOCAL_STORAGE_KEY_TAGS = "todoApp.tags";
 // const LOCAL_STORAGE_KEY_SETTINGS = "todoApp.settings";
 // const LOCAL_STORAGE_KEY_THEME = "todoApp.theme";
@@ -87,6 +89,7 @@ const App = () => {
 
   // const [lists, setLists] = useState(SPECIAL_LISTS);
   // const [tasks, setTasks] = useState([dummyTask]);
+  // const [subtasks, setSubtasks] = useState([]);
   // const [tags, setTags] = useState([]);
 
   const [lists, setLists] = useState<List[]>(() => {
@@ -128,6 +131,20 @@ const App = () => {
     return storedTasks;
   });
 
+  const [subtasks, setSubtasks] = useState<Subtask[]>(() => {
+    const stored = localStorage.getItem(LOCAL_STORAGE_KEY_SUBTASKS);
+    let storedSubtasks: Subtask[] = [];
+
+    if (stored) {
+      try {
+        storedSubtasks = JSON.parse(stored) as Subtask[];
+      } catch (e) {
+        console.error("Failed to parse stored subtasks:", e);
+      }
+    }
+    return storedSubtasks;
+  });
+
   const [tags, setTags] = useState<Tag[]>(() => {
     const stored = localStorage.getItem(LOCAL_STORAGE_KEY_TAGS);
     let storedTags: Tag[] = [];
@@ -147,6 +164,10 @@ const App = () => {
   const [selectedTask, setSelectedTask] = useState<Task | undefined>(
     tasks.find((task) => task.id === selectedList.id) || undefined
   );
+
+  // const [selectedSubtask, setSelectedSubtask] = useState<Subtask | undefined>(
+  //   undefined
+  // );
 
   const [isAddMode, setIsAddMode] = useState<boolean>(true);
 
@@ -352,6 +373,13 @@ const App = () => {
     setTasks(tasks.filter((task: Task) => task.id !== taskId));
   };
 
+  const deleteSubtask = (subtaskId: number) => {
+    // TODO - look at deleteTask method above and copy over the logic needed
+    setSubtasks(
+      subtasks.filter((subtask: Subtask) => subtask.id !== subtaskId)
+    );
+  };
+
   const addTask = (newTask: Task) => {
     if (!newTask) return; // Prevent adding empty tasks
     setTasks([...tasks, newTask]);
@@ -364,6 +392,22 @@ const App = () => {
     }
     setIsAddMode(false);
     setSelectedTask(newTask); // Select the newly added task
+  };
+
+  const addSubtask = (newSubtask: Subtask) => {
+    // TODO - look at addTask method above and copy over the logic needed
+
+    if (!newSubtask) return; // Prevent adding empty subtasks
+    setSubtasks([...subtasks, newSubtask]);
+
+    // Do I even need below method? Subtasks are already associated with taskId. When deleting subtask, that's OK. When deleting task, that should be OK, too.
+    // addSubtaskToTask();
+
+    // addTasksToList(newSubtask.listId, [newSubtask.id]);
+    // above should be addSubtasksToTask
+
+    // setIsAddMode(false);
+    //setSelectedSubtask(newSubtask); // Select the newly added subtask
   };
 
   const editTask = (editedTask: Task) => {
@@ -414,6 +458,11 @@ const App = () => {
     taskFormRef.current?.focusTitleInput(); // Focus the title input
   };
 
+  const handleStartNewSubtask = (e: React.MouseEvent<HTMLDivElement>) => {
+    // TODO - figure out what rest should be
+    ripple(e);
+  };
+
   const toggleCompleted = (taskId: number) => {
     setTasks(
       tasks.map((task: Task) => {
@@ -426,11 +475,27 @@ const App = () => {
     );
   };
 
+  const toggleSubtaskCompleted = (subtaskId: number) => {
+    setSubtasks(
+      subtasks.map((subtask: Subtask) => {
+        if (subtask.id === subtaskId) {
+          return { ...subtask, completed: !subtask.completed };
+        } else {
+          return subtask;
+        }
+      })
+    );
+  };
+
   const getTasksByListId = (listId: number) => {
     if (listId === -1) {
       return tasks; // Return all tasks for "All Tasks" list
     }
     return tasks.filter((task) => task.listId === listId);
+  };
+
+  const getSubtasksByTaskId = (taskId: number) => {
+    return subtasks.filter((subtask) => subtask.taskId === taskId);
   };
 
   /* End Functions */
@@ -538,6 +603,12 @@ const App = () => {
   //   console.log(tasks.slice(0, 2));
   // };
 
+  // console.log("subtasks in App", subtasks);
+  // console.log(
+  //   "filtered subtasks in App",
+  //   getSubtasksByTaskId(selectedTask ? selectedTask.id : 0)
+  // );
+
   /* End Debugging */
 
   return (
@@ -584,6 +655,15 @@ const App = () => {
               isAddMode={isAddMode}
               addTag={addTag}
               deleteTag={deleteTag}
+              subtasks={getSubtasksByTaskId(selectedTask.id)}
+              setSubtasks={setSubtasks}
+              // setSelectedSubtask={setSelectedSubtask}
+              // selectedSubtaskId={selectedSubtask?.id}
+              deleteSubtask={deleteSubtask}
+              toggleSubtaskCompleted={toggleSubtaskCompleted}
+              handleStartNewSubtask={handleStartNewSubtask}
+              ripple={ripple}
+              // addSubtask={addSubtask}
               ref={taskFormRef}
             />
           }

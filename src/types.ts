@@ -15,6 +15,13 @@ export interface Task {
   tagIds: number[];
 }
 
+export interface Subtask {
+  id: number;
+  completed: boolean;
+  title: string;
+  taskId: number;
+}
+
 export interface Tag {
   id: number;
   name: string;

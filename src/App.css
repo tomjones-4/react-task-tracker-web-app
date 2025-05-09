@@ -59,7 +59,7 @@ input[type="text"] {
   top: 12px;
   left: 12px;
   bottom: 12px;
-  min-width: 350px;
+  min-width: 250px;
   max-width: 350px;
   height: calc(100vh - 40px);
   background-color: #f7f7f7;
@@ -468,6 +468,7 @@ input[type="text"] {
   min-width: 0;
   height: 100vh; /* Full height */
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .debug {
