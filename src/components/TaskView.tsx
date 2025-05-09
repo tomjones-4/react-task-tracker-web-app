@@ -1,5 +1,4 @@
 import TaskForm from "./TaskForm";
-import SubtaskList from "./SubtaskList";
 import { useState, useEffect, forwardRef } from "react";
 import { List, Task, Tag } from "../types";
 
@@ -53,7 +52,6 @@ const TaskView = forwardRef<TaskFormRef, TaskViewProps>(
           deleteTag={deleteTag}
           ref={ref}
         />
-        <SubtaskList />
       </div>
     );
   }

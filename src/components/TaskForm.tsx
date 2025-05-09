@@ -12,6 +12,7 @@ import { List, Task, Tag } from "../types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaTrashAlt } from "react-icons/fa";
+import SubtaskList from "./SubtaskList";
 
 type TaskFormProps = {
   lists: List[];
@@ -277,6 +278,7 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
             </Modal>
           )}
         </span>
+        <SubtaskList />
         <TaskFormButtons
           deleteTask={deleteTask}
           selectedTaskId={selectedTask.id}
