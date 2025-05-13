@@ -47,9 +47,6 @@ const TaskItem: React.FC<TaskItemProps> = ({
         }`}
         onClick={handleTaskClick}
       >
-        <span {...listeners} className="drag-handle">
-          <FaGripVertical />
-        </span>
         <input
           type="checkbox"
           checked={task.completed}
@@ -57,7 +54,9 @@ const TaskItem: React.FC<TaskItemProps> = ({
         />
         <p>{task.title}</p>
         {/* <button onClick={() => deleteTask(task.id)}>X</button> */}
-
+        <span {...listeners} className="drag-handle">
+          <FaGripVertical onClick={(e) => e.stopPropagation()} />
+        </span>
         <FaChevronRight className="expand-task-icon" />
         <span className="ripple" />
       </div>

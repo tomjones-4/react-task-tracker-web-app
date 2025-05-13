@@ -340,10 +340,16 @@ input[type="text"] {
 }
 
 .drag-handle {
+  opacity: 0;
+  transition: opacity 0.2s ease;
   cursor: grab;
   padding: 0 8px 0 2px;
   display: inline-flex;
-  align-items: center;
+  user-select: none;
+}
+
+.task-item:hover .drag-handle {
+  opacity: 1;
 }
 
 .new-list-input {

@@ -2,6 +2,7 @@
 
 /* High Priority */
 // Make it so the first task in a list is selected by default when switching to a list if there's been no list selected yet.
+// Fix issue where drag and drop only works on All Tasks list
 /* End High Priority */
 
 /* Medium Priority */
