@@ -14,6 +14,10 @@ type MainViewProps = {
   selectedTaskForDebug: Task | undefined;
   setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
+  listSelectedTasksIds: number[];
+  setListSelectedTaskIds: React.Dispatch<React.SetStateAction<number[]>>;
+  listScrollPositions: number[];
+  setListScrollPositions: React.Dispatch<React.SetStateAction<number[]>>;
 };
 
 const MainView: React.FC<MainViewProps> = ({
@@ -28,6 +32,10 @@ const MainView: React.FC<MainViewProps> = ({
   selectedTaskForDebug,
   setIsAddMode,
   ripple,
+  listSelectedTasksIds,
+  setListSelectedTaskIds,
+  listScrollPositions,
+  setListScrollPositions,
 }) => {
   return (
     <div className="main-view">
@@ -44,20 +52,24 @@ const MainView: React.FC<MainViewProps> = ({
         handleStartNewTask={handleStartNewTask}
         setIsAddMode={setIsAddMode}
         ripple={ripple}
+        listSelectedTasksIds={listSelectedTasksIds}
+        setListSelectedTaskIds={setListSelectedTaskIds}
+        listScrollPositions={listScrollPositions}
+        setListScrollPositions={setListScrollPositions}
       />
 
       <div className="debug">
         <h2>Debug</h2>
-        <p>Selected Task: {JSON.stringify(selectedTaskForDebug)}</p>
-        <p>Selected List: {JSON.stringify(selectedList.name)}</p>
+        {/* <p>Selected Task: {JSON.stringify(selectedTaskForDebug)}</p>
+        <p>Selected List: {JSON.stringify(selectedList.name)}</p> */}
         <p>
           Selected Task:{" "}
           {selectedTaskForDebug
-            ? `${selectedTaskForDebug.title} (ID: ${selectedTaskForDebug.id}), (List ID: ${selectedTaskForDebug.listId})`
+            ? `"${selectedTaskForDebug.title}" (ID: ${selectedTaskForDebug.id}, List ID: ${selectedTaskForDebug.listId})`
             : "No task selected"}
         </p>
         <p>
-          Selected List: {selectedList.name} (ID: {selectedList.id})
+          Selected List: "{selectedList.name}" (ID: {selectedList.id})
         </p>
       </div>
     </div>

@@ -10,6 +10,7 @@
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
 // Add a tag filter when "All tasks" is selected in the sidebar
 // Consider adding a calendar view in place of the task list. This would probably be a very large code change, but it would be a sweet feature.
+// Think about making selected task something that's always selected (behavior would be that if a list doesn't have any tasks, it defauls to adding task with resetTask() method)
 /* End Medium Priority */
 
 /* Low Priority */
@@ -303,6 +304,11 @@ const App = () => {
   };
 
   const changeSelectedList = (list: List) => {
+    // console.log("chaning selecting list");
+    // console.log("selected task", selectedTask);
+
+    // TODO - I think I should add the logic here for setting the selected task instead of keeping it in TaskList.tsx.
+    // For example, the useEffect should just be for storing the scroll position and selected task per list, but then it should be set here.
     setSelectedList(list);
     if (list.taskIds.length === 0) {
       resetTask(list.id);
@@ -539,6 +545,9 @@ const App = () => {
     ripple.classList.add("ripple-animate");
   };
 
+  const [listSelectedTasksIds, setListSelectedTaskIds] = useState<number[]>([]);
+  const [listScrollPositions, setListScrollPositions] = useState<number[]>([]);
+
   /* End front-end effects */
 
   /* Begin Initialization */
@@ -660,6 +669,10 @@ const App = () => {
               selectedTaskForDebug={selectedTask}
               setIsAddMode={setIsAddMode}
               ripple={ripple}
+              listSelectedTasksIds={listSelectedTasksIds}
+              setListSelectedTaskIds={setListSelectedTaskIds}
+              listScrollPositions={listScrollPositions}
+              setListScrollPositions={setListScrollPositions}
             />
           }
           right={
@@ -701,6 +714,10 @@ const App = () => {
           selectedTaskForDebug={selectedTask}
           setIsAddMode={setIsAddMode}
           ripple={ripple}
+          listSelectedTasksIds={listSelectedTasksIds}
+          setListSelectedTaskIds={setListSelectedTaskIds}
+          listScrollPositions={listScrollPositions}
+          setListScrollPositions={setListScrollPositions}
         />
       )}
     </div>

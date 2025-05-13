@@ -28,6 +28,10 @@ type TaskListProps = {
   handleStartNewTask: (e: React.MouseEvent<HTMLDivElement>) => void;
   setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
+  listSelectedTasksIds: number[];
+  setListSelectedTaskIds: React.Dispatch<React.SetStateAction<number[]>>;
+  listScrollPositions: number[];
+  setListScrollPositions: React.Dispatch<React.SetStateAction<number[]>>;
 };
 
 const TaskList: React.FC<TaskListProps> = ({
@@ -41,7 +45,18 @@ const TaskList: React.FC<TaskListProps> = ({
   handleStartNewTask,
   setIsAddMode,
   ripple,
+  listSelectedTasksIds,
+  setListSelectedTaskIds,
+  listScrollPositions,
+  setListScrollPositions,
 }) => {
+  // useEffect(() => {
+  //   console.log("TaskList mounted");
+  //   return () => {
+  //     console.log("TaskList unmounted");
+  //   };
+  // }, []);
+
   // Sort tasks: incomplete ones first, then completed ones
   const sortedTasks = tasks.sort(
     (a, b) => Number(a.completed) - Number(b.completed)
@@ -70,10 +85,22 @@ const TaskList: React.FC<TaskListProps> = ({
   };
 
   const listRef = useRef<HTMLDivElement>(null);
-  const [listSelectedTasksIds, setListSelectedTaskIds] = useState<number[]>([]);
-  const [scrollPositions, setScrollPositions] = useState<number[]>([]);
 
   useEffect(() => {
+    console.log(
+      "listSelectedTaskIds when setting the selected task ids",
+      listSelectedTasksIds
+    );
+
+    // const isSelectedTaskSaved = tasks.findIndex(
+    //   (t: Task) => t.id === selectedTaskId
+    // );
+    // if (
+    //   isSelectedTaskSaved !== -1 &&
+    //   selectedTaskId &&
+    //   selectedListId === SPECIAL_LIST_ID_ALL_TASKS
+    // ) {
+
     if (selectedTaskId && selectedListId === SPECIAL_LIST_ID_ALL_TASKS) {
       const listIdForTask = tasks.find(
         (task: Task) => task.id === selectedTaskId
@@ -86,6 +113,7 @@ const TaskList: React.FC<TaskListProps> = ({
       }
       return;
     }
+    //if (isSelectedTaskSaved && selectedTaskId) {
     if (selectedTaskId) {
       setListSelectedTaskIds((prevIds) => ({
         ...prevIds,
@@ -98,7 +126,7 @@ const TaskList: React.FC<TaskListProps> = ({
     const handleScroll = () => {
       if (listRef.current) {
         const currentList = listRef.current;
-        setScrollPositions((prevScrollPositions) => ({
+        setListScrollPositions((prevScrollPositions) => ({
           ...prevScrollPositions,
           [selectedListId]: currentList.scrollTop,
         }));
@@ -111,8 +139,12 @@ const TaskList: React.FC<TaskListProps> = ({
   }, [selectedListId]);
 
   useEffect(() => {
-    if (listRef.current && scrollPositions[selectedListId] !== undefined) {
-      listRef.current.scrollTop = scrollPositions[selectedListId];
+    // console.log(
+    //   "listSelectedTaskIds when retrieving the selected task ids",
+    //   listSelectedTasksIds
+    // );
+    if (listRef.current && listScrollPositions[selectedListId] !== undefined) {
+      listRef.current.scrollTop = listScrollPositions[selectedListId];
     }
     if (selectedListId === SPECIAL_LIST_ID_ALL_TASKS) return;
     if (listSelectedTasksIds[selectedListId]) {
@@ -120,7 +152,12 @@ const TaskList: React.FC<TaskListProps> = ({
       console.log("selectedListId", selectedListId);
       console.log("selectedTaskId", selectedTaskId);
       console.log("listSelectedTasksIds[selectedListId]", id);
-      setSelectedTask(tasks.find((task: Task) => task.id === id));
+      // This line is causing the task to be undefined since there is currently no task with the id of the new (reset task) task
+      // if (id) {
+      //   console.log("id", id);
+      //   setSelectedTask(tasks.find((task: Task) => task.id === id));
+      // }
+      // We want to say: if id isn't found, reset task or go to first task on list
     }
   }, [selectedListId]);
 
