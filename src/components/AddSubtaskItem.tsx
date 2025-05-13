@@ -58,6 +58,9 @@ const AddSubtaskItem: React.FC<AddSubtaskItemProps> = ({
           placeholder="Add New Subtask"
           value={newSubtaskTitle}
           onChange={(e) => setNewSubtaskTitle(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleAddSubtask(e, newSubtaskTitle);
+          }}
         ></input>
       </span>
       <span className="ripple" />

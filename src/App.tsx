@@ -1,8 +1,7 @@
 // TODO
 
 /* High Priority */
-// Allow tasks to have subtasks. (See the mockup on Github.) Consider - do I need selected subtask? I'm thinking no.
-// Make it so subtasks can be saved by hitting "Enter"
+// Make it so the first task in a list is selected by default when switching to a list if there's been no list selected yet.
 /* End High Priority */
 
 /* Medium Priority */

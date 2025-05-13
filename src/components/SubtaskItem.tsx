@@ -90,6 +90,12 @@ const SubtaskItem: React.FC<SubtaskItemProps> = ({
           placeholder="Add New Subtask"
           value={subtaskTitle}
           onChange={(e) => setSubtaskTitle(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleUpdateSubtask(e, subtaskTitle);
+              e.currentTarget.blur();
+            }
+          }}
         ></input>
         <span>
           <button
