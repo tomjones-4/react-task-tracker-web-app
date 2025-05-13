@@ -46,17 +46,27 @@ const TaskList: React.FC<TaskListProps> = ({
   const sortedTasks = tasks.sort(
     (a, b) => Number(a.completed) - Number(b.completed)
   );
-
   const sensors = useSensors(useSensor(PointerSensor));
 
   const handleDragEnd = (e: DragEndEvent) => {
     const { active, over } = e;
-    if (!over) return; //safeguard against null
-    if (active.id !== over.id) {
-      const oldIndex = tasks.findIndex((t) => t.id === active.id);
-      const newIndex = tasks.findIndex((t) => t.id === over.id);
-      setTasks((tasks) => arrayMove(tasks, oldIndex, newIndex));
-    }
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = tasks.findIndex((t) => t.id === active.id);
+    const newIndex = tasks.findIndex((t) => t.id === over.id);
+    const reorderedTasks = arrayMove(tasks, oldIndex, newIndex); // `tasks` is the subset (current list only)
+
+    setTasks((prev) => {
+      // Filter out tasks that belong to the current list
+      const otherTasks = prev.filter(
+        (t: Task) =>
+          t.listId !== selectedListId &&
+          selectedListId !== SPECIAL_LIST_ID_ALL_TASKS
+      );
+
+      // Combine reordered list-tasks with all other tasks
+      return [...otherTasks, ...reorderedTasks];
+    });
   };
 
   const listRef = useRef<HTMLDivElement>(null);
@@ -125,6 +135,7 @@ const TaskList: React.FC<TaskListProps> = ({
         >
           <SortableContext
             items={sortedTasks.map((task) => task.id)}
+            // items={sortedTasks.map((task) => task.id.toString())}
             strategy={verticalListSortingStrategy}
           >
             {sortedTasks.map((task) => (
