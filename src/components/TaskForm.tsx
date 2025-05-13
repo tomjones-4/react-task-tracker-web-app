@@ -30,11 +30,12 @@ type TaskFormProps = {
   setSubtasks: React.Dispatch<React.SetStateAction<Subtask[]>>;
   // setSelectedSubtask: React.Dispatch<React.SetStateAction<Subtask | undefined>>;
   // selectedSubtaskId: number | undefined;
+  addSubtask: (newSubtask: Subtask) => void;
+  editSubtask: (editedSubtask: Subtask) => void;
   deleteSubtask: (subtaskId: number) => void;
   toggleSubtaskCompleted: (subtaskId: number) => void;
   handleStartNewSubtask: (e: React.MouseEvent<HTMLDivElement>) => void;
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
-  // addSubtask: (newSubtask: Subtask) => void;
 };
 
 export type TaskFormRef = {
@@ -58,11 +59,12 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
       setSubtasks,
       // setSelectedSubtask,
       // selectedSubtaskId,
+      addSubtask,
+      editSubtask,
       deleteSubtask,
       toggleSubtaskCompleted,
       handleStartNewSubtask,
       ripple,
-      // addSubtask,
     },
     ref
   ) => {
@@ -301,9 +303,10 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
           subtasks={subtasks}
           setSubtasks={setSubtasks}
           // setSelectedSubtask={setSelectedSubtask}
-          // addSubtask={addSubtask}
           // selectedSubtaskId={selectedSubtaskId}
           selectedTaskId={selectedTask.id}
+          addSubtask={addSubtask}
+          editSubtask={editSubtask}
           deleteSubtask={deleteSubtask}
           toggleSubtaskCompleted={toggleSubtaskCompleted}
           handleStartNewSubtask={handleStartNewSubtask}

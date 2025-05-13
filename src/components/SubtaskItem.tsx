@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Subtask } from "../types";
 import { FaGripVertical } from "react-icons/fa";
 import { useSortable } from "@dnd-kit/sortable";
@@ -6,19 +6,22 @@ import { CSS } from "@dnd-kit/utilities";
 
 interface SubtaskItemProps {
   subtask: Subtask;
+  toggleSubtaskCompleted: (subtaskId: number) => void;
+  editSubtask: (editedSubtask: Subtask) => void;
+  deleteSubtask: (subtaskId: number) => void;
   //   selectedSubtaskId: number | undefined;
   //   setSelectedSubtask: React.Dispatch<React.SetStateAction<Subtask | undefined>>;
-  toggleSubtaskCompleted: (subtaskId: number) => void;
-  //   setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
   //   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const SubtaskItem: React.FC<SubtaskItemProps> = ({
   subtask,
+  toggleSubtaskCompleted,
+  editSubtask,
+  deleteSubtask,
+
   //   selectedSubtaskId,
   //   setSelectedSubtask,
-  toggleSubtaskCompleted,
-  //   setIsAddMode,
   //   ripple,
 }) => {
   //   const handleSubtaskClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -27,8 +30,32 @@ const SubtaskItem: React.FC<SubtaskItemProps> = ({
   //     ripple(e);
   //   };
 
+  const [subtaskTitle, setSubtaskTitle] = useState<string>(subtask.title);
+
   const handleChange = () => {
     toggleSubtaskCompleted(subtask.id);
+  };
+
+  const handleUpdateSubtask = (
+    e:
+      | React.MouseEvent<HTMLButtonElement>
+      | React.KeyboardEvent<HTMLInputElement>,
+    editedSubtaskTitle: string
+  ) => {
+    e.preventDefault();
+    const editedSubtask: Subtask = {
+      ...subtask,
+      title: editedSubtaskTitle,
+    };
+    editSubtask(editedSubtask);
+  };
+
+  const handleDeleteSubtask = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    subtaskId: number
+  ) => {
+    e.preventDefault();
+    deleteSubtask(subtaskId);
   };
 
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -56,7 +83,28 @@ const SubtaskItem: React.FC<SubtaskItemProps> = ({
           checked={subtask.completed}
           onChange={handleChange}
         />
-        <p>{subtask.title}</p>
+        <input
+          className="add-subtask-input"
+          ref={undefined} // TODO - fill this out if needed
+          type="text"
+          placeholder="Add New Subtask"
+          value={subtaskTitle}
+          onChange={(e) => setSubtaskTitle(e.target.value)}
+        ></input>
+        <span>
+          <button
+            type="button"
+            onClick={(e) => handleUpdateSubtask(e, subtaskTitle)}
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            onClick={(e) => handleDeleteSubtask(e, subtask.id)}
+          >
+            Delete
+          </button>
+        </span>
         {/* TODO - make a delete button for subtasks */}
         {/* <button onClick={() => deleteTask(task.id)}>X</button> */}
 

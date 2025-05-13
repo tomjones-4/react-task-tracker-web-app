@@ -48,8 +48,8 @@ const MainView: React.FC<MainViewProps> = ({
 
       <div className="debug">
         <h2>Debug</h2>
-        {/* <p>Selected Task: {JSON.stringify(selectedTaskForDebug)}</p> */}
-        {/* <p>Selected List: {JSON.stringify(selectedList.name)}</p> */}
+        <p>Selected Task: {JSON.stringify(selectedTaskForDebug)}</p>
+        <p>Selected List: {JSON.stringify(selectedList.name)}</p>
         <p>
           Selected Task:{" "}
           {selectedTaskForDebug

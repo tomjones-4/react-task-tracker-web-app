@@ -8,10 +8,11 @@ interface SubtasksProps {
   // setSelectedSubtask: React.Dispatch<React.SetStateAction<Subtask | undefined>>;
   // selectedSubtaskId: number | undefined;
   selectedTaskId: number;
+  addSubtask: (newSubtask: Subtask) => void;
+  editSubtask: (editedSubtask: Subtask) => void;
   deleteSubtask: (subtaskId: number) => void;
   toggleSubtaskCompleted: (subtaskId: number) => void;
   handleStartNewSubtask: (e: React.MouseEvent<HTMLDivElement>) => void;
-  // setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
@@ -21,27 +22,27 @@ const Subtasks: React.FC<SubtasksProps> = ({
   // setSelectedSubtask,
   // selectedSubtaskId,
   selectedTaskId,
+  addSubtask,
+  editSubtask,
   deleteSubtask,
   toggleSubtaskCompleted,
-
   handleStartNewSubtask,
-  // setIsAddMode,
   ripple,
 }) => {
   return (
-    <div>
-      <h2>Subtasks</h2>
+    <div className="subtasks-container">
+      <h2>Subtasks:</h2>
       <SubtaskList
         subtasks={subtasks}
         setSubtasks={setSubtasks}
         // setSelectedSubtask={setSelectedSubtask}
-        // addSubtask={addSubtask}
         // selectedSubtaskId={selectedSubtaskId}
         selectedTaskId={selectedTaskId}
+        addSubtask={addSubtask}
+        editSubtask={editSubtask}
         deleteSubtask={deleteSubtask}
         toggleSubtaskCompleted={toggleSubtaskCompleted}
-        handleStartNewSubtask={handleStartNewSubtask}
-        // setIsAddMode={setIsAddMode}
+        // handleStartNewSubtask={handleStartNewSubtask}
         ripple={ripple}
       />
     </div>

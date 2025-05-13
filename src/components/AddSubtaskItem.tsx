@@ -1,31 +1,65 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
+import { Subtask } from "../types";
 
 type AddSubtaskItemProps = {
-  //   handleAddSubtask: (e: React.MouseEvent<HTMLDivElement>) => void;
-  handleAddSubtask: (e: React.MouseEvent<SVGElement>) => void;
-  subTaskTitle: string;
-  setSubtaskTitle: React.Dispatch<React.SetStateAction<string>>;
+  addSubtask: (newSubtask: Subtask) => void;
+  selectedTaskId: number;
+  ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
 const AddSubtaskItem: React.FC<AddSubtaskItemProps> = ({
-  handleAddSubtask,
-  subTaskTitle,
-  setSubtaskTitle,
+  addSubtask,
+  selectedTaskId,
+  ripple,
 }) => {
+  const [newSubtaskTitle, setNewSubtaskTitle] = useState<string>("");
+
+  // TODO - make it so subtasks can be added with "Enter" hotkey
+  const handleAddSubtask = (
+    e: React.MouseEvent<SVGElement> | React.KeyboardEvent<HTMLInputElement>,
+    subtaskTitle: string
+  ) => {
+    e.preventDefault();
+    if (!subtaskTitle) {
+      // TODO - use better error handling
+      alert("Subtask title cannot be empty. TODO - use better error handling.");
+      // showError("Subtask title cannot be empty.");
+      return;
+    }
+    const newSubtask: Subtask = {
+      id: Date.now(),
+      completed: false,
+      title: subtaskTitle,
+      taskId: selectedTaskId,
+    };
+
+    // clear new subtask input
+    setNewSubtaskTitle("");
+    addSubtask(newSubtask);
+  };
+
+  useEffect(() => {
+    if (selectedTaskId) {
+      setNewSubtaskTitle("");
+    }
+  }, [selectedTaskId]);
   return (
     <div className="add-task">
-      <div>
-        <FaPlus className="add-task-icon" onClick={handleAddSubtask} />
+      <span>
+        <FaPlus
+          className="add-task-icon"
+          onClick={(e) => handleAddSubtask(e, newSubtaskTitle)}
+        />
         <input
-          className="TODO"
+          className="add-subtask-input"
           ref={undefined} // TODO - fill this out if needed
           type="text"
           placeholder="Add New Subtask"
-          value={subTaskTitle}
-          onChange={(e) => setSubtaskTitle(e.target.value)}
+          value={newSubtaskTitle}
+          onChange={(e) => setNewSubtaskTitle(e.target.value)}
         ></input>
-      </div>
+      </span>
       <span className="ripple" />
     </div>
   );

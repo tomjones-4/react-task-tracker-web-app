@@ -22,10 +22,12 @@ type SubtaskListProps = {
   // setSelectedSubtask: React.Dispatch<React.SetStateAction<Subtask | undefined>>;
   // selectedSubtaskId: number | undefined;
   selectedTaskId: number;
-  deleteSubtask: (subtaskId: number) => void;
+  addSubtask: (newSubtask: Subtask) => void;
   toggleSubtaskCompleted: (subtaskId: number) => void;
-  handleStartNewSubtask: (e: React.MouseEvent<HTMLDivElement>) => void;
-  // setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
+  editSubtask: (editedSubtask: Subtask) => void;
+  deleteSubtask: (subtaskId: number) => void;
+
+  // handleStartNewSubtask: (e: React.MouseEvent<HTMLDivElement>) => void;
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
@@ -35,48 +37,18 @@ const SubtaskList: React.FC<SubtaskListProps> = ({
   // setSelectedSubtask,
   // selectedSubtaskId,
   selectedTaskId,
-  deleteSubtask,
+  addSubtask,
   toggleSubtaskCompleted,
+  editSubtask,
+  deleteSubtask,
 
-  handleStartNewSubtask,
-  // setIsAddMode,
+  // handleStartNewSubtask,
   ripple,
 }) => {
-  const [subtaskTitle, setSubtaskTitle] = useState<string>("");
-
   // Sort subtasks: incomplete ones first, then completed ones
   const sortedSubtasks = subtasks.sort(
     (a, b) => Number(a.completed) - Number(b.completed)
   );
-
-  console.log("subtasks", subtasks);
-  console.log("sorted subtasks", sortedSubtasks);
-
-  const handleAddSubtask = (
-    e: React.MouseEvent<SVGElement> | React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    e.preventDefault();
-    console.log("adding subtask");
-    console.log(subtaskTitle);
-    console.log("subtasks", subtasks);
-    if (!subtaskTitle) {
-      alert("Subtask title cannot be empty. TODO - use better error handling.");
-      // showError("Subtask title cannot be empty.");
-      return;
-    }
-    const newSubtask: Subtask = {
-      id: Date.now(),
-      completed: false,
-      title: subtaskTitle,
-      taskId: selectedTaskId,
-    };
-    console.log("newSubtask", newSubtask);
-    setSubtasks([...subtasks, newSubtask]);
-  };
-
-  // useEffect(() => {
-
-  // }, [subtasks]);
 
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -95,9 +67,9 @@ const SubtaskList: React.FC<SubtaskListProps> = ({
   return (
     <div className="task-list-container">
       <AddSubtaskItem
-        handleAddSubtask={handleAddSubtask}
-        subTaskTitle={subtaskTitle}
-        setSubtaskTitle={setSubtaskTitle}
+        addSubtask={addSubtask}
+        selectedTaskId={selectedTaskId}
+        ripple={ripple}
       />
       <div className="task-list" ref={listRef}>
         <DndContext
@@ -113,10 +85,11 @@ const SubtaskList: React.FC<SubtaskListProps> = ({
               <SubtaskItem
                 key={subtask.id}
                 subtask={subtask}
+                toggleSubtaskCompleted={toggleSubtaskCompleted}
+                editSubtask={editSubtask}
+                deleteSubtask={deleteSubtask}
                 // selectedSubtaskId={selectedSubtaskId}
                 // setSelectedSubtask={setSelectedSubtask}
-                toggleSubtaskCompleted={toggleSubtaskCompleted}
-                // setIsAddMode={setIsAddMode}
                 // ripple={ripple}
               />
             ))}

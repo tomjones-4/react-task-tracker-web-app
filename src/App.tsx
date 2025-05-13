@@ -416,7 +416,7 @@ const App = () => {
       console.error("No task found in editTask method");
       return;
     }
-    const updatedTasks = tasks.map((task) => {
+    const updatedTasks = tasks.map((task: Task) => {
       if (task.id === editedTask.id) {
         return {
           ...task,
@@ -436,6 +436,21 @@ const App = () => {
         editedTask.id,
       ]);
     }
+  };
+
+  const editSubtask = (editedSubtask: Subtask) => {
+    const updatedSubtasks = subtasks.map((subtask: Subtask) => {
+      if (subtask.id === editedSubtask.id) {
+        return {
+          ...subtask,
+          title: editedSubtask.title,
+        };
+      }
+      return subtask;
+    });
+    setSubtasks(updatedSubtasks);
+    // TODO - figure out if I need to set selected subtask
+    // setSelectedTask(editedTask);
   };
 
   const resetTask = (newListId: number = selectedList.id) => {
@@ -459,7 +474,7 @@ const App = () => {
   };
 
   const handleStartNewSubtask = (e: React.MouseEvent<HTMLDivElement>) => {
-    // TODO - figure out what rest should be
+    // TODO - figure out what reset should be
     ripple(e);
   };
 
@@ -547,20 +562,25 @@ const App = () => {
 
   /* Begin seEffect Hooks */
 
+  // Save lists to localStorage whenever the lists array changes
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY_LISTS, JSON.stringify(lists));
+  }, [lists]);
+
   // Save tasks to localStorage whenever the tasks array changes
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY_TASKS, JSON.stringify(tasks));
   }, [tasks]);
 
+  // Save subtasks to localStorage whenever the subtasks array changes
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY_SUBTASKS, JSON.stringify(subtasks));
+  }, [subtasks]);
+
   // Save tags to localStorage whenever the tags array changes
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY_TAGS, JSON.stringify(tags));
   }, [tags]);
-
-  // Save lists to localStorage whenever the lists array changes
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY_LISTS, JSON.stringify(lists));
-  }, [lists]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -659,11 +679,12 @@ const App = () => {
               setSubtasks={setSubtasks}
               // setSelectedSubtask={setSelectedSubtask}
               // selectedSubtaskId={selectedSubtask?.id}
+              addSubtask={addSubtask}
+              editSubtask={editSubtask}
               deleteSubtask={deleteSubtask}
               toggleSubtaskCompleted={toggleSubtaskCompleted}
               handleStartNewSubtask={handleStartNewSubtask}
               ripple={ripple}
-              // addSubtask={addSubtask}
               ref={taskFormRef}
             />
           }

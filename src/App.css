@@ -44,7 +44,6 @@ h1 {
 /* Style the input field for new tasks and other inputs throughout App */
 input[type="text"] {
   padding: 10px;
-  margin-top: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
   color: black;
@@ -463,7 +462,7 @@ input[type="text"] {
 }
 
 .main-view {
-  padding: 20px 30px;
+  padding: 20px 0px;
   flex: 1;
   min-width: 0;
   height: 100vh; /* Full height */
@@ -486,7 +485,6 @@ input[type="text"] {
   height: 55%;
   width: 100%;
   max-width: auto;
-  padding: 20px;
   font-size: larger;
   box-sizing: border-box;
 }
@@ -614,7 +612,6 @@ input[type="text"] {
 textarea {
   width: calc(100% - 22px);
   padding: 10px;
-  margin-top: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
   resize: both;
@@ -624,7 +621,7 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
   margin: 10px 20px;
   border-radius: 16px;
 }
@@ -653,7 +650,7 @@ textarea {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 15px;
+  margin: 8px 0;
   color: gray;
 }
 
@@ -931,6 +928,24 @@ textarea {
 
 .trash-can-button:hover {
   transform: scale(1.6);
+}
+
+.subtasks-container {
+  margin-top: 0px;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.subtasks-container h2 {
+  margin-block-start: 0px;
+  margin-block-end: 14px;
+}
+
+.subtasks-container .add-task:hover {
+  /* border: none; */
+  background-color: #f7f7f7;
 }
 
 .delete-task-button:hover {
