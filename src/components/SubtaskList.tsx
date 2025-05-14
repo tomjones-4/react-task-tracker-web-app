@@ -65,13 +65,13 @@ const SubtaskList: React.FC<SubtaskListProps> = ({
   const listRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="task-list-container">
+    <div className="subtask-list-container">
       <AddSubtaskItem
         addSubtask={addSubtask}
         selectedTaskId={selectedTaskId}
         ripple={ripple}
       />
-      <div className="task-list" ref={listRef}>
+      <div className="subtask-list" ref={listRef}>
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}

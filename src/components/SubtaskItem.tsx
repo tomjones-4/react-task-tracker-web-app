@@ -83,7 +83,7 @@ const SubtaskItem: React.FC<SubtaskItemProps> = ({
           onChange={handleChange}
         />
         <input
-          className="add-subtask-input"
+          className="subtask-input"
           ref={undefined} // TODO - fill this out if needed
           type="text"
           placeholder="Add New Subtask"

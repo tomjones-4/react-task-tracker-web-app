@@ -45,24 +45,22 @@ const AddSubtaskItem: React.FC<AddSubtaskItemProps> = ({
     }
   }, [selectedTaskId]);
   return (
-    <div className="add-task">
-      <span>
-        <FaPlus
-          className="add-task-icon"
-          onClick={(e) => handleAddSubtask(e, newSubtaskTitle)}
-        />
-        <input
-          className="add-subtask-input"
-          ref={undefined} // TODO - fill this out if needed
-          type="text"
-          placeholder="Add New Subtask"
-          value={newSubtaskTitle}
-          onChange={(e) => setNewSubtaskTitle(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleAddSubtask(e, newSubtaskTitle);
-          }}
-        ></input>
-      </span>
+    <div className="add-subtask">
+      <FaPlus
+        className="add-task-icon"
+        onClick={(e) => handleAddSubtask(e, newSubtaskTitle)}
+      />
+      <input
+        className="add-subtask-input"
+        ref={undefined} // TODO - fill this out if needed
+        type="text"
+        placeholder="Add New Subtask"
+        value={newSubtaskTitle}
+        onChange={(e) => setNewSubtaskTitle(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") handleAddSubtask(e, newSubtaskTitle);
+        }}
+      ></input>
       <span className="ripple" />
     </div>
   );
