@@ -44,12 +44,22 @@ const SubtaskList: React.FC<SubtaskListProps> = ({
 
   const handleDragEnd = (e: DragEndEvent) => {
     const { active, over } = e;
-    if (!over) return; //safeguard against null
-    if (active.id !== over.id) {
-      const oldIndex = subtasks.findIndex((s) => s.id === active.id);
-      const newIndex = subtasks.findIndex((s) => s.id === over.id);
-      setSubtasks((subtasks) => arrayMove(subtasks, oldIndex, newIndex));
-    }
+
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = subtasks.findIndex((s: Subtask) => s.id === active.id);
+    const newIndex = subtasks.findIndex((s: Subtask) => s.id === over.id);
+    const reorderedSubtasks = arrayMove(subtasks, oldIndex, newIndex); // 'subtasks' is the subset (current task only)
+
+    setSubtasks((prev) => {
+      // Filter out subtasks that belong to the current task
+      const otherSubtasks = prev.filter(
+        (s: Subtask) => s.taskId !== selectedTaskId
+      );
+
+      // Combine reordered subtasks for selected task with all other subtasks
+      return [...otherSubtasks, ...reorderedSubtasks];
+    });
   };
 
   const listRef = useRef<HTMLDivElement>(null);
