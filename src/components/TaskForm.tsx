@@ -185,120 +185,122 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
         className={`task-form ${wiggle ? "wiggle" : ""}`}
         onSubmit={isAddMode ? handleAddTask : handleEditTask}
       >
-        <input
-          ref={taskTitleInputRef}
-          type="text"
-          name="title"
-          placeholder="Title"
-          value={taskTitle}
-          required
-          className="task-form-item"
-          onChange={(e) => setTaskTitle(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={taskDescription}
-          className="task-form-item task-form-description"
-          onChange={(e) => setTaskDescription(e.target.value)}
-          onKeyDown={handleKeyDown}
-        ></textarea>
-
-        <span className="task-form-item">
-          <label htmlFor="list-select">List</label>
-          <select
-            id="list-select"
-            name="list"
-            value={String(taskListId)}
-            onChange={(e) => setTaskListId(Number(e.target.value))}
-          >
-            {lists.slice(1).map((list) => (
-              <option key={String(list.id)} value={String(list.id)}>
-                {list.name}
-              </option>
-            ))}
-          </select>
-        </span>
-
-        <span className="task-form-item">
-          <label>
-            Due date?
-            <input
-              className="due-date-checkbox"
-              type="checkbox"
-              id="enable-due-date"
-              onChange={(e) => setDueDateEnabled(e.target.checked)}
-            />{" "}
-          </label>
-          <DatePicker
-            className="datepicker-input"
-            calendarClassName="datepicker-calendar"
-            selected={taskDueDate}
-            onChange={(date) => setTaskDueDate(date)}
-            placeholderText="Select a due date"
-            dateFormat="MMMM d, yyyy"
-            isClearable
-            disabled={!dueDateEnabled}
+        <div className="form-inputs">
+          <input
+            ref={taskTitleInputRef}
+            type="text"
+            name="title"
+            placeholder="Title"
+            value={taskTitle}
+            required
+            className="task-form-item"
+            onChange={(e) => setTaskTitle(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
-        </span>
 
-        <span className="task-form-item">
-          <label htmlFor="tags" className="tags-label">
-            Tags
-          </label>
-          <span className="tags">
-            {taskTagIds
-              .filter((id) => tags.some((tag) => tag.id === id)) // do this filter to avoid state sync issue where tag still exists in taskTagIds but not in tags, which happens briefly after tag is deleted
-              .map((id) => tags.find((tag) => tag.id === id))
-              .filter((tag): tag is Tag => tag !== undefined) // <-- type guard
-              .map((tag) => (
-                <span
-                  key={tag.id}
-                  className="tag"
-                  style={{ backgroundColor: tag.color, fontWeight: "bold" }}
-                >
-                  {tag.name}
-                  <button
-                    className="trash-can-button"
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      deleteTaskTag(tag.id);
-                    }}
-                  >
-                    <FaTrashAlt className="delete-tag-icon" />
-                  </button>
-                </span>
-              ))}
-            <span
-              key={0}
-              className="tag"
-              style={{ backgroundColor: "lightskyblue", fontWeight: "bold" }}
-              onClick={(e) => {
-                e.preventDefault();
-                setIsTagModalOpen(true);
-              }}
+          <textarea
+            name="description"
+            placeholder="Description"
+            value={taskDescription}
+            className="task-form-item task-form-description"
+            onChange={(e) => setTaskDescription(e.target.value)}
+            onKeyDown={handleKeyDown}
+          ></textarea>
+
+          <span className="task-form-item">
+            <label htmlFor="list-select">List</label>
+            <select
+              id="list-select"
+              name="list"
+              value={String(taskListId)}
+              onChange={(e) => setTaskListId(Number(e.target.value))}
             >
-              Add tag
-            </span>
+              {lists.slice(1).map((list) => (
+                <option key={String(list.id)} value={String(list.id)}>
+                  {list.name}
+                </option>
+              ))}
+            </select>
           </span>
 
-          {isTagModalOpen && (
-            <Modal closeModal={closeModal} wiggle={wiggle}>
-              <TagModal
-                tags={tags}
-                addTag={addTag}
-                deleteTag={deleteTag}
-                addTaskTag={addTaskTag}
-                taskTagIds={taskTagIds}
-                closeModal={closeModal}
-                setWiggle={setWiggle}
-              />
-            </Modal>
-          )}
-        </span>
+          <span className="task-form-item">
+            <label>
+              Due date?
+              <input
+                className="due-date-checkbox"
+                type="checkbox"
+                id="enable-due-date"
+                onChange={(e) => setDueDateEnabled(e.target.checked)}
+              />{" "}
+            </label>
+            <DatePicker
+              className="datepicker-input"
+              calendarClassName="datepicker-calendar"
+              selected={taskDueDate}
+              onChange={(date) => setTaskDueDate(date)}
+              placeholderText="Select a due date"
+              dateFormat="MMMM d, yyyy"
+              isClearable
+              disabled={!dueDateEnabled}
+            />
+          </span>
+
+          <span className="task-form-item">
+            <label htmlFor="tags" className="tags-label">
+              Tags
+            </label>
+            <span className="tags">
+              {taskTagIds
+                .filter((id) => tags.some((tag) => tag.id === id)) // do this filter to avoid state sync issue where tag still exists in taskTagIds but not in tags, which happens briefly after tag is deleted
+                .map((id) => tags.find((tag) => tag.id === id))
+                .filter((tag): tag is Tag => tag !== undefined) // <-- type guard
+                .map((tag) => (
+                  <span
+                    key={tag.id}
+                    className="tag"
+                    style={{ backgroundColor: tag.color, fontWeight: "bold" }}
+                  >
+                    {tag.name}
+                    <button
+                      className="trash-can-button"
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        deleteTaskTag(tag.id);
+                      }}
+                    >
+                      <FaTrashAlt className="delete-tag-icon" />
+                    </button>
+                  </span>
+                ))}
+              <span
+                key={0}
+                className="tag"
+                style={{ backgroundColor: "lightskyblue", fontWeight: "bold" }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsTagModalOpen(true);
+                }}
+              >
+                Add tag
+              </span>
+            </span>
+
+            {isTagModalOpen && (
+              <Modal closeModal={closeModal} wiggle={wiggle}>
+                <TagModal
+                  tags={tags}
+                  addTag={addTag}
+                  deleteTag={deleteTag}
+                  addTaskTag={addTaskTag}
+                  taskTagIds={taskTagIds}
+                  closeModal={closeModal}
+                  setWiggle={setWiggle}
+                />
+              </Modal>
+            )}
+          </span>
+        </div>
         <Subtasks
           subtasks={subtasks}
           setSubtasks={setSubtasks}

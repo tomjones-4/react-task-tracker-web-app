@@ -5,16 +5,18 @@
 /* End High Priority */
 
 /* Medium Priority */
-// Add authentication - require a user to login. This will require Supabase.
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
 // Add a tag filter when "All tasks" is selected in the sidebar
 // Consider adding a calendar view in place of the task list. This would probably be a very large code change, but it would be a sweet feature.
-// Think about making selected task something that's always selected (behavior would be that if a list doesn't have any tasks, it defauls to adding task with resetTask() method)
+/* Think about making selected task something that's always selected (behavior would be that if a list doesn't have any tasks, it defauls to adding task with resetTask() method).
+   I think this could be achieved by having selectedTaskId = -1 when there is no task selected, and that's how app knows to show AddTask form.
+  This probably also aligns better with only having selected task ids for tasks that actually exist, and not tasks that are going to be added. */
 /* End Medium Priority */
 
 /* Low Priority */
 // Consider adding a reset task button on the task form.
+// Add authentication - require a user to login. This will require Supabase.
 // Have the lists show up in a different way from the tags. Refactor whatever logic is shared between lists and tags modals
 // Consider using Headless UI for the modal and dropdown components. This would make it easier to style them and make them more accessible.
 // Use highlights to show tasks that are getting old or are due urgently.

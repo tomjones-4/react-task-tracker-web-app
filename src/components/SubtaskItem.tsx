@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Subtask } from "../types";
 import { FaGripVertical } from "react-icons/fa";
+import { FiCheck, FiX } from "react-icons/fi";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -75,10 +76,8 @@ const SubtaskItem: React.FC<SubtaskItemProps> = ({
         className={`task-item ${subtask.completed ? "completed" : ""}`}
         // onClick={handleSubtaskClick}
       >
-        <span {...listeners} className="drag-handle">
-          <FaGripVertical />
-        </span>
         <input
+          className="subtask-checkbox"
           type="checkbox"
           checked={subtask.completed}
           onChange={handleChange}
@@ -97,19 +96,24 @@ const SubtaskItem: React.FC<SubtaskItemProps> = ({
             }
           }}
         ></input>
-        <span>
+        <span className="subtask-actions">
           <button
             type="button"
+            className="icon-button save"
             onClick={(e) => handleUpdateSubtask(e, subtaskTitle)}
           >
-            Save
+            <FiCheck size={16} />
           </button>
           <button
             type="button"
+            className="icon-button delete"
             onClick={(e) => handleDeleteSubtask(e, subtask.id)}
           >
-            Delete
+            <FiX size={16} />
           </button>
+        </span>
+        <span {...listeners} className="drag-handle">
+          <FaGripVertical onClick={(e) => e.stopPropagation()} />
         </span>
         {/* TODO - make a delete button for subtasks */}
         {/* <button onClick={() => deleteTask(task.id)}>X</button> */}
