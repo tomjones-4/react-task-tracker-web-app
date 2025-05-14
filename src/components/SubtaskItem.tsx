@@ -10,9 +10,6 @@ interface SubtaskItemProps {
   toggleSubtaskCompleted: (subtaskId: number) => void;
   editSubtask: (editedSubtask: Subtask) => void;
   deleteSubtask: (subtaskId: number) => void;
-  //   selectedSubtaskId: number | undefined;
-  //   setSelectedSubtask: React.Dispatch<React.SetStateAction<Subtask | undefined>>;
-  //   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const SubtaskItem: React.FC<SubtaskItemProps> = ({
@@ -20,17 +17,7 @@ const SubtaskItem: React.FC<SubtaskItemProps> = ({
   toggleSubtaskCompleted,
   editSubtask,
   deleteSubtask,
-
-  //   selectedSubtaskId,
-  //   setSelectedSubtask,
-  //   ripple,
 }) => {
-  //   const handleSubtaskClick = (e: React.MouseEvent<HTMLDivElement>) => {
-  //     // setSelectedSubtask(subtask);
-  //     // setIsAddMode(false);
-  //     ripple(e);
-  //   };
-
   const [subtaskTitle, setSubtaskTitle] = useState<string>(subtask.title);
 
   const handleChange = () => {
@@ -69,13 +56,7 @@ const SubtaskItem: React.FC<SubtaskItemProps> = ({
 
   return (
     <div ref={setNodeRef} style={style} {...attributes}>
-      <div
-        // className={`task-item ${subtask.completed ? "completed" : ""} ${
-        //   subtask.id == selectedSubtaskId ? "selected" : ""
-        // }`}
-        className={`task-item ${subtask.completed ? "completed" : ""}`}
-        // onClick={handleSubtaskClick}
-      >
+      <div className={`task-item ${subtask.completed ? "completed" : ""}`}>
         <input
           className="subtask-checkbox"
           type="checkbox"
@@ -84,7 +65,6 @@ const SubtaskItem: React.FC<SubtaskItemProps> = ({
         />
         <input
           className="subtask-input"
-          ref={undefined} // TODO - fill this out if needed
           type="text"
           placeholder="Add New Subtask"
           value={subtaskTitle}
@@ -115,10 +95,6 @@ const SubtaskItem: React.FC<SubtaskItemProps> = ({
         <span {...listeners} className="drag-handle">
           <FaGripVertical onClick={(e) => e.stopPropagation()} />
         </span>
-        {/* TODO - make a delete button for subtasks */}
-        {/* <button onClick={() => deleteTask(task.id)}>X</button> */}
-
-        {/* <span className="ripple" /> */}
       </div>
     </div>
   );

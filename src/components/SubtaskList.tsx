@@ -19,31 +19,21 @@ import {
 type SubtaskListProps = {
   subtasks: Subtask[];
   setSubtasks: React.Dispatch<React.SetStateAction<Subtask[]>>;
-  // setSelectedSubtask: React.Dispatch<React.SetStateAction<Subtask | undefined>>;
-  // selectedSubtaskId: number | undefined;
   selectedTaskId: number;
   addSubtask: (newSubtask: Subtask) => void;
   toggleSubtaskCompleted: (subtaskId: number) => void;
   editSubtask: (editedSubtask: Subtask) => void;
   deleteSubtask: (subtaskId: number) => void;
-
-  // handleStartNewSubtask: (e: React.MouseEvent<HTMLDivElement>) => void;
-  ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
 const SubtaskList: React.FC<SubtaskListProps> = ({
   subtasks,
   setSubtasks,
-  // setSelectedSubtask,
-  // selectedSubtaskId,
   selectedTaskId,
   addSubtask,
   toggleSubtaskCompleted,
   editSubtask,
   deleteSubtask,
-
-  // handleStartNewSubtask,
-  ripple,
 }) => {
   // Sort subtasks: incomplete ones first, then completed ones
   const sortedSubtasks = subtasks.sort(
@@ -66,11 +56,7 @@ const SubtaskList: React.FC<SubtaskListProps> = ({
 
   return (
     <div className="subtask-list-container">
-      <AddSubtaskItem
-        addSubtask={addSubtask}
-        selectedTaskId={selectedTaskId}
-        ripple={ripple}
-      />
+      <AddSubtaskItem addSubtask={addSubtask} selectedTaskId={selectedTaskId} />
       <div className="subtask-list" ref={listRef}>
         <DndContext
           sensors={sensors}
@@ -88,9 +74,6 @@ const SubtaskList: React.FC<SubtaskListProps> = ({
                 toggleSubtaskCompleted={toggleSubtaskCompleted}
                 editSubtask={editSubtask}
                 deleteSubtask={deleteSubtask}
-                // selectedSubtaskId={selectedSubtaskId}
-                // setSelectedSubtask={setSelectedSubtask}
-                // ripple={ripple}
               />
             ))}
           </SortableContext>

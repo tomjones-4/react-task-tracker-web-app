@@ -168,10 +168,6 @@ const App = () => {
     tasks.find((task) => task.id === selectedList.id) || undefined
   );
 
-  // const [selectedSubtask, setSelectedSubtask] = useState<Subtask | undefined>(
-  //   undefined
-  // );
-
   const [isAddMode, setIsAddMode] = useState<boolean>(true);
 
   /* End State Variables */
@@ -382,7 +378,6 @@ const App = () => {
   };
 
   const deleteSubtask = (subtaskId: number) => {
-    // TODO - look at deleteTask method above and copy over the logic needed
     setSubtasks(
       subtasks.filter((subtask: Subtask) => subtask.id !== subtaskId)
     );
@@ -403,19 +398,8 @@ const App = () => {
   };
 
   const addSubtask = (newSubtask: Subtask) => {
-    // TODO - look at addTask method above and copy over the logic needed
-
     if (!newSubtask) return; // Prevent adding empty subtasks
     setSubtasks([...subtasks, newSubtask]);
-
-    // Do I even need below method? Subtasks are already associated with taskId. When deleting subtask, that's OK. When deleting task, that should be OK, too.
-    // addSubtaskToTask();
-
-    // addTasksToList(newSubtask.listId, [newSubtask.id]);
-    // above should be addSubtasksToTask
-
-    // setIsAddMode(false);
-    //setSelectedSubtask(newSubtask); // Select the newly added subtask
   };
 
   const editTask = (editedTask: Task) => {
@@ -457,8 +441,6 @@ const App = () => {
       return subtask;
     });
     setSubtasks(updatedSubtasks);
-    // TODO - figure out if I need to set selected subtask
-    // setSelectedTask(editedTask);
   };
 
   const resetTask = (newListId: number = selectedList.id) => {
@@ -479,11 +461,6 @@ const App = () => {
     ripple(e);
     resetTask();
     taskFormRef.current?.focusTitleInput(); // Focus the title input
-  };
-
-  const handleStartNewSubtask = (e: React.MouseEvent<HTMLDivElement>) => {
-    // TODO - figure out what reset should be
-    ripple(e);
   };
 
   const toggleCompleted = (taskId: number) => {
@@ -634,12 +611,6 @@ const App = () => {
   //   console.log(tasks.slice(0, 2));
   // };
 
-  // console.log("subtasks in App", subtasks);
-  // console.log(
-  //   "filtered subtasks in App",
-  //   getSubtasksByTaskId(selectedTask ? selectedTask.id : 0)
-  // );
-
   /* End Debugging */
 
   return (
@@ -692,14 +663,10 @@ const App = () => {
               deleteTag={deleteTag}
               subtasks={getSubtasksByTaskId(selectedTask.id)}
               setSubtasks={setSubtasks}
-              // setSelectedSubtask={setSelectedSubtask}
-              // selectedSubtaskId={selectedSubtask?.id}
               addSubtask={addSubtask}
               editSubtask={editSubtask}
               deleteSubtask={deleteSubtask}
               toggleSubtaskCompleted={toggleSubtaskCompleted}
-              handleStartNewSubtask={handleStartNewSubtask}
-              ripple={ripple}
               ref={taskFormRef}
             />
           }

@@ -15,14 +15,10 @@ type TaskViewProps = {
   deleteTag: (tagId: number) => void;
   subtasks: Subtask[];
   setSubtasks: React.Dispatch<React.SetStateAction<Subtask[]>>;
-  // setSelectedSubtask: React.Dispatch<React.SetStateAction<Subtask | undefined>>;
-  // selectedSubtaskId: number | undefined;
   addSubtask: (newSubtask: Subtask) => void;
   editSubtask: (editedSubtask: Subtask) => void;
   deleteSubtask: (subtaskId: number) => void;
   toggleSubtaskCompleted: (subtaskId: number) => void;
-  handleStartNewSubtask: (e: React.MouseEvent<HTMLDivElement>) => void;
-  ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
 export type TaskFormRef = {
@@ -44,14 +40,10 @@ const TaskView = forwardRef<TaskFormRef, TaskViewProps>(
       deleteTag,
       subtasks,
       setSubtasks,
-      // setSelectedSubtask,
-      // selectedSubtaskId,
       addSubtask,
       editSubtask,
       deleteSubtask,
       toggleSubtaskCompleted,
-      handleStartNewSubtask,
-      ripple,
     },
     ref
   ) => {
@@ -72,14 +64,10 @@ const TaskView = forwardRef<TaskFormRef, TaskViewProps>(
           deleteTag={deleteTag}
           subtasks={subtasks}
           setSubtasks={setSubtasks}
-          // setSelectedSubtask={setSelectedSubtask}
-          // selectedSubtaskId={selectedSubtaskId}
           addSubtask={addSubtask}
           editSubtask={editSubtask}
           deleteSubtask={deleteSubtask}
           toggleSubtaskCompleted={toggleSubtaskCompleted}
-          handleStartNewSubtask={handleStartNewSubtask}
-          ripple={ripple}
           ref={ref}
         />
       </div>

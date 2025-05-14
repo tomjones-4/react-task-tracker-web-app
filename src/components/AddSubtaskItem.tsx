@@ -5,17 +5,14 @@ import { Subtask } from "../types";
 type AddSubtaskItemProps = {
   addSubtask: (newSubtask: Subtask) => void;
   selectedTaskId: number;
-  ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
 const AddSubtaskItem: React.FC<AddSubtaskItemProps> = ({
   addSubtask,
   selectedTaskId,
-  ripple,
 }) => {
   const [newSubtaskTitle, setNewSubtaskTitle] = useState<string>("");
 
-  // TODO - make it so subtasks can be added with "Enter" hotkey
   const handleAddSubtask = (
     e: React.MouseEvent<SVGElement> | React.KeyboardEvent<HTMLInputElement>,
     subtaskTitle: string
@@ -52,7 +49,6 @@ const AddSubtaskItem: React.FC<AddSubtaskItemProps> = ({
       />
       <input
         className="add-subtask-input"
-        ref={undefined} // TODO - fill this out if needed
         type="text"
         placeholder="Add New Subtask"
         value={newSubtaskTitle}
@@ -61,7 +57,6 @@ const AddSubtaskItem: React.FC<AddSubtaskItemProps> = ({
           if (e.key === "Enter") handleAddSubtask(e, newSubtaskTitle);
         }}
       ></input>
-      <span className="ripple" />
     </div>
   );
 };
