@@ -68,6 +68,10 @@ input[type="text"] {
   box-sizing: border-box;
 }
 
+.menu-container h1 {
+  margin: 0 0 10px 0;
+}
+
 .menu-container h2 {
   margin: 0;
   padding: 20px;
@@ -468,9 +472,12 @@ input[type="text"] {
 }
 
 .main-view {
+  display: flex;
+  flex-direction: column;
   padding: 20px 0px;
   flex: 1;
   min-width: 0;
+  min-height: 0; /* important to avoid content overflow issues */
   height: 100vh; /* Full height */
   box-sizing: border-box;
   overflow-x: hidden;
@@ -484,17 +491,21 @@ input[type="text"] {
 .main-view h1 {
   margin-left: 10px;
   font-size: 44px;
-  margin-block-start: 10px;
+  margin-block-start: 0px;
+  margin-block-end: 10px;
 }
 
 .task-list-container {
   font-size: larger;
   box-sizing: border-box;
   min-height: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .task-list {
-  max-height: calc(100vh - 350px);
+  flex: 1;
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
@@ -524,6 +535,7 @@ input[type="text"] {
 
 .add-task p {
   color: slategray;
+  margin: 12px 0;
 }
 
 .task-item {
