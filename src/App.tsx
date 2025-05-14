@@ -2,6 +2,7 @@
 
 /* High Priority */
 // Make it so the first task in a list is selected by default when switching to a list if there's been no list selected yet.
+// Figure out how to get new subtask input to take up all the space on the row
 /* End High Priority */
 
 /* Medium Priority */
