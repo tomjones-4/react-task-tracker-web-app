@@ -57,7 +57,9 @@ const ListModal: React.FC<ListModalProps> = ({
     inputRef.current?.select();
   };
 
-  const handleAddList = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleAddList = (
+    e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLDivElement>
+  ) => {
     e.preventDefault();
 
     setListToDelete(undefined);
@@ -132,7 +134,12 @@ const ListModal: React.FC<ListModalProps> = ({
         )}
       </div>
 
-      <div className="new-list-input">
+      <div
+        className="new-list-input"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") handleAddList(e);
+        }}
+      >
         <input
           ref={inputRef}
           className={`list-name-input ${error ? "error" : ""}`}

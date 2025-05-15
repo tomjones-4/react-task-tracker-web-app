@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import ColorPickerWithPresets from "./ColorPickerWithPresets";
 import { Tag } from "../types";
 import { FaTrashAlt } from "react-icons/fa";
@@ -49,7 +49,9 @@ const TagModal: React.FC<TagModalProps> = ({
     inputRef.current?.select();
   };
 
-  const handleAddTag = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleAddTag = (
+    e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLDivElement>
+  ) => {
     e.preventDefault();
 
     const trimmedTagName = newTagName.trim();
@@ -122,7 +124,12 @@ const TagModal: React.FC<TagModalProps> = ({
         )}
       </div>
 
-      <div className="new-tag-input">
+      <div
+        className="new-tag-input"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") handleAddTag(e);
+        }}
+      >
         <input
           ref={inputRef}
           type="text"
