@@ -352,6 +352,10 @@ input[type="text"] {
   user-select: none;
 }
 
+.menu-list:hover .drag-handle {
+  opacity: 1;
+}
+
 .task-item:hover .drag-handle {
   opacity: 1;
 }

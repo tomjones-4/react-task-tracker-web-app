@@ -28,14 +28,14 @@ const MenuListItem: React.FC<MenuListItemProps> = ({
         key={list.id}
         onClick={(e) => handleListClick(e, list)}
       >
-        <span {...listeners} className="drag-handle">
-          <FaGripVertical />
-        </span>
         <span
           className="menu-list-color-block"
           style={{ backgroundColor: list.color }}
         ></span>
         <span className="menu-list-name">{list.name}</span>
+        <span {...listeners} className="drag-handle">
+          <FaGripVertical />
+        </span>
         <span className="menu-list-item-count">{list.taskIds.length}</span>
         <span className="ripple" />
       </div>
