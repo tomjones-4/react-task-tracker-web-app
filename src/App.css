@@ -58,8 +58,8 @@ input[type="text"] {
   top: 12px;
   left: 12px;
   bottom: 12px;
-  min-width: 250px;
-  max-width: 350px;
+  min-height: 0;
+  width: 20vw;
   height: calc(100vh - 40px);
   background-color: #f7f7f7;
   padding: 10px;
@@ -106,14 +106,22 @@ input[type="text"] {
   font-size: 18px;
 }
 
+.menu-lists-container {
+  box-sizing: border-box;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 .menu-lists {
   overflow-y: auto; /* scrollable when content grows */
   overflow-x: hidden;
   box-sizing: border-box;
-  padding-right: 5px;
-  flex: 1 1 auto;
-  min-height: 0; /* fix for Firefox scroll bug */
-  max-height: 55vh;
+  padding: 0 5px 12px 4px;
+  margin-bottom: 10px;
+  flex: 1;
+  min-height: 0;
 }
 
 .menu-list {
@@ -282,6 +290,7 @@ input[type="text"] {
 }
 
 .menu-list-color-block {
+  flex-shrink: 0;
   width: 12px;
   height: 12px;
   border-radius: 3px;
@@ -304,6 +313,7 @@ input[type="text"] {
 }
 
 .add-list {
+  margin-left: 5px;
   position: relative;
   padding: 0px 10px; /* Inner spacing */
   border-radius: 8px; /* Rounded corners */
@@ -446,7 +456,6 @@ input[type="text"] {
   display: flex;
   flex-direction: column;
   justify-content: end;
-  flex: 1;
   margin-top: auto; /* pushes to bottom if space */
   margin-bottom: 16px;
 }
@@ -1042,10 +1051,6 @@ z .tags-label {
 .add-subtask-input {
   margin: 2px 0;
   flex: 1;
-}
-
-.add-subtask-input.hover {
-  background-color: #f7f7f7;
 }
 
 .subtasks-container .subtask-input {

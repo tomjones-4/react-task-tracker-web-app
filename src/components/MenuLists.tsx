@@ -53,7 +53,7 @@ const MenuLists: React.FC<MenuListsProps> = ({
   };
 
   return (
-    <div>
+    <div className="menu-lists-container">
       <h3>Lists</h3>
       <AddList
         lists={lists}
