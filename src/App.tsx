@@ -2,7 +2,8 @@
 
 /* High Priority */
 // Make it so the first task in a list is selected by default when switching to a list if there's been no list selected yet.
-// Figure out how to get new subtask input to take up all the space on the row
+// See TODO in changeSelectedList function
+// Make the vertical drag and drop handles visible on menu lists
 /* End High Priority */
 
 /* Medium Priority */
@@ -10,6 +11,7 @@
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
 // Add a tag filter when "All tasks" is selected in the sidebar
 // Consider adding a calendar view in place of the task list. This would probably be a very large code change, but it would be a sweet feature.
+// Use highlights to show tasks that are getting old or are due urgently.
 /* Think about making selected task something that's always selected (behavior would be that if a list doesn't have any tasks, it defauls to adding task with resetTask() method).
    I think this could be achieved by having selectedTaskId = -1 when there is no task selected, and that's how app knows to show AddTask form.
   This probably also aligns better with only having selected task ids for tasks that actually exist, and not tasks that are going to be added. */
@@ -17,12 +19,9 @@
 
 /* Low Priority */
 // Consider adding a reset task button on the task form.
-// Add authentication - require a user to login. This will require Supabase.
-// Have the lists show up in a different way from the tags. Refactor whatever logic is shared between lists and tags modals
-// Consider using Headless UI for the modal and dropdown components. This would make it easier to style them and make them more accessible.
-// Use highlights to show tasks that are getting old or are due urgently.
-// Allow users to take advantage of keyboard shortcuts like "Esc" to clear inputs or exit modes.
-
+// Refactor whatever logic is shared between lists and tags modals.
+// Add authentication - require a user to login. This will require Supabase. TBD if this is necessary or overkill.
+// Have the lists show up in a different way from the tags. TBD if this is ncessary.
 /* End Low Priority */
 
 /* Begin Constants */
@@ -587,13 +586,6 @@ const App = () => {
         searchInputRef.current?.focusSearchInput(); // Focus the search input
         return;
       }
-      // TODO - eventually include functionality for "Escape" key
-      // if (event.key === "Escape") {
-      //   setSelectedTask(tasks[0]); // Reset to the first task
-      //   setIsAddMode(false);
-      //   searchInputRef.current?.focus(); // Focus the search input
-      //   return;
-      // }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => {

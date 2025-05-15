@@ -10,6 +10,8 @@ interface SubtasksProps {
   editSubtask: (editedSubtask: Subtask) => void;
   deleteSubtask: (subtaskId: number) => void;
   toggleSubtaskCompleted: (subtaskId: number) => void;
+  showError: (message: string) => void;
+  setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Subtasks: React.FC<SubtasksProps> = ({
@@ -20,6 +22,8 @@ const Subtasks: React.FC<SubtasksProps> = ({
   editSubtask,
   deleteSubtask,
   toggleSubtaskCompleted,
+  showError,
+  setError,
 }) => {
   return (
     <div className="subtasks-container">
@@ -32,6 +36,8 @@ const Subtasks: React.FC<SubtasksProps> = ({
         editSubtask={editSubtask}
         deleteSubtask={deleteSubtask}
         toggleSubtaskCompleted={toggleSubtaskCompleted}
+        showError={showError}
+        setError={setError}
       />
     </div>
   );

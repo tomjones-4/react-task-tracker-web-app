@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Subtask } from "../types";
 import { FaGripVertical } from "react-icons/fa";
 import { FiCheck, FiX } from "react-icons/fi";
@@ -10,6 +10,8 @@ interface SubtaskItemProps {
   toggleSubtaskCompleted: (subtaskId: number) => void;
   editSubtask: (editedSubtask: Subtask) => void;
   deleteSubtask: (subtaskId: number) => void;
+  showError: (message: string) => void;
+  setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const SubtaskItem: React.FC<SubtaskItemProps> = ({
@@ -17,6 +19,8 @@ const SubtaskItem: React.FC<SubtaskItemProps> = ({
   toggleSubtaskCompleted,
   editSubtask,
   deleteSubtask,
+  showError,
+  setError,
 }) => {
   const [subtaskTitle, setSubtaskTitle] = useState<string>(subtask.title);
 
@@ -27,13 +31,16 @@ const SubtaskItem: React.FC<SubtaskItemProps> = ({
   const handleUpdateSubtask = (
     e:
       | React.MouseEvent<HTMLButtonElement>
-      | React.KeyboardEvent<HTMLInputElement>,
-    editedSubtaskTitle: string
+      | React.KeyboardEvent<HTMLInputElement>
   ) => {
     e.preventDefault();
+    if (!subtaskTitle) {
+      showError("Subtask cannot be empty.");
+      return;
+    }
     const editedSubtask: Subtask = {
       ...subtask,
-      title: editedSubtaskTitle,
+      title: subtaskTitle,
     };
     editSubtask(editedSubtask);
   };
@@ -45,6 +52,12 @@ const SubtaskItem: React.FC<SubtaskItemProps> = ({
     e.preventDefault();
     deleteSubtask(subtaskId);
   };
+
+  useEffect(() => {
+    if (subtaskTitle) {
+      setError("");
+    }
+  }, [subtaskTitle]);
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: subtask.id });
@@ -71,7 +84,7 @@ const SubtaskItem: React.FC<SubtaskItemProps> = ({
           onChange={(e) => setSubtaskTitle(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              handleUpdateSubtask(e, subtaskTitle);
+              handleUpdateSubtask(e);
               e.currentTarget.blur();
             }
           }}
@@ -80,7 +93,7 @@ const SubtaskItem: React.FC<SubtaskItemProps> = ({
           <button
             type="button"
             className="icon-button save"
-            onClick={(e) => handleUpdateSubtask(e, subtaskTitle)}
+            onClick={(e) => handleUpdateSubtask(e)}
           >
             <FiCheck size={16} />
           </button>

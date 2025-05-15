@@ -1,4 +1,4 @@
-import {
+import React, {
   useState,
   useEffect,
   useRef,
@@ -12,7 +12,6 @@ import { List, Task, Subtask, Tag } from "../types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaTrashAlt } from "react-icons/fa";
-import SubtaskList from "./SubtaskList";
 import Subtasks from "./Subtasks";
 
 type TaskFormProps = {
@@ -89,8 +88,11 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
       setError(message);
       setWiggle(true);
       setTimeout(() => setWiggle(false), 400); // Remove class after animation
-      taskTitleInputRef.current?.focus();
-      taskTitleInputRef.current?.select();
+    };
+
+    const focusElement = (ref: React.RefObject<HTMLInputElement | null>) => {
+      ref.current?.focus();
+      ref.current?.select();
     };
 
     useEffect(() => {
@@ -110,6 +112,7 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
       e.preventDefault();
       if (!taskTitle) {
         showError("Task title cannot be empty.");
+        focusElement(taskTitleInputRef);
         return;
       }
       const newTask: Task = {
@@ -133,6 +136,7 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
       e.preventDefault();
       if (!taskTitle) {
         showError("Task title cannot be empty.");
+        focusElement(taskTitleInputRef);
         return;
       }
       const updatedTask: Task = {
@@ -301,6 +305,8 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
           editSubtask={editSubtask}
           deleteSubtask={deleteSubtask}
           toggleSubtaskCompleted={toggleSubtaskCompleted}
+          showError={showError}
+          setError={setError}
         />
         <TaskFormButtons
           deleteTask={deleteTask}

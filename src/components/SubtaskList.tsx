@@ -24,6 +24,8 @@ type SubtaskListProps = {
   toggleSubtaskCompleted: (subtaskId: number) => void;
   editSubtask: (editedSubtask: Subtask) => void;
   deleteSubtask: (subtaskId: number) => void;
+  showError: (message: string) => void;
+  setError: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const SubtaskList: React.FC<SubtaskListProps> = ({
@@ -34,6 +36,8 @@ const SubtaskList: React.FC<SubtaskListProps> = ({
   toggleSubtaskCompleted,
   editSubtask,
   deleteSubtask,
+  showError,
+  setError,
 }) => {
   // Sort subtasks: incomplete ones first, then completed ones
   const sortedSubtasks = subtasks.sort(
@@ -66,7 +70,12 @@ const SubtaskList: React.FC<SubtaskListProps> = ({
 
   return (
     <div className="subtask-list-container">
-      <AddSubtaskItem addSubtask={addSubtask} selectedTaskId={selectedTaskId} />
+      <AddSubtaskItem
+        addSubtask={addSubtask}
+        selectedTaskId={selectedTaskId}
+        showError={showError}
+        setError={setError}
+      />
       <div className="subtask-list" ref={listRef}>
         <DndContext
           sensors={sensors}
@@ -84,6 +93,8 @@ const SubtaskList: React.FC<SubtaskListProps> = ({
                 toggleSubtaskCompleted={toggleSubtaskCompleted}
                 editSubtask={editSubtask}
                 deleteSubtask={deleteSubtask}
+                showError={showError}
+                setError={setError}
               />
             ))}
           </SortableContext>

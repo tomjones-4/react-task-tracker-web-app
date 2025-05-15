@@ -5,29 +5,32 @@ import { Subtask } from "../types";
 type AddSubtaskItemProps = {
   addSubtask: (newSubtask: Subtask) => void;
   selectedTaskId: number;
+  showError: (message: string) => void;
+  setError: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const AddSubtaskItem: React.FC<AddSubtaskItemProps> = ({
   addSubtask,
   selectedTaskId,
+  showError,
+  setError,
 }) => {
   const [newSubtaskTitle, setNewSubtaskTitle] = useState<string>("");
 
   const handleAddSubtask = (
-    e: React.MouseEvent<SVGElement> | React.KeyboardEvent<HTMLInputElement>,
-    subtaskTitle: string
+    e: React.MouseEvent<SVGElement> | React.KeyboardEvent<HTMLInputElement>
   ) => {
     e.preventDefault();
-    if (!subtaskTitle) {
-      // TODO - use better error handling
-      alert("Subtask title cannot be empty. TODO - use better error handling.");
-      // showError("Subtask title cannot be empty.");
+
+    if (!newSubtaskTitle) {
+      showError("Subtask cannot be empty.");
       return;
     }
+
     const newSubtask: Subtask = {
       id: Date.now(),
       completed: false,
-      title: subtaskTitle,
+      title: newSubtaskTitle,
       taskId: selectedTaskId,
     };
 
@@ -37,16 +40,20 @@ const AddSubtaskItem: React.FC<AddSubtaskItemProps> = ({
   };
 
   useEffect(() => {
+    if (newSubtaskTitle) {
+      setError("");
+    }
+  }, [newSubtaskTitle]);
+
+  useEffect(() => {
     if (selectedTaskId) {
       setNewSubtaskTitle("");
     }
   }, [selectedTaskId]);
+
   return (
     <div className="add-subtask">
-      <FaPlus
-        className="add-task-icon"
-        onClick={(e) => handleAddSubtask(e, newSubtaskTitle)}
-      />
+      <FaPlus className="add-task-icon" onClick={(e) => handleAddSubtask(e)} />
       <input
         className="add-subtask-input"
         type="text"
@@ -54,7 +61,7 @@ const AddSubtaskItem: React.FC<AddSubtaskItemProps> = ({
         value={newSubtaskTitle}
         onChange={(e) => setNewSubtaskTitle(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === "Enter") handleAddSubtask(e, newSubtaskTitle);
+          if (e.key === "Enter") handleAddSubtask(e);
         }}
       ></input>
     </div>
