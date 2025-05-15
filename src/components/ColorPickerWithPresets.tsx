@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { RgbaStringColorPicker } from "react-colorful";
+import * as Popover from "@radix-ui/react-popover";
 interface ColorPickerWithPresetsProps {
   color: string;
   setColor: (color: string) => void;
@@ -12,10 +13,18 @@ const ColorPickerWithPresets: React.FC<ColorPickerWithPresetsProps> = ({
   presetColors,
 }) => {
   const [showCustomPicker, setShowCustomPicker] = useState<boolean>(false);
+  const [customColor, setCustomColor] = useState<string>(
+    "rgba(128, 128, 128, 1)"
+  );
 
   const handlePresetClick = (preset: string) => {
     setColor(preset);
     setShowCustomPicker(false);
+  };
+
+  const handleCustomChange = (newColor: string) => {
+    setCustomColor(newColor); // update swatch color
+    setColor(newColor); // apply selected color
   };
 
   return (
@@ -31,21 +40,31 @@ const ColorPickerWithPresets: React.FC<ColorPickerWithPresetsProps> = ({
             aria-label={`Select color ${preset}`}
           />
         ))}
-        <button
-          className={`color-swatch custom ${
-            showCustomPicker ? "selected" : ""
-          }`}
-          onClick={() => setShowCustomPicker(!showCustomPicker)}
-        >
-          +
-        </button>
-      </div>
 
-      {showCustomPicker && (
-        <div className="custom-picker">
-          <RgbaStringColorPicker color={color} onChange={setColor} />
-        </div>
-      )}
+        <Popover.Root>
+          <Popover.Trigger asChild>
+            <button
+              className={`color-swatch custom ${
+                color === customColor ? "selected" : ""
+              }`}
+              style={{ backgroundColor: customColor }}
+              aria-label="Custom color picker"
+            >
+              +
+            </button>
+          </Popover.Trigger>
+
+          <Popover.Portal>
+            <Popover.Content sideOffset={8} className="popover-content">
+              <RgbaStringColorPicker
+                color={customColor}
+                onChange={handleCustomChange}
+              />
+              <Popover.Arrow className="popover-arrow" />
+            </Popover.Content>
+          </Popover.Portal>
+        </Popover.Root>
+      </div>
     </div>
   );
 };

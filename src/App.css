@@ -406,9 +406,7 @@ input[type="text"] {
 }
 
 .color-swatch.custom {
-  background: linear-gradient(45deg, #e5e5e5, #ccc);
   font-size: 1.25rem;
-  color: #333;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -820,7 +818,19 @@ textarea {
   cursor: pointer;
 }
 
-.tags-label {
+.popover-content {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 12px;
+  z-index: 2000; /* Very important */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.popover-arrow {
+  fill: white;
+}
+z .tags-label {
   margin-right: 10px;
 }
 
