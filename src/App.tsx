@@ -58,12 +58,22 @@ const LOCAL_STORAGE_KEY_TAGS = "todoApp.tags";
 // const LOCAL_STORAGE_KEY_SETTINGS = "todoApp.settings";
 // const LOCAL_STORAGE_KEY_THEME = "todoApp.theme";
 
-const dummyTask: Task = {
-  id: -1,
+const DUMMY_TASK: Task = {
+  id: -2,
   completed: false,
   title: "Tend to the garden",
   description: "Water the plants and remove weeds",
-  listId: 0,
+  listId: SPECIAL_LIST_ID_UNCATEGORIZED,
+  dueDate: null,
+  tagIds: [],
+};
+
+const EMPTY_TASK: Task = {
+  id: -1,
+  completed: false,
+  title: "",
+  description: "",
+  listId: SPECIAL_LIST_ID_UNCATEGORIZED,
   dueDate: null,
   tagIds: [],
 };
@@ -89,7 +99,7 @@ const App = () => {
   // When uncommenting this line, comment out the blocks below it that sets the lists, tasks, and tags based on localStorage.
 
   // const [lists, setLists] = useState(SPECIAL_LISTS);
-  // const [tasks, setTasks] = useState([dummyTask]);
+  // const [tasks, setTasks] = useState([DUMMY_TASK]);
   // const [subtasks, setSubtasks] = useState([]);
   // const [tags, setTags] = useState([]);
 
@@ -163,7 +173,7 @@ const App = () => {
   const [selectedList, setSelectedList] = useState<List>(lists[0]);
 
   const [selectedTask, setSelectedTask] = useState<Task | undefined>(
-    tasks.find((task) => task.id === selectedList.id) || undefined
+    tasks.length > 0 ? tasks[0] : EMPTY_TASK
   );
 
   const [isAddMode, setIsAddMode] = useState<boolean>(true);
