@@ -58,10 +58,10 @@ const MainView: React.FC<MainViewProps> = ({
         setListScrollPositions={setListScrollPositions}
       />
 
-      <div className="debug">
+      {/* <div className="debug">
         <h2>Debug</h2>
-        {/* <p>Selected Task: {JSON.stringify(selectedTaskForDebug)}</p>
-        <p>Selected List: {JSON.stringify(selectedList.name)}</p> */}
+        <p>Selected Task: {JSON.stringify(selectedTaskForDebug)}</p>
+        <p>Selected List: {JSON.stringify(selectedList.name)}</p>
         <p>
           Selected Task:{" "}
           {selectedTaskForDebug
@@ -71,7 +71,7 @@ const MainView: React.FC<MainViewProps> = ({
         <p>
           Selected List: "{selectedList.name}" (ID: {selectedList.id})
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };

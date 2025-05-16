@@ -12,6 +12,7 @@
 /* Think about making selected task something that's always selected (behavior would be that if a list doesn't have any tasks, it defauls to adding task with resetTask() method).
    I think this could be achieved by having selectedTaskId = -1 when there is no task selected, and that's how app knows to show AddTask form.
   This probably also aligns better with only having selected task ids for tasks that actually exist, and not tasks that are going to be added. */
+// Add dark mode toggle
 /* End Medium Priority */
 
 /* Low Priority */
@@ -21,6 +22,8 @@
 // Refactor whatever logic is shared between lists and tags modals.
 // Add authentication - require a user to login. This will require Supabase. TBD if this is necessary or overkill.
 // Have the lists show up in a different way from the tags. TBD if this is ncessary.
+// Add tooltips when user is getting started with app
+// Maybe change favicon?
 /* End Low Priority */
 
 /* Begin Constants */
