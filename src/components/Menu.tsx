@@ -63,7 +63,7 @@ const Menu = forwardRef<MenuRef, MenuProps>(
             ref={searchInputRef}
             type="text"
             className="search-input"
-            placeholder="Search"
+            placeholder="Search - Coming soon..."
           ></input>
         </div>
         <MenuLists

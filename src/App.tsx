@@ -4,8 +4,9 @@
 /* End High Priority */
 
 /* Medium Priority */
+// Fix small bug where when list has been moved to end of lists, it isn't deleted. It's an indexing error - I need to copy the logic from deleting tasks with choosing the correct index.
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
-// Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab)
+// Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab, or just be a toggle for the selected list - in that case list UI would probably need more state added to it, possibly in App.tsx)
 // Add a tag filter when "All tasks" is selected in the sidebar
 // Consider adding a calendar view in place of the task list. This would probably be a very large code change, but it would be a sweet feature.
 // Use highlights to show tasks that are getting old or are due urgently.
@@ -15,6 +16,7 @@
 /* End Medium Priority */
 
 /* Low Priority */
+// Consider making the delete task jump to the next task above when tasks have been reordered. It currently works like this for menu lists, but I think that's because the objects are reordered correctly with drag and drop. When I delete, I currently use list.taskIds.
 // Consider adding a reset task button on the task form.
 // Refactor whatever logic is shared between lists and tags modals.
 // Add authentication - require a user to login. This will require Supabase. TBD if this is necessary or overkill.
