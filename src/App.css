@@ -496,7 +496,7 @@ input[type="text"] {
 }
 
 .debug {
-  width: 700px;
+  width: 100%;
   overflow: hidden;
 }
 
@@ -526,7 +526,7 @@ input[type="text"] {
 
 .add-task-icon {
   cursor: pointer;
-  margin-right: 12px;
+  margin: 0 11px;
   color: slategray;
 }
 
@@ -1021,6 +1021,12 @@ z .tags-label {
   align-items: center; /* Centers items vertically */
   transition: background 0.2s ease-in-out;
   overflow: hidden;
+}
+
+.add-subtask-icon {
+  cursor: pointer;
+  margin-right: 12px;
+  color: slategray;
 }
 
 .subtask-list-container {

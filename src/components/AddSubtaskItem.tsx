@@ -53,7 +53,10 @@ const AddSubtaskItem: React.FC<AddSubtaskItemProps> = ({
 
   return (
     <div className="add-subtask">
-      <FaPlus className="add-task-icon" onClick={(e) => handleAddSubtask(e)} />
+      <FaPlus
+        className="add-subtask-icon"
+        onClick={(e) => handleAddSubtask(e)}
+      />
       <input
         className="add-subtask-input"
         type="text"
