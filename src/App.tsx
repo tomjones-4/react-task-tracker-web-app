@@ -1,9 +1,7 @@
 // TODO
 
 /* High Priority */
-// Make it so the first task in a list is selected by default when switching to a list if there's been no list selected yet.
-// See TODO in changeSelectedList function
-// Make the vertical drag and drop handles visible on menu lists
+// When deleting tasks from All Tasks list, the deleted task can jump around instead of sliding down the list nicely.
 /* End High Priority */
 
 /* Medium Priority */
@@ -302,18 +300,69 @@ const App = () => {
   };
 
   const changeSelectedList = (list: List) => {
-    // console.log("chaning selecting list");
-    // console.log("selected task", selectedTask);
-
-    // TODO - I think I should add the logic here for setting the selected task instead of keeping it in TaskList.tsx.
-    // For example, the useEffect should just be for storing the scroll position and selected task per list, but then it should be set here.
     setSelectedList(list);
     if (list.taskIds.length === 0) {
       resetTask(list.id);
     } else {
-      setIsAddMode(false);
+      if (list.id !== SPECIAL_LIST_ID_ALL_TASKS) {
+        const taskIdToSelect = listSelectedTasksIds[list.id];
+        if (taskIdToSelect) {
+          // console.log("list.id", list.id);
+          // console.log("taskIdToSelect", taskIdToSelect);
+          const taskToSelect = tasks.find((t: Task) => t.id === taskIdToSelect);
+          if (taskToSelect) {
+            setSelectedTask(taskToSelect);
+          } else {
+            console.log("No taskToSelect found");
+          }
+        } else {
+          const firstTaskIdInList = list.taskIds[0];
+          const firstTaskInList = tasks.find(
+            (t: Task) => t.id === firstTaskIdInList
+          );
+          setSelectedTask(firstTaskInList);
+        }
+
+        setIsAddMode(false);
+      }
     }
   };
+
+  useEffect(() => {
+    // console.log(
+    //   "listSelectedTaskIds when setting the selected task ids in App.tsx",
+    //   listSelectedTasksIds
+    // );
+    // console.log(
+    //   "selectedTask name and id -",
+    //   selectedTask?.title,
+    //   selectedTask?.id
+    // );
+    // console.log("selectedList", selectedList.name);
+
+    if (selectedTask && selectedList.id === SPECIAL_LIST_ID_ALL_TASKS) {
+      const listIdForTask = tasks.find(
+        (task: Task) => task.id === selectedTask.id
+      )?.listId;
+      if (listIdForTask === undefined) {
+        console.warn("No list found for task");
+        return;
+      }
+
+      setListSelectedTaskIds((prevIds) => ({
+        ...prevIds,
+        [listIdForTask]: selectedTask.id,
+      }));
+
+      return;
+    }
+    if (selectedTask) {
+      setListSelectedTaskIds((prevIds) => ({
+        ...prevIds,
+        [selectedList.id]: selectedTask.id,
+      }));
+    }
+  }, [selectedTask]);
 
   const addTag = (newTag: Tag) => {
     setTags([...tags, newTag]);
@@ -389,7 +438,7 @@ const App = () => {
     const listForNewTask = lists.find(
       (list: List) => list.id === newTask.listId
     );
-    if (listForNewTask) {
+    if (listForNewTask && selectedList.id !== SPECIAL_LIST_ID_ALL_TASKS) {
       changeSelectedList(listForNewTask); // Select the newly added task's list
     }
     setIsAddMode(false);
@@ -444,7 +493,7 @@ const App = () => {
 
   const resetTask = (newListId: number = selectedList.id) => {
     const newTask: Task = {
-      id: Date.now(),
+      id: -1,
       completed: false,
       title: "",
       description: "",

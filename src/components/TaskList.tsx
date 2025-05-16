@@ -87,42 +87,12 @@ const TaskList: React.FC<TaskListProps> = ({
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log(
-      "listSelectedTaskIds when setting the selected task ids",
-      listSelectedTasksIds
-    );
-
-    // const isSelectedTaskSaved = tasks.findIndex(
-    //   (t: Task) => t.id === selectedTaskId
-    // );
-    // if (
-    //   isSelectedTaskSaved !== -1 &&
-    //   selectedTaskId &&
-    //   selectedListId === SPECIAL_LIST_ID_ALL_TASKS
-    // ) {
-
-    if (selectedTaskId && selectedListId === SPECIAL_LIST_ID_ALL_TASKS) {
-      const listIdForTask = tasks.find(
-        (task: Task) => task.id === selectedTaskId
-      )?.listId;
-      if (listIdForTask) {
-        setListSelectedTaskIds((prevIds) => ({
-          ...prevIds,
-          [listIdForTask]: selectedTaskId,
-        }));
-      }
-      return;
+    // set list's scroll position to what's been saved
+    if (listRef.current && listScrollPositions[selectedListId] !== undefined) {
+      listRef.current.scrollTop = listScrollPositions[selectedListId];
     }
-    //if (isSelectedTaskSaved && selectedTaskId) {
-    if (selectedTaskId) {
-      setListSelectedTaskIds((prevIds) => ({
-        ...prevIds,
-        [selectedListId]: selectedTaskId,
-      }));
-    }
-  }, [selectedTaskId]);
 
-  useEffect(() => {
+    // create handleScroll method that tracks list scroll position and stores in state variable listScrollPositions
     const handleScroll = () => {
       if (listRef.current) {
         const currentList = listRef.current;
@@ -136,29 +106,6 @@ const TaskList: React.FC<TaskListProps> = ({
     const el = listRef.current;
     el?.addEventListener("scroll", handleScroll);
     return () => el?.removeEventListener("scroll", handleScroll);
-  }, [selectedListId]);
-
-  useEffect(() => {
-    // console.log(
-    //   "listSelectedTaskIds when retrieving the selected task ids",
-    //   listSelectedTasksIds
-    // );
-    if (listRef.current && listScrollPositions[selectedListId] !== undefined) {
-      listRef.current.scrollTop = listScrollPositions[selectedListId];
-    }
-    if (selectedListId === SPECIAL_LIST_ID_ALL_TASKS) return;
-    if (listSelectedTasksIds[selectedListId]) {
-      const id = listSelectedTasksIds[selectedListId];
-      console.log("selectedListId", selectedListId);
-      console.log("selectedTaskId", selectedTaskId);
-      console.log("listSelectedTasksIds[selectedListId]", id);
-      // This line is causing the task to be undefined since there is currently no task with the id of the new (reset task) task
-      // if (id) {
-      //   console.log("id", id);
-      //   setSelectedTask(tasks.find((task: Task) => task.id === id));
-      // }
-      // We want to say: if id isn't found, reset task or go to first task on list
-    }
   }, [selectedListId]);
 
   return (
