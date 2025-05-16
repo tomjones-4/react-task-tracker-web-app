@@ -1,7 +1,6 @@
 // TODO
 
 /* High Priority */
-// When deleting tasks from All Tasks list, the deleted task can jump around instead of sliding down the list nicely.
 /* End High Priority */
 
 /* Medium Priority */
@@ -388,12 +387,21 @@ const App = () => {
 
     // Select new task if selected task is deleted
     if (selectedTask && selectedTask.id === taskId) {
-      const taskList = lists.find((list) => list.id === taskToDelete.listId);
+      let taskList = selectedList;
+      // the if-else blocks below shouldn't be needed because currently the only way to delete a task is when it's already selected
+      // however, if this changes, the code below will be useful for making sure the right task and list are found
+      if (selectedList.id === SPECIAL_LIST_ID_ALL_TASKS) {
+        taskList =
+          lists.find((list) => list.id === SPECIAL_LIST_ID_ALL_TASKS) ??
+          selectedList;
+      } else {
+        taskList =
+          lists.find((list) => list.id === taskToDelete.listId) ?? selectedList;
+      }
       if (!taskList) {
         console.error("No list found for deleted task");
         return;
       }
-
       const indexInList = taskList.taskIds.indexOf(taskId);
       if (indexInList === -1) {
         console.warn("No position in list found when deleting task");
