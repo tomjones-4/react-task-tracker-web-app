@@ -41,13 +41,13 @@ const SPECIAL_LISTS: List[] = [
     id: SPECIAL_LIST_ID_ALL_TASKS,
     name: "All Tasks",
     color: "white",
-    taskIds: [-1],
+    taskIds: [],
   },
   {
     id: SPECIAL_LIST_ID_UNCATEGORIZED,
     name: "Uncategorized",
     color: "gray",
-    taskIds: [-1],
+    taskIds: [],
   },
 ];
 
