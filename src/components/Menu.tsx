@@ -78,11 +78,11 @@ const Menu = forwardRef<MenuRef, MenuProps>(
         <div className="menu-footer">
           <span>
             <IoSettingsOutline className="menu-footer-icon" />
-            <p>Settings</p>
+            <p>Settings - Coming soon...</p>
           </span>
           <span>
             <IoIosLogOut className="menu-footer-icon" />
-            <p>Sign out</p>
+            <p>Sign out - Coming soon...</p>
           </span>
         </div>
       </div>

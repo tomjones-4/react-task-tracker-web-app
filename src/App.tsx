@@ -4,7 +4,6 @@
 /* End High Priority */
 
 /* Medium Priority */
-// Fix small bug where when list has been moved to end of lists, it isn't deleted. It's an indexing error - I need to copy the logic from deleting tasks with choosing the correct index.
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab, or just be a toggle for the selected list - in that case list UI would probably need more state added to it, possibly in App.tsx)
 // Add a tag filter when "All tasks" is selected in the sidebar
@@ -16,8 +15,9 @@
 /* End Medium Priority */
 
 /* Low Priority */
-// Consider making the delete task jump to the next task above when tasks have been reordered. It currently works like this for menu lists, but I think that's because the objects are reordered correctly with drag and drop. When I delete, I currently use list.taskIds.
 // Consider adding a reset task button on the task form.
+// Consider changing the structure of tasks. Is it necessary to have all the task ids associated with them on the task? That info is sort of double tracked, since each task has a list id.
+// See if Drag and Drop reordering can handle completed subtasks. The crossing them off that makes them jump to bottom of the list, and then when they're deleted, the task to delete jumps around instead of smoothly moving up or down 1 spot.
 // Refactor whatever logic is shared between lists and tags modals.
 // Add authentication - require a user to login. This will require Supabase. TBD if this is necessary or overkill.
 // Have the lists show up in a different way from the tags. TBD if this is ncessary.
@@ -206,9 +206,14 @@ const App = () => {
       }
 
       if (lists.length <= 1) {
+        // this shouldn't ever happen because All Tasks and Uncategorized lists cannot be deleted
         resetTask();
       } else {
-        const listToSelect = lists[indexInList + 1];
+        const listToSelect =
+          lists[
+            indexInList < lists.length - 1 ? indexInList + 1 : indexInList - 1
+          ];
+
         if (!listToSelect) {
           console.warn("No list found when looking to select new list");
           return;
@@ -385,43 +390,30 @@ const App = () => {
 
   const deleteTask = (taskId: number) => {
     const taskToDelete = tasks.find((task: Task) => task.id === taskId);
-    if (!taskToDelete) return;
+    if (!taskToDelete) {
+      console.error("No task found to delete");
+      return;
+    }
 
     // Select new task if selected task is deleted
     if (selectedTask && selectedTask.id === taskId) {
-      let taskList = selectedList;
-      // the if-else blocks below shouldn't be needed because currently the only way to delete a task is when it's already selected
-      // however, if this changes, the code below will be useful for making sure the right task and list are found
-      if (selectedList.id === SPECIAL_LIST_ID_ALL_TASKS) {
-        taskList =
-          lists.find((list) => list.id === SPECIAL_LIST_ID_ALL_TASKS) ??
-          selectedList;
-      } else {
-        taskList =
-          lists.find((list) => list.id === taskToDelete.listId) ?? selectedList;
-      }
-      if (!taskList) {
-        console.error("No list found for deleted task");
-        return;
-      }
-      const indexInList = taskList.taskIds.indexOf(taskId);
+      const tasksInList = getTasksByListId(taskToDelete.listId);
+      const indexInList = tasksInList.indexOf(taskToDelete);
+
       if (indexInList === -1) {
         console.warn("No position in list found when deleting task");
         return;
       }
 
-      if (taskList.taskIds.length <= 1) {
+      if (tasksInList.length <= 1) {
         resetTask();
       } else {
-        const taskToSelect = tasks.find(
-          (task: Task) =>
-            task.id ===
-            taskList.taskIds[
-              indexInList < taskList.taskIds.length - 1
-                ? indexInList + 1
-                : indexInList - 1
-            ]
-        );
+        const taskToSelect =
+          tasksInList[
+            indexInList < tasksInList.length - 1
+              ? indexInList + 1
+              : indexInList - 1
+          ];
 
         if (!taskToSelect) {
           console.warn("No task found when looking to select new task");

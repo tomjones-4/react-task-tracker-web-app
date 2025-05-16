@@ -59,6 +59,7 @@ input[type="text"] {
   left: 12px;
   bottom: 12px;
   min-height: 0;
+  min-width: 200px;
   width: 20vw;
   height: calc(100vh - 40px);
   background-color: #f7f7f7;
