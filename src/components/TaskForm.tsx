@@ -68,7 +68,9 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
       selectedTask.dueDate
     );
     const [taskTagIds, setTaskTagIds] = useState<number[]>(selectedTask.tagIds);
-    const [dueDateEnabled, setDueDateEnabled] = useState<boolean>(false);
+    const [dueDateEnabled, setDueDateEnabled] = useState<boolean>(
+      selectedTask.dueDate !== null
+    );
     const [isTagModalOpen, setIsTagModalOpen] = useState<boolean>(false);
 
     const [error, setError] = useState<string>("");
@@ -81,8 +83,15 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
         setTaskListId(selectedListId);
         setTaskDueDate(selectedTask.dueDate);
         setTaskTagIds(selectedTask.tagIds);
+        setDueDateEnabled(selectedTask.dueDate !== null);
       }
     }, [selectedTask]);
+
+    useEffect(() => {
+      if (!dueDateEnabled) {
+        setTaskDueDate(null);
+      }
+    }, [dueDateEnabled]);
 
     const showError = (message: string) => {
       setError(message);
@@ -226,6 +235,7 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
                 className="due-date-checkbox"
                 type="checkbox"
                 id="enable-due-date"
+                checked={dueDateEnabled}
                 onChange={(e) => setDueDateEnabled(e.target.checked)}
               />{" "}
             </label>

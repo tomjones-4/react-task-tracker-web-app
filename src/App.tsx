@@ -37,7 +37,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { List, Task, Subtask, Tag } from "./types";
 
 export const SPECIAL_LIST_ID_ALL_TASKS = -1;
-const SPECIAL_LIST_ID_UNCATEGORIZED = 0;
+const SPECIAL_LIST_ID_UNCATEGORIZED_TASKS = 0;
 
 const SPECIAL_LISTS: List[] = [
   {
@@ -47,8 +47,8 @@ const SPECIAL_LISTS: List[] = [
     taskIds: [],
   },
   {
-    id: SPECIAL_LIST_ID_UNCATEGORIZED,
-    name: "Uncategorized",
+    id: SPECIAL_LIST_ID_UNCATEGORIZED_TASKS,
+    name: "Uncategorized Tasks",
     color: "gray",
     taskIds: [],
   },
@@ -66,7 +66,7 @@ const DUMMY_TASK: Task = {
   completed: false,
   title: "Tend to the garden",
   description: "Water the plants and remove weeds",
-  listId: SPECIAL_LIST_ID_UNCATEGORIZED,
+  listId: SPECIAL_LIST_ID_UNCATEGORIZED_TASKS,
   dueDate: null,
   tagIds: [],
 };
@@ -76,7 +76,7 @@ const EMPTY_TASK: Task = {
   completed: false,
   title: "",
   description: "",
-  listId: SPECIAL_LIST_ID_UNCATEGORIZED,
+  listId: SPECIAL_LIST_ID_UNCATEGORIZED_TASKS,
   dueDate: null,
   tagIds: [],
 };
@@ -193,7 +193,9 @@ const App = () => {
   /* Begin Functions */
 
   const addList = (newList: List) => {
-    setLists([...lists.slice(0, -1), newList, lists[lists.length - 1]]); // Add the new list before the last element (Uncategorized)
+    setLists([...lists.slice(0, -1), newList, lists[lists.length - 1]]); // Add the new list before the last element (Uncategorized Tasks)
+    // TODO - delete above line and uncomment below line if I want tasks to be added to end of list - this can be good since tasks can be reordered
+    //setLists([...lists, newList]);
     setSelectedList(newList); // Select the newly added list
     resetTask(newList.id); // Reset the task view to add a new task
   };
@@ -201,7 +203,7 @@ const App = () => {
   const deleteList = (listId: number) => {
     if (
       listId === SPECIAL_LIST_ID_ALL_TASKS ||
-      listId === SPECIAL_LIST_ID_UNCATEGORIZED
+      listId === SPECIAL_LIST_ID_UNCATEGORIZED_TASKS
     )
       return;
     const deletedList = lists.find((list: List) => list.id === listId);
@@ -219,7 +221,7 @@ const App = () => {
       }
 
       if (lists.length <= 1) {
-        // this shouldn't ever happen because All Tasks and Uncategorized lists cannot be deleted
+        // this shouldn't ever happen because All Tasks and Uncategorized Tasks lists cannot be deleted
         resetTask();
       } else {
         const listToSelect =
@@ -235,16 +237,20 @@ const App = () => {
       }
     }
 
-    // Update tasks to remove the deleted list from them and assign their list ID as Uncategorized
+    // Update tasks to remove the deleted list from them and assign their list ID as Uncategorized Tasks
     const updatedTasks = tasks.map((task) =>
       task.listId === deletedList.id
-        ? { ...task, listId: SPECIAL_LIST_ID_UNCATEGORIZED }
+        ? { ...task, listId: SPECIAL_LIST_ID_UNCATEGORIZED_TASKS }
         : task
     );
     setTasks(updatedTasks);
 
-    // Move tasks over to uncategorized list
-    addTasksToList(0, deletedList.taskIds, false);
+    // Move tasks over to Uncategorized Tasks list
+    addTasksToList(
+      SPECIAL_LIST_ID_UNCATEGORIZED_TASKS,
+      deletedList.taskIds,
+      false
+    );
 
     setLists((prevLists) =>
       prevLists.filter((list: List) => list.id !== listId)

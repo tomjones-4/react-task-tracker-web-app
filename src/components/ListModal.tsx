@@ -246,7 +246,7 @@ const ListModal: React.FC<ListModalProps> = ({
           <h3 className="title">Delete list "{listToDelete.name}"?</h3>
           <p className="message">
             Tasks in this list will be preserved and moved to the{" "}
-            <strong>Uncategorized</strong> list.
+            <strong>Uncategorized Tasks</strong> list.
           </p>
           <div className="actions">
             <button
