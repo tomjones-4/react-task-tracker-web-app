@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import TaskItem from "./TaskItem.jsx";
-import AddTaskItem from "./AddTaskItem.jsx";
 import { Task } from "../types";
 import { SPECIAL_LIST_ID_ALL_TASKS } from "../App";
 import {
@@ -25,7 +24,7 @@ type TaskListProps = {
   deleteTask: (taskId: number) => void;
   toggleCompleted: (taskId: number) => void;
   setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>;
-  handleStartNewTask: (e: React.MouseEvent<HTMLDivElement>) => void;
+  //handleStartNewTask: (e: React.MouseEvent<HTMLDivElement>) => void;
   setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
   listSelectedTasksIds: number[];
@@ -42,7 +41,7 @@ const TaskList: React.FC<TaskListProps> = ({
   deleteTask,
   toggleCompleted,
   setSelectedTask,
-  handleStartNewTask,
+  //handleStartNewTask,
   setIsAddMode,
   ripple,
   listSelectedTasksIds,
@@ -109,33 +108,30 @@ const TaskList: React.FC<TaskListProps> = ({
   }, [selectedListId]);
 
   return (
-    <div className="task-list-container">
-      <AddTaskItem handleStartNewTask={handleStartNewTask} />
-      <div className="task-list" ref={listRef}>
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
+    <div className="task-list" ref={listRef}>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={sortedTasks.map((task) => task.id)}
+          // items={sortedTasks.map((task) => task.id.toString())}
+          strategy={verticalListSortingStrategy}
         >
-          <SortableContext
-            items={sortedTasks.map((task) => task.id)}
-            // items={sortedTasks.map((task) => task.id.toString())}
-            strategy={verticalListSortingStrategy}
-          >
-            {sortedTasks.map((task) => (
-              <TaskItem
-                key={task.id}
-                task={task}
-                selectedTaskId={selectedTaskId}
-                toggleCompleted={toggleCompleted}
-                setSelectedTask={setSelectedTask}
-                setIsAddMode={setIsAddMode}
-                ripple={ripple}
-              />
-            ))}
-          </SortableContext>
-        </DndContext>
-      </div>
+          {sortedTasks.map((task) => (
+            <TaskItem
+              key={task.id}
+              task={task}
+              selectedTaskId={selectedTaskId}
+              toggleCompleted={toggleCompleted}
+              setSelectedTask={setSelectedTask}
+              setIsAddMode={setIsAddMode}
+              ripple={ripple}
+            />
+          ))}
+        </SortableContext>
+      </DndContext>
     </div>
   );
 };

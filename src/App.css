@@ -472,6 +472,46 @@ input[type="text"] {
   transition: background 0.2s ease-in-out;
 }
 
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.switch-root {
+  all: unset;
+  width: 48px;
+  height: 32px;
+  background-color: #040811;
+  border-radius: 9999px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.1s;
+  margin: 10px;
+}
+
+.switch-root[data-state="checked"] {
+  background-color: #4caf50;
+}
+
+.switch-thumb {
+  display: block;
+  width: 11px;
+  height: 11px;
+  background-color: white;
+  border-radius: 9999px;
+  transition: transform 0.2s;
+  transform: translateX(0px);
+  will-change: transform;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+}
+
+.switch-root[data-state="checked"] .switch-thumb {
+  transform: translateX(18px);
+}
+
 .menu-footer-icon {
   color: black;
   font-size: 20px;
@@ -493,6 +533,7 @@ input[type="text"] {
   height: 100vh; /* Full height */
   box-sizing: border-box;
   overflow-x: hidden;
+  font-size: larger;
 }
 
 .debug {
@@ -505,15 +546,6 @@ input[type="text"] {
   font-size: 44px;
   margin-block-start: 0px;
   margin-block-end: 10px;
-}
-
-.task-list-container {
-  font-size: larger;
-  box-sizing: border-box;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
 }
 
 .task-list {
@@ -621,6 +653,13 @@ input[type="text"] {
   cursor: pointer;
   color: slategray;
   font-size: 20px;
+}
+
+.calendar-view {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding-bottom: 12px;
 }
 
 .task-view {

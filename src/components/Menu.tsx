@@ -1,10 +1,9 @@
 import React, { useRef, forwardRef, useImperativeHandle } from "react";
 import MenuLists from "./MenuLists";
 import { List } from "../types";
-import { IoSettingsOutline } from "react-icons/io5";
-import { IoIosLogOut } from "react-icons/io";
+import MenuFooter from "./MenuFooter";
 
-type MenuProps = {
+interface MenuProps {
   lists: List[];
   setLists: React.Dispatch<React.SetStateAction<List[]>>;
   addList: (newList: List) => void;
@@ -12,7 +11,9 @@ type MenuProps = {
   selectedListId: number;
   changeSelectedList: (list: List) => void;
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
-};
+  showCalendarView: boolean;
+  setShowCalendarView: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 export type MenuRef = {
   focusSearchInput: () => void;
@@ -28,6 +29,8 @@ const Menu = forwardRef<MenuRef, MenuProps>(
       selectedListId,
       changeSelectedList,
       ripple,
+      showCalendarView,
+      setShowCalendarView,
     },
     ref
   ) => {
@@ -75,16 +78,10 @@ const Menu = forwardRef<MenuRef, MenuProps>(
           changeSelectedList={changeSelectedList}
           ripple={ripple}
         />
-        <div className="menu-footer">
-          <span>
-            <IoSettingsOutline className="menu-footer-icon" />
-            <p>Settings - Coming soon...</p>
-          </span>
-          <span>
-            <IoIosLogOut className="menu-footer-icon" />
-            <p>Sign out - Coming soon...</p>
-          </span>
-        </div>
+        <MenuFooter
+          showCalendarView={showCalendarView}
+          setShowCalendarView={setShowCalendarView}
+        />
       </div>
     );
   }

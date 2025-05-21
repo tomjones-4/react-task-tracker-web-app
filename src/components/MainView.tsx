@@ -1,6 +1,8 @@
 import React from "react";
 import TaskList from "./TaskList";
 import { List, Task } from "../types";
+import CalendarView from "./CalendarView";
+import AddTaskItem from "./AddTaskItem";
 
 type MainViewProps = {
   selectedList: List;
@@ -18,6 +20,7 @@ type MainViewProps = {
   setListSelectedTaskIds: React.Dispatch<React.SetStateAction<number[]>>;
   listScrollPositions: number[];
   setListScrollPositions: React.Dispatch<React.SetStateAction<number[]>>;
+  showCalendarView: boolean;
 };
 
 const MainView: React.FC<MainViewProps> = ({
@@ -36,27 +39,32 @@ const MainView: React.FC<MainViewProps> = ({
   setListSelectedTaskIds,
   listScrollPositions,
   setListScrollPositions,
+  showCalendarView,
 }) => {
   return (
     <div className="main-view">
       <h1>{selectedList.name}</h1>
+      <AddTaskItem handleStartNewTask={handleStartNewTask} />
+      {!showCalendarView && (
+        <TaskList
+          tasks={tasks}
+          setTasks={setTasks}
+          selectedListId={selectedList.id}
+          selectedTaskId={selectedTaskId}
+          deleteTask={deleteTask}
+          toggleCompleted={toggleCompleted}
+          setSelectedTask={setSelectedTask}
+          //handleStartNewTask={handleStartNewTask}
+          setIsAddMode={setIsAddMode}
+          ripple={ripple}
+          listSelectedTasksIds={listSelectedTasksIds}
+          setListSelectedTaskIds={setListSelectedTaskIds}
+          listScrollPositions={listScrollPositions}
+          setListScrollPositions={setListScrollPositions}
+        />
+      )}
 
-      <TaskList
-        tasks={tasks}
-        setTasks={setTasks}
-        selectedListId={selectedList.id}
-        selectedTaskId={selectedTaskId}
-        deleteTask={deleteTask}
-        toggleCompleted={toggleCompleted}
-        setSelectedTask={setSelectedTask}
-        handleStartNewTask={handleStartNewTask}
-        setIsAddMode={setIsAddMode}
-        ripple={ripple}
-        listSelectedTasksIds={listSelectedTasksIds}
-        setListSelectedTaskIds={setListSelectedTaskIds}
-        listScrollPositions={listScrollPositions}
-        setListScrollPositions={setListScrollPositions}
-      />
+      {showCalendarView && <CalendarView />}
 
       <div className="debug">
         <h2>Debug</h2>

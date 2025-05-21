@@ -179,6 +179,8 @@ const App = () => {
     tasks.length > 0 ? tasks[0] : EMPTY_TASK
   );
 
+  const [showCalendarView, setShowCalendarView] = useState<boolean>(false);
+
   const [isAddMode, setIsAddMode] = useState<boolean>(true);
 
   /* End State Variables */
@@ -686,6 +688,8 @@ const App = () => {
           changeSelectedList={changeSelectedList}
           selectedListId={selectedList.id}
           ripple={ripple}
+          showCalendarView={showCalendarView}
+          setShowCalendarView={setShowCalendarView}
           ref={searchInputRef}
         />
       </aside>
@@ -709,6 +713,7 @@ const App = () => {
               setListSelectedTaskIds={setListSelectedTaskIds}
               listScrollPositions={listScrollPositions}
               setListScrollPositions={setListScrollPositions}
+              showCalendarView={showCalendarView}
             />
           }
           right={
@@ -750,6 +755,7 @@ const App = () => {
           setListSelectedTaskIds={setListSelectedTaskIds}
           listScrollPositions={listScrollPositions}
           setListScrollPositions={setListScrollPositions}
+          showCalendarView={showCalendarView}
         />
       )}
     </div>
