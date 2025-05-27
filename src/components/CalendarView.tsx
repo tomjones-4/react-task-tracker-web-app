@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Task } from "../types";
-import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import { Calendar, dateFnsLocalizer, SlotInfo } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import { enUS } from "date-fns/locale/en-US";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -54,7 +54,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     onCalendarTaskClick(task);
   };
 
-  const handleSelectSlot = (slotInfo) => {
+  const handleSelectSlot = (slotInfo: SlotInfo) => {
     // You get slotInfo.start and slotInfo.end (JS Date objects)
     onCalendarCreateTask(slotInfo.start); // pass to form/modal
   };

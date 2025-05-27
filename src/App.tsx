@@ -1,12 +1,13 @@
 // TODO
 
 /* High Priority */
-// Fix issue with lists where list changes aren't allowed
+// Make it so different views on calendar work - day, week, month, etc.
+// On the task list, have subtasks appear below the task they belong to, indented, and with a checkbox to mark them as complete. This should be done in the TaskList component, and the subtasks should be fetched from the subtasks state variable.
 /* End High Priority */
 
 /* Medium Priority */
+// Think about actually reordering the tasks when a user marks a task as completed. Currently the tasks are only sorted visually, but if I made that change using setTask I think it would be easier to delete tasks in the right order.
 // Consider adding priority to tasks, and then sorting tasks by priority in the task list. This could be a simple dropdown on the task form, and then the task list could sort by priority first, then due date, then title.
-// Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab, or just be a toggle for the selected list - in that case list UI would probably need more state added to it, possibly in App.tsx)
 // Add a tag filter when "All tasks" is selected in the sidebar
 // Consider adding a calendar view in place of the task list. This would probably be a very large code change, but it would be a sweet feature.
@@ -15,6 +16,7 @@
    I think this could be achieved by having selectedTaskId = -1 when there is no task selected, and that's how app knows to show AddTask form.
   This probably also aligns better with only having selected task ids for tasks that actually exist, and not tasks that are going to be added. */
 // Add dark mode toggle
+// Make toggles responsive. They are janky when resizing the window.
 /* End Medium Priority */
 
 /* Low Priority */
@@ -26,7 +28,7 @@
 // Have the lists show up in a different way from the tags. TBD if this is ncessary.
 // Add tooltips when user is getting started with app
 // Maybe change favicon?
-// Make toggles responsive. They are janky when resizing the window.
+// Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
 /* End Low Priority */
 
 /* Begin Constants */
