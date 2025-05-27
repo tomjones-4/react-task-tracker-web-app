@@ -21,6 +21,7 @@ type MainViewProps = {
   listScrollPositions: number[];
   setListScrollPositions: React.Dispatch<React.SetStateAction<number[]>>;
   showCalendarView: boolean;
+  onCalendarCreateTask: (startDate: Date) => void;
 };
 
 const MainView: React.FC<MainViewProps> = ({
@@ -40,33 +41,42 @@ const MainView: React.FC<MainViewProps> = ({
   listScrollPositions,
   setListScrollPositions,
   showCalendarView,
+  onCalendarCreateTask,
 }) => {
   return (
     <div className="main-view">
       <h1>{selectedList.name}</h1>
-      <AddTaskItem handleStartNewTask={handleStartNewTask} />
+
       {!showCalendarView && (
-        <TaskList
+        <>
+          <AddTaskItem handleStartNewTask={handleStartNewTask} />
+          <TaskList
+            tasks={tasks}
+            setTasks={setTasks}
+            selectedListId={selectedList.id}
+            selectedTaskId={selectedTaskId}
+            deleteTask={deleteTask}
+            toggleCompleted={toggleCompleted}
+            setSelectedTask={setSelectedTask}
+            setIsAddMode={setIsAddMode}
+            ripple={ripple}
+            listSelectedTasksIds={listSelectedTasksIds}
+            setListSelectedTaskIds={setListSelectedTaskIds}
+            listScrollPositions={listScrollPositions}
+            setListScrollPositions={setListScrollPositions}
+          />
+        </>
+      )}
+
+      {showCalendarView && (
+        <CalendarView
           tasks={tasks}
-          setTasks={setTasks}
-          selectedListId={selectedList.id}
-          selectedTaskId={selectedTaskId}
-          deleteTask={deleteTask}
-          toggleCompleted={toggleCompleted}
-          setSelectedTask={setSelectedTask}
-          //handleStartNewTask={handleStartNewTask}
-          setIsAddMode={setIsAddMode}
-          ripple={ripple}
-          listSelectedTasksIds={listSelectedTasksIds}
-          setListSelectedTaskIds={setListSelectedTaskIds}
-          listScrollPositions={listScrollPositions}
-          setListScrollPositions={setListScrollPositions}
+          onCalendarTaskClick={setSelectedTask}
+          onCalendarCreateTask={onCalendarCreateTask}
         />
       )}
 
-      {showCalendarView && <CalendarView tasks={tasks} />}
-
-      <div className="debug">
+      {/* <div className="debug">
         <h2>Debug</h2>
         <p>Selected Task: {JSON.stringify(selectedTaskForDebug)}</p>
         <p>Selected List: {JSON.stringify(selectedList.name)}</p>
@@ -79,7 +89,7 @@ const MainView: React.FC<MainViewProps> = ({
         <p>
           Selected List: "{selectedList.name}" (ID: {selectedList.id})
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };

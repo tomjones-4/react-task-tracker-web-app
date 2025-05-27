@@ -1,9 +1,11 @@
 // TODO
 
 /* High Priority */
+// Fix issue with lists where list changes aren't allowed
 /* End High Priority */
 
 /* Medium Priority */
+// Consider adding priority to tasks, and then sorting tasks by priority in the task list. This could be a simple dropdown on the task form, and then the task list could sort by priority first, then due date, then title.
 // Make it so ids for tasks, lists, tags, etc. are unique and incremented by 1 instead of using Date.now() (This is important for when we add the ability to edit tasks, since we need to be able to find the task in the array by id.) THIS REQUIRES SUPABASE INTEGRATION - this will be a big one
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab, or just be a toggle for the selected list - in that case list UI would probably need more state added to it, possibly in App.tsx)
 // Add a tag filter when "All tasks" is selected in the sidebar
@@ -24,6 +26,7 @@
 // Have the lists show up in a different way from the tags. TBD if this is ncessary.
 // Add tooltips when user is getting started with app
 // Maybe change favicon?
+// Make toggles responsive. They are janky when resizing the window.
 /* End Low Priority */
 
 /* Begin Constants */
@@ -514,14 +517,17 @@ const App = () => {
     setSubtasks(updatedSubtasks);
   };
 
-  const resetTask = (newListId: number = selectedList.id) => {
+  const resetTask = (
+    newListId: number = selectedList.id,
+    dueDate: Date | null = null
+  ) => {
     const newTask: Task = {
       id: -1,
       completed: false,
       title: "",
       description: "",
       listId: newListId, // Set the listId to the currently selected list
-      dueDate: null,
+      dueDate: dueDate,
       tagIds: [],
     };
     setSelectedTask(newTask);
@@ -531,6 +537,11 @@ const App = () => {
   const handleStartNewTask = (e: React.MouseEvent<HTMLDivElement>) => {
     ripple(e);
     resetTask();
+    taskFormRef.current?.focusTitleInput(); // Focus the title input
+  };
+
+  const onCalendarCreateTask = (startDate: Date) => {
+    resetTask(selectedList.id, startDate);
     taskFormRef.current?.focusTitleInput(); // Focus the title input
   };
 
@@ -714,6 +725,7 @@ const App = () => {
               listScrollPositions={listScrollPositions}
               setListScrollPositions={setListScrollPositions}
               showCalendarView={showCalendarView}
+              onCalendarCreateTask={onCalendarCreateTask}
             />
           }
           right={
@@ -756,6 +768,7 @@ const App = () => {
           listScrollPositions={listScrollPositions}
           setListScrollPositions={setListScrollPositions}
           showCalendarView={showCalendarView}
+          onCalendarCreateTask={onCalendarCreateTask}
         />
       )}
     </div>

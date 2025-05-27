@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Task } from "../types";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay } from "date-fns";
+import { enUS } from "date-fns/locale/en-US";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-// import DatePicker from "react-datepicker";
 
-const locales = { "en-US": require("date-fns/locale/en-US") };
+const locales = { "en-US": enUS };
 const localizer = dateFnsLocalizer({
   format,
   parse,
@@ -16,42 +16,60 @@ const localizer = dateFnsLocalizer({
 
 interface CalendarViewProps {
   tasks: Task[];
+  onCalendarTaskClick: (task: Task) => void;
+  onCalendarCreateTask: (startDate: Date) => void;
 }
 
-const CalendarView: React.FC<CalendarViewProps> = ({ tasks }) => {
-  const [date, setDate] = useState<Date | null>(new Date(2025, 5, 20));
+type event = {
+  id: number;
+  title: string;
+  start: Date; // ISO string or Date
+  end: Date; // or task.dueDateEnd if available
+  allDay: boolean;
+};
+
+const CalendarView: React.FC<CalendarViewProps> = ({
+  tasks,
+  onCalendarTaskClick,
+  onCalendarCreateTask,
+}) => {
+  //const [date, setDate] = useState<Date | null>(new Date(2025, 5, 20));
 
   const events = tasks
     .filter((task) => task.dueDate !== null)
     .map((task) => ({
+      id: task.id,
       title: task.title,
       start: new Date(task.dueDate!), // ISO string or Date
       end: new Date(task.dueDate!), // or task.dueDateEnd if available
       allDay: false,
     }));
 
+  const handleSelectEvent = (e: event) => {
+    const task = tasks.find((t) => t.id === e.id);
+    if (!task) {
+      console.warn("No task found on calendar select");
+      return;
+    }
+    onCalendarTaskClick(task);
+  };
+
+  const handleSelectSlot = (slotInfo) => {
+    // You get slotInfo.start and slotInfo.end (JS Date objects)
+    onCalendarCreateTask(slotInfo.start); // pass to form/modal
+  };
+
   return (
     <div className="calendar-view">
-      <p>Calendar view</p>
-      <div style={{ height: "80vh" }}>
-        <Calendar
-          localizer={localizer}
-          events={events}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: "100%" }}
-        />
-      </div>
-      {/* <DatePicker
-        className="datepicker-input"
-        calendarClassName="datepicker-calendar"
-        selected={date}
-        onChange={(date) => setDate(date)}
-        placeholderText="Select a due date"
-        dateFormat="MMMM d, yyyy"
-        isClearable
-        disabled={false}
-      /> */}
+      <Calendar
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+        selectable
+        onSelectEvent={handleSelectEvent}
+        onSelectSlot={handleSelectSlot}
+      />
     </div>
   );
 };
