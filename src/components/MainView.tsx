@@ -64,7 +64,7 @@ const MainView: React.FC<MainViewProps> = ({
         />
       )}
 
-      {showCalendarView && <CalendarView />}
+      {showCalendarView && <CalendarView tasks={tasks} />}
 
       <div className="debug">
         <h2>Debug</h2>
