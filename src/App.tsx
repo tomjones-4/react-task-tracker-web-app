@@ -714,9 +714,12 @@ const App = () => {
               selectedList={selectedList}
               tasks={getTasksByListId(selectedList.id)}
               setTasks={setTasks}
+              subtasks={subtasks}
+              setSubtasks={setSubtasks}
               selectedTaskId={selectedTask?.id}
               deleteTask={deleteTask}
               toggleCompleted={toggleCompleted}
+              toggleSubtaskCompleted={toggleSubtaskCompleted}
               setSelectedTask={setSelectedTask}
               handleStartNewTask={handleStartNewTask}
               selectedTaskForDebug={selectedTask}
@@ -757,9 +760,13 @@ const App = () => {
           selectedList={selectedList}
           tasks={getTasksByListId(selectedList.id)}
           setTasks={setTasks}
+          subtasks={subtasks}
+          // subtasks={selectedTask !== undefined ? getSubtasksByTaskId(selectedTask.id) : subtasks}
+          setSubtasks={setSubtasks}
           selectedTaskId={undefined}
           deleteTask={deleteTask}
           toggleCompleted={toggleCompleted}
+          toggleSubtaskCompleted={toggleSubtaskCompleted}
           setSelectedTask={setSelectedTask}
           handleStartNewTask={handleStartNewTask}
           selectedTaskForDebug={selectedTask}

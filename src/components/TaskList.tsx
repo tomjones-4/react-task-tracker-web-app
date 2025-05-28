@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import TaskItem from "./TaskItem.jsx";
-import { Task } from "../types";
+import { Task, Subtask } from "../types";
 import { SPECIAL_LIST_ID_ALL_TASKS } from "../App";
 import {
   DndContext,
@@ -19,10 +19,13 @@ import {
 type TaskListProps = {
   tasks: Task[];
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  subtasks: Subtask[];
+  setSubtasks: React.Dispatch<React.SetStateAction<Subtask[]>>;
   selectedListId: number;
   selectedTaskId: number | undefined;
   deleteTask: (taskId: number) => void;
   toggleCompleted: (taskId: number) => void;
+  toggleSubtaskCompleted: (subtaskId: number) => void;
   setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>;
   //handleStartNewTask: (e: React.MouseEvent<HTMLDivElement>) => void;
   setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
@@ -36,10 +39,13 @@ type TaskListProps = {
 const TaskList: React.FC<TaskListProps> = ({
   tasks,
   setTasks,
+  subtasks,
+  setSubtasks,
   selectedListId,
   selectedTaskId,
   deleteTask,
   toggleCompleted,
+  toggleSubtaskCompleted,
   setSelectedTask,
   //handleStartNewTask,
   setIsAddMode,
@@ -107,6 +113,22 @@ const TaskList: React.FC<TaskListProps> = ({
     return () => el?.removeEventListener("scroll", handleScroll);
   }, [selectedListId]);
 
+  const [expandedTaskIds, setExpandedTaskIds] = useState<Set<number>>(
+    new Set()
+  );
+
+  const toggleExpand = (taskId: number) => {
+    setExpandedTaskIds((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(taskId)) {
+        newSet.delete(taskId);
+      } else {
+        newSet.add(taskId);
+      }
+      return newSet;
+    });
+  };
+
   return (
     <div className="task-list" ref={listRef}>
       <DndContext
@@ -116,17 +138,24 @@ const TaskList: React.FC<TaskListProps> = ({
       >
         <SortableContext
           items={sortedTasks.map((task) => task.id)}
-          // items={sortedTasks.map((task) => task.id.toString())}
           strategy={verticalListSortingStrategy}
         >
           {sortedTasks.map((task) => (
             <TaskItem
               key={task.id}
               task={task}
+              subtasks={subtasks.filter(
+                (subtask) => subtask.taskId === task.id
+              )}
+              // subtasks={subtasks}
+              setSubtasks={setSubtasks}
               selectedTaskId={selectedTaskId}
               toggleCompleted={toggleCompleted}
+              toggleSubtaskCompleted={toggleSubtaskCompleted}
               setSelectedTask={setSelectedTask}
               setIsAddMode={setIsAddMode}
+              expandedTaskIds={expandedTaskIds}
+              toggleExpand={toggleExpand}
               ripple={ripple}
             />
           ))}

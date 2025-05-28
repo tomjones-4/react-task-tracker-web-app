@@ -1,29 +1,41 @@
 import React from "react";
-import { Task } from "../types";
-import { FaChevronRight, FaGripVertical } from "react-icons/fa";
+import { Task, Subtask } from "../types";
+import { FaChevronRight, FaChevronDown, FaGripVertical } from "react-icons/fa";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import ExpandedSubtaskList from "./ExpandedSubtaskList";
 
 type TaskItemProps = {
   task: Task;
+  subtasks: Subtask[];
+  setSubtasks: React.Dispatch<React.SetStateAction<Subtask[]>>;
   selectedTaskId: number | undefined;
   toggleCompleted: (taskId: number) => void;
+  toggleSubtaskCompleted: (subtaskId: number) => void;
   setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>;
   setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
+  expandedTaskIds: Set<number>;
+  toggleExpand: (taskId: number) => void;
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
 const TaskItem: React.FC<TaskItemProps> = ({
   task,
+  subtasks,
+  setSubtasks,
   selectedTaskId,
   toggleCompleted,
+  toggleSubtaskCompleted,
   setSelectedTask,
   setIsAddMode,
+  expandedTaskIds,
+  toggleExpand,
   ripple,
 }) => {
   const handleTaskClick = (e: React.MouseEvent<HTMLDivElement>) => {
     setSelectedTask(task);
     setIsAddMode(false);
+    toggleExpand(task.id);
     ripple(e);
   };
 
@@ -45,7 +57,9 @@ const TaskItem: React.FC<TaskItemProps> = ({
         className={`task-item ${task.completed ? "completed" : ""} ${
           task.id == selectedTaskId ? "selected" : ""
         }`}
-        onClick={handleTaskClick}
+        onClick={(e) => {
+          handleTaskClick(e);
+        }}
       >
         <input
           type="checkbox"
@@ -57,9 +71,21 @@ const TaskItem: React.FC<TaskItemProps> = ({
         <span {...listeners} className="drag-handle">
           <FaGripVertical onClick={(e) => e.stopPropagation()} />
         </span>
-        <FaChevronRight className="expand-task-icon" />
+        {expandedTaskIds.has(task.id) ? (
+          <FaChevronDown className="expand-task-icon" />
+        ) : (
+          <FaChevronRight className="expand-task-icon" />
+        )}
         <span className="ripple" />
       </div>
+      {expandedTaskIds.has(task.id) && (
+        <ExpandedSubtaskList
+          subtasks={subtasks}
+          setSubtasks={setSubtasks}
+          selectedTaskId={selectedTaskId}
+          toggleSubtaskCompleted={toggleSubtaskCompleted}
+        />
+      )}
     </div>
   );
 };
