@@ -2,7 +2,6 @@
 
 /* High Priority */
 // Make it so different views on calendar work - day, week, month, etc.
-// On the task list, have subtasks appear below the task they belong to, indented, and with a checkbox to mark them as complete. This should be done in the TaskList component, and the subtasks should be fetched from the subtasks state variable.
 /* End High Priority */
 
 /* Medium Priority */
@@ -722,6 +721,7 @@ const App = () => {
               toggleSubtaskCompleted={toggleSubtaskCompleted}
               setSelectedTask={setSelectedTask}
               handleStartNewTask={handleStartNewTask}
+              tags={tags}
               selectedTaskForDebug={selectedTask}
               setIsAddMode={setIsAddMode}
               ripple={ripple}
@@ -769,6 +769,7 @@ const App = () => {
           toggleSubtaskCompleted={toggleSubtaskCompleted}
           setSelectedTask={setSelectedTask}
           handleStartNewTask={handleStartNewTask}
+          tags={tags}
           selectedTaskForDebug={selectedTask}
           setIsAddMode={setIsAddMode}
           ripple={ripple}

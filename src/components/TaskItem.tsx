@@ -4,6 +4,9 @@ import { FaChevronRight, FaChevronDown, FaGripVertical } from "react-icons/fa";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import ExpandedSubtaskList from "./ExpandedSubtaskList";
+import { AnimatePresence, motion } from "framer-motion";
+
+const MAX_TAGS_PER_TASK_ITEM = 3;
 
 type TaskItemProps = {
   task: Task;
@@ -78,14 +81,33 @@ const TaskItem: React.FC<TaskItemProps> = ({
         )}
         <span className="ripple" />
       </div>
-      {expandedTaskIds.has(task.id) && (
-        <ExpandedSubtaskList
-          subtasks={subtasks}
-          setSubtasks={setSubtasks}
-          selectedTaskId={selectedTaskId}
-          toggleSubtaskCompleted={toggleSubtaskCompleted}
-        />
-      )}
+
+      <AnimatePresence initial={false}>
+        {expandedTaskIds.has(task.id) && (
+          <motion.ul
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{
+              overflow: "hidden",
+              //paddingLeft: "1.5rem",
+              paddingLeft: "0rem",
+              //marginTop: "0.3rem",
+              marginTop: "0rem",
+              //marginBottom: "0.5rem",
+              marginBottom: "0rem",
+            }}
+          >
+            <ExpandedSubtaskList
+              subtasks={subtasks}
+              setSubtasks={setSubtasks}
+              selectedTaskId={selectedTaskId}
+              toggleSubtaskCompleted={toggleSubtaskCompleted}
+            />
+          </motion.ul>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
