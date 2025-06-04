@@ -1,5 +1,5 @@
 import React from "react";
-import { Task, Subtask } from "../types";
+import { Task, Subtask, Tag } from "../types";
 import { FaChevronRight, FaChevronDown, FaGripVertical } from "react-icons/fa";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -16,6 +16,7 @@ type TaskItemProps = {
   toggleCompleted: (taskId: number) => void;
   toggleSubtaskCompleted: (subtaskId: number) => void;
   setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>;
+  tags: Tag[];
   setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
   expandedTaskIds: Set<number>;
   toggleExpand: (taskId: number) => void;
@@ -30,6 +31,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
   toggleCompleted,
   toggleSubtaskCompleted,
   setSelectedTask,
+  tags,
   setIsAddMode,
   expandedTaskIds,
   toggleExpand,
@@ -59,7 +61,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
       <div
         className={`task-item ${task.completed ? "completed" : ""} ${
           task.id == selectedTaskId ? "selected" : ""
-        }`}
+        } ${tags.length > 0 ? "tags" : ""} `}
         onClick={(e) => {
           handleTaskClick(e);
         }}
@@ -70,7 +72,27 @@ const TaskItem: React.FC<TaskItemProps> = ({
           onChange={handleChange}
         />
         <p>{task.title}</p>
-        {/* <button onClick={() => deleteTask(task.id)}>X</button> */}
+        <span className="tags">
+          {tags.slice(0, 3).map((tag) => (
+            <span
+              key={tag.id}
+              className="tag"
+              style={{ backgroundColor: tag.color, fontWeight: "bold" }}
+            >
+              {tag.name}
+            </span>
+          ))}
+          {/* "Overflow" tag if there are more than 3 tags on the task */}
+          {tags.length > MAX_TAGS_PER_TASK_ITEM && (
+            <span
+              key={0}
+              className="tag"
+              style={{ backgroundColor: "lightskyblue", fontWeight: "bold" }}
+            >
+              ...
+            </span>
+          )}
+        </span>
         <span {...listeners} className="drag-handle">
           <FaGripVertical onClick={(e) => e.stopPropagation()} />
         </span>

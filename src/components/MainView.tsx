@@ -1,6 +1,6 @@
 import React from "react";
 import TaskList from "./TaskList";
-import { List, Task, Subtask } from "../types";
+import { List, Task, Subtask, Tag } from "../types";
 import CalendarView from "./CalendarView";
 import AddTaskItem from "./AddTaskItem";
 
@@ -16,6 +16,7 @@ type MainViewProps = {
   toggleSubtaskCompleted: (subtaskId: number) => void;
   setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>;
   handleStartNewTask: (e: React.MouseEvent<HTMLDivElement>) => void;
+  tags: Tag[];
   selectedTaskForDebug: Task | undefined;
   setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
@@ -39,6 +40,7 @@ const MainView: React.FC<MainViewProps> = ({
   toggleSubtaskCompleted,
   setSelectedTask,
   handleStartNewTask,
+  tags,
   selectedTaskForDebug,
   setIsAddMode,
   ripple,
@@ -67,6 +69,7 @@ const MainView: React.FC<MainViewProps> = ({
             toggleCompleted={toggleCompleted}
             toggleSubtaskCompleted={toggleSubtaskCompleted}
             setSelectedTask={setSelectedTask}
+            tags={tags}
             setIsAddMode={setIsAddMode}
             ripple={ripple}
             listSelectedTasksIds={listSelectedTasksIds}

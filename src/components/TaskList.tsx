@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import TaskItem from "./TaskItem.jsx";
-import { Task, Subtask } from "../types";
+import { Task, Subtask, Tag } from "../types";
 import { SPECIAL_LIST_ID_ALL_TASKS } from "../App";
 import {
   DndContext,
@@ -27,7 +27,7 @@ type TaskListProps = {
   toggleCompleted: (taskId: number) => void;
   toggleSubtaskCompleted: (subtaskId: number) => void;
   setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>;
-  //handleStartNewTask: (e: React.MouseEvent<HTMLDivElement>) => void;
+  tags: Tag[];
   setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
   listSelectedTasksIds: number[];
@@ -43,10 +43,10 @@ const TaskList: React.FC<TaskListProps> = ({
   setSubtasks,
   selectedListId,
   selectedTaskId,
-  deleteTask,
   toggleCompleted,
   toggleSubtaskCompleted,
   setSelectedTask,
+  tags,
   //handleStartNewTask,
   setIsAddMode,
   ripple,
@@ -153,6 +153,7 @@ const TaskList: React.FC<TaskListProps> = ({
               toggleCompleted={toggleCompleted}
               toggleSubtaskCompleted={toggleSubtaskCompleted}
               setSelectedTask={setSelectedTask}
+              tags={tags.filter((tag) => task.tagIds.includes(tag.id))} // filter tags to only those that are in the task's tagIds
               setIsAddMode={setIsAddMode}
               expandedTaskIds={expandedTaskIds}
               toggleExpand={toggleExpand}

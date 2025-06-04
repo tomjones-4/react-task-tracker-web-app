@@ -649,6 +649,15 @@ input[type="text"] {
   color: #888;
 }
 
+.task-item .tags {
+  flex-grow: 100;
+  gap: 0px;
+}
+
+.task-item.tags {
+  padding: 2px 16px;
+}
+
 .expand-task-icon {
   cursor: pointer;
   color: slategray;
