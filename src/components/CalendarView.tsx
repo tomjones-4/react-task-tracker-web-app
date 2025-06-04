@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-import { Task } from "../types";
-import { Calendar, dateFnsLocalizer, SlotInfo } from "react-big-calendar";
+import { Task, CalendarEvent } from "../types";
+import {
+  Calendar,
+  dateFnsLocalizer,
+  SlotInfo,
+  View,
+  NavigateAction,
+  ToolbarProps,
+} from "react-big-calendar";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import { enUS } from "date-fns/locale/en-US";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import CalendarToolbar from "./CalendarToolbar";
 
 const locales = { "en-US": enUS };
 const localizer = dateFnsLocalizer({
@@ -20,20 +28,15 @@ interface CalendarViewProps {
   onCalendarCreateTask: (startDate: Date) => void;
 }
 
-type event = {
-  id: number;
-  title: string;
-  start: Date; // ISO string or Date
-  end: Date; // or task.dueDateEnd if available
-  allDay: boolean;
-};
-
 const CalendarView: React.FC<CalendarViewProps> = ({
   tasks,
   onCalendarTaskClick,
   onCalendarCreateTask,
 }) => {
   //const [date, setDate] = useState<Date | null>(new Date(2025, 5, 20));
+
+  const [view, setView] = useState<View>("month");
+  const [date, setDate] = useState(new Date());
 
   const events = tasks
     .filter((task) => task.dueDate !== null)
@@ -45,7 +48,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
       allDay: false,
     }));
 
-  const handleSelectEvent = (e: event) => {
+  const handleSelectEvent = (e: CalendarEvent) => {
     const task = tasks.find((t) => t.id === e.id);
     if (!task) {
       console.warn("No task found on calendar select");
@@ -59,6 +62,18 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     onCalendarCreateTask(slotInfo.start); // pass to form/modal
   };
 
+  const handleViewChange = (newView: View) => {
+    setView(newView);
+  };
+
+  const handleNavigate = (
+    newDate: Date,
+    view: View,
+    action: NavigateAction
+  ) => {
+    setDate(newDate);
+  };
+
   return (
     <div className="calendar-view">
       <Calendar
@@ -67,8 +82,17 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         startAccessor="start"
         endAccessor="end"
         selectable
+        view={view}
+        date={date}
+        onView={handleViewChange}
+        onNavigate={handleNavigate}
         onSelectEvent={handleSelectEvent}
         onSelectSlot={handleSelectSlot}
+        components={{
+          toolbar: CalendarToolbar as React.ComponentType<
+            ToolbarProps<CalendarEvent>
+          >,
+        }}
       />
     </div>
   );

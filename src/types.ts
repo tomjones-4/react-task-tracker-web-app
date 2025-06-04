@@ -27,3 +27,11 @@ export interface Tag {
   name: string;
   color: string;
 }
+
+export type CalendarEvent = {
+  id: number;
+  title: string;
+  start: Date;
+  end: Date;
+  allDay: boolean;
+};
