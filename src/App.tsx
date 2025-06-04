@@ -1,7 +1,7 @@
 // TODO
 
 /* High Priority */
-// Make it so different views on calendar work - day, week, month, etc.
+// Keep improving dark mode
 /* End High Priority */
 
 /* Medium Priority */
@@ -9,7 +9,6 @@
 // Consider adding priority to tasks, and then sorting tasks by priority in the task list. This could be a simple dropdown on the task form, and then the task list could sort by priority first, then due date, then title.
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab, or just be a toggle for the selected list - in that case list UI would probably need more state added to it, possibly in App.tsx)
 // Add a tag filter when "All tasks" is selected in the sidebar
-// Consider adding a calendar view in place of the task list. This would probably be a very large code change, but it would be a sweet feature.
 // Use highlights to show tasks that are getting old or are due urgently.
 /* Think about making selected task something that's always selected (behavior would be that if a list doesn't have any tasks, it defauls to adding task with resetTask() method).
    I think this could be achieved by having selectedTaskId = -1 when there is no task selected, and that's how app knows to show AddTask form.
@@ -62,6 +61,7 @@ const LOCAL_STORAGE_KEY_LISTS = "todoApp.lists";
 const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";
 const LOCAL_STORAGE_KEY_SUBTASKS = "todoApp.subtasks";
 const LOCAL_STORAGE_KEY_TAGS = "todoApp.tags";
+const LOCAL_STORAGE_KEY_DARK_MODE = "todoApp.darkMode";
 // const LOCAL_STORAGE_KEY_SETTINGS = "todoApp.settings";
 // const LOCAL_STORAGE_KEY_THEME = "todoApp.theme";
 
@@ -184,6 +184,11 @@ const App = () => {
   );
 
   const [showCalendarView, setShowCalendarView] = useState<boolean>(false);
+
+  const [darkMode, setDarkMode] = useState(() => {
+    // Load from localStorage on first load
+    return localStorage.getItem(LOCAL_STORAGE_KEY_DARK_MODE) === "dark";
+  });
 
   const [isAddMode, setIsAddMode] = useState<boolean>(true);
 
@@ -677,6 +682,18 @@ const App = () => {
     };
   }, []);
 
+  useEffect(() => {
+    //console.log("dark mode changed:", darkMode);
+    const className = "dark";
+    if (darkMode) {
+      document.body.classList.add(className);
+      localStorage.setItem(LOCAL_STORAGE_KEY_DARK_MODE, "dark");
+    } else {
+      document.body.classList.remove(className);
+      localStorage.setItem(LOCAL_STORAGE_KEY_DARK_MODE, "light");
+    }
+  }, [darkMode]);
+
   /* End useEffect Hooks */
 
   /* Begin Debugging */
@@ -702,6 +719,8 @@ const App = () => {
           ripple={ripple}
           showCalendarView={showCalendarView}
           setShowCalendarView={setShowCalendarView}
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
           ref={searchInputRef}
         />
       </aside>

@@ -13,6 +13,8 @@ interface MenuProps {
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
   showCalendarView: boolean;
   setShowCalendarView: React.Dispatch<React.SetStateAction<boolean>>;
+  darkMode: boolean;
+  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export type MenuRef = {
@@ -31,6 +33,8 @@ const Menu = forwardRef<MenuRef, MenuProps>(
       ripple,
       showCalendarView,
       setShowCalendarView,
+      darkMode,
+      setDarkMode,
     },
     ref
   ) => {
@@ -81,6 +85,8 @@ const Menu = forwardRef<MenuRef, MenuProps>(
         <MenuFooter
           showCalendarView={showCalendarView}
           setShowCalendarView={setShowCalendarView}
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
         />
       </div>
     );

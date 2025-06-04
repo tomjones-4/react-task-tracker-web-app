@@ -6,11 +6,15 @@ import ToggleSwitch from "./ToggleSwitch";
 interface MenuFooterProps {
   showCalendarView: boolean;
   setShowCalendarView: React.Dispatch<React.SetStateAction<boolean>>;
+  darkMode: boolean;
+  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const MenuFooter: React.FC<MenuFooterProps> = ({
   showCalendarView,
   setShowCalendarView,
+  darkMode,
+  setDarkMode,
 }) => {
   return (
     <div className="menu-footer">
@@ -26,8 +30,8 @@ const MenuFooter: React.FC<MenuFooterProps> = ({
         label="Hide completed tasks"
       />
       <ToggleSwitch
-        checked={showCalendarView}
-        onCheckedChange={setShowCalendarView}
+        checked={darkMode}
+        onCheckedChange={setDarkMode}
         label="Dark mode"
       />
       {/* <span>
