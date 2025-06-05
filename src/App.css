@@ -10,14 +10,14 @@
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  transition: background-color 0.6s ease, color 0.6s ease;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 body.dark .App {
   background-color: #292828;
   /* background-color: #181818; */
   color: #eee;
-  transition: background-color 0.6s ease, color 0.6s ease;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 h1 {
@@ -46,12 +46,12 @@ h1 {
   background-color: white;
   cursor: col-resize;
   z-index: 10;
-  transition: background-color 0.6s ease, color 0.6s ease;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 body.dark .resizer {
   /* background-color: #454545; */
-  transition: background-color 0.6s ease, color 0.6s ease;
+  transition: background-color 0.5s ease, color 0.5s ease;
   background-color: #292828;
 }
 
@@ -81,14 +81,14 @@ input[type="text"] {
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   box-sizing: border-box;
-  transition: background-color 0.6s ease, color 0.6s ease;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 body.dark .menu-container {
   background-color: #181818;
   /* background-color: #454242; */
   color: #eee;
-  transition: background-color 0.6s ease, color 0.6s ease;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .menu-container h1 {
@@ -490,44 +490,41 @@ body.dark .menu-container {
   transition: background 0.2s ease-in-out;
 }
 
-.toggle-switch {
+.switch-container {
   display: flex;
   align-items: center;
   gap: 8px;
+  font-size: large;
 }
 
-.switch-root {
-  all: unset;
-  width: 48px;
-  height: 32px;
-  background-color: #040811;
-  border-radius: 9999px;
+.switch {
+  width: 50px;
+  height: 25px;
+  background-color: #ccc;
+  border-radius: 15px;
   position: relative;
   cursor: pointer;
-  transition: background-color 0.1s;
-  margin: 10px;
+  transition: background-color 0.3s ease;
 }
 
-.switch-root[data-state="checked"] {
-  background-color: #4caf50;
+.switch.switch-on {
+  background-color: #007bff;
 }
 
-.switch-thumb {
-  display: block;
-  width: 11px;
-  height: 11px;
+.switch-handle {
+  width: 20px;
+  height: 20px;
   background-color: white;
-  border-radius: 9999px;
-  transition: transform 0.2s;
-  transform: translateX(0px);
-  will-change: transform;
+  border-radius: 50%;
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  transition: left 0.3s ease;
 }
 
-.switch-root[data-state="checked"] .switch-thumb {
-  transform: translateX(18px);
+.switch.switch-on .switch-handle {
+  left: 25px;
 }
 
 .menu-footer-icon {
@@ -765,14 +762,14 @@ body.dark .menu-container {
   border-radius: 20px; /* Rounded edges */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   box-sizing: border-box;
-  transition: background-color 0.6s ease, color 0.6s ease;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 body.dark .task-view {
   background-color: #181818;
   /* background-color: #454242; */
   color: #eee;
-  transition: background-color 0.6s ease, color 0.6s ease;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .task-view h1 {

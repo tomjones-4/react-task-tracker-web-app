@@ -1,12 +1,11 @@
 // TODO
 
 /* High Priority */
-// Keep improving dark mode: modals, add list, add task, color contrast on darks, divider
 // Consider adding priority to tasks, and then sorting tasks by priority in the task list. This could be a simple dropdown on the task form, and then the task list could sort by priority first, then due date, then title.
-// Fix the slight indents for the tasks with tags on them.
 /* End High Priority */
 
 /* Medium Priority */
+// Dark mode improvements
 // Think about actually reordering the tasks when a user marks a task as completed. Currently the tasks are only sorted visually, but if I made that change using setTask I think it would be easier to delete tasks in the right order.
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab, or just be a toggle for the selected list - in that case list UI would probably need more state added to it, possibly in App.tsx)
 // Add a tag filter when "All tasks" is selected in the sidebar
@@ -14,8 +13,6 @@
 /* Think about making selected task something that's always selected (behavior would be that if a list doesn't have any tasks, it defauls to adding task with resetTask() method).
    I think this could be achieved by having selectedTaskId = -1 when there is no task selected, and that's how app knows to show AddTask form.
   This probably also aligns better with only having selected task ids for tasks that actually exist, and not tasks that are going to be added. */
-// Add dark mode toggle
-// Make toggles responsive. They are janky when resizing the window.
 /* End Medium Priority */
 
 /* Low Priority */

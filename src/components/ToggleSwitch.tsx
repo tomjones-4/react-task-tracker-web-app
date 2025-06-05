@@ -1,8 +1,6 @@
-import * as Switch from "@radix-ui/react-switch";
-
 interface ToggleSwitchProps {
   checked: boolean;
-  onCheckedChange: (checked: boolean) => void;
+  onCheckedChange: () => void;
   label?: string;
 }
 
@@ -12,17 +10,16 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
   label = "Toggle",
 }) => {
   return (
-    <div className="toggle-switch">
-      <label className="toggle-label">
+    <div className="switch-container">
+      <span className="switch-label">
         <b>{label}</b>
-      </label>
-      <Switch.Root
-        className="switch-root"
-        checked={checked}
-        onCheckedChange={onCheckedChange}
+      </span>
+      <div
+        className={`switch ${checked ? "switch-on" : ""}`}
+        onClick={onCheckedChange}
       >
-        <Switch.Thumb className="switch-thumb" />
-      </Switch.Root>
+        <div className="switch-handle" />
+      </div>
     </div>
   );
 };

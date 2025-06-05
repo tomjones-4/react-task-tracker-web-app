@@ -20,18 +20,18 @@ const MenuFooter: React.FC<MenuFooterProps> = ({
     <div className="menu-footer">
       <ToggleSwitch
         checked={showCalendarView}
-        onCheckedChange={setShowCalendarView}
+        onCheckedChange={() => setShowCalendarView(!showCalendarView)}
         label="Show Calendar View"
       />
       {/* TODO - change the checked and onCheckedChange props to the correct ones */}
-      <ToggleSwitch
+      {/* <ToggleSwitch
         checked={showCalendarView}
         onCheckedChange={setShowCalendarView}
         label="Hide completed tasks"
-      />
+      /> */}
       <ToggleSwitch
         checked={darkMode}
-        onCheckedChange={setDarkMode}
+        onCheckedChange={() => setDarkMode(!darkMode)}
         label="Dark mode"
       />
       {/* <span>
