@@ -30,7 +30,7 @@ const AddList: React.FC<AddListProps> = ({
 
   return (
     <>
-      <div className="add-list" onClick={openAddListModal}>
+      <div className="add-list menu-list" onClick={openAddListModal}>
         <FaPlus className="add-list-icon" />
         <p>Add New List</p>
         <span className="ripple" />
