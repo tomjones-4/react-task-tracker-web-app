@@ -61,7 +61,9 @@ const TaskItem: React.FC<TaskItemProps> = ({
       <div
         className={`task-item ${task.completed ? "completed" : ""} ${
           task.id == selectedTaskId ? "selected" : ""
-        } ${tags.length > 0 ? "tags" : ""} `}
+        } 
+         
+        `}
         onClick={(e) => {
           handleTaskClick(e);
         }}

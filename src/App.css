@@ -14,8 +14,8 @@
 }
 
 body.dark .App {
-  /* background-color: #454242; */
-  background-color: #181818;
+  background-color: #292828;
+  /* background-color: #181818; */
   color: #eee;
   transition: background-color 0.6s ease, color 0.6s ease;
 }
@@ -46,7 +46,13 @@ h1 {
   background-color: white;
   cursor: col-resize;
   z-index: 10;
-  transition: background-color 0.2s;
+  transition: background-color 0.6s ease, color 0.6s ease;
+}
+
+body.dark .resizer {
+  /* background-color: #454545; */
+  transition: background-color 0.6s ease, color 0.6s ease;
+  background-color: #292828;
 }
 
 /* Style the input field for new tasks and other inputs throughout App */
@@ -79,8 +85,8 @@ input[type="text"] {
 }
 
 body.dark .menu-container {
-  /* background-color: #181818; */
-  background-color: #454242;
+  background-color: #181818;
+  /* background-color: #454242; */
   color: #eee;
   transition: background-color 0.6s ease, color 0.6s ease;
 }
@@ -685,11 +691,10 @@ body.dark .menu-container {
 
 .task-item .tags {
   flex-grow: 100;
-  gap: 0px;
-}
-
-.task-item.tags {
-  padding: 2px 0px 2px 16px;
+  min-width: 10px;
+  gap: 4px;
+  margin: 0;
+  padding-left: 12px;
 }
 
 .expand-task-icon {
@@ -764,8 +769,8 @@ body.dark .menu-container {
 }
 
 body.dark .task-view {
-  /* background-color: #181818; */
-  background-color: #454242;
+  background-color: #181818;
+  /* background-color: #454242; */
   color: #eee;
   transition: background-color 0.6s ease, color 0.6s ease;
 }
