@@ -711,7 +711,7 @@ body.dark .menu-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
   padding: 0.75rem 1rem;
   border-bottom: 1px solid #e0e0e0;
 }
@@ -724,7 +724,7 @@ body.dark .menu-container {
 .toolbar-label {
   font-size: 1.2rem;
   font-weight: 600;
-  color: #333;
+  /* color: #333; */
   margin: 6px;
 }
 
@@ -747,6 +747,16 @@ body.dark .menu-container {
   background-color: #007bff;
   color: white;
   border-color: #007bff;
+}
+
+/* Changing background color for selected day on calendar */
+.rbc-today {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+body.dark .rbc-today {
+  background-color: #8b9fb9;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .task-view {
@@ -889,6 +899,25 @@ textarea {
 .datepicker-calendar .react-datepicker__day--today {
   font-weight: bold;
   color: #4f8cff;
+}
+
+.time-picker {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.time-picker select {
+  padding: 0.3rem 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  appearance: none;
+}
+
+.time-picker span {
+  font-size: 1rem;
 }
 
 .task-form-buttons-container {

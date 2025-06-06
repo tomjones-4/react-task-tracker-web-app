@@ -8,11 +8,12 @@ import React, {
 import TagModal from "./TagModal";
 import Modal from "./Modal";
 import TaskFormButtons from "./TaskFormButtons";
-import { List, Task, Subtask, Tag } from "../types";
+import { List, Task, Subtask, Tag, Time } from "../types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaTrashAlt } from "react-icons/fa";
 import Subtasks from "./Subtasks";
+import TimePicker from "./TimePicker";
 
 type TaskFormProps = {
   lists: List[];
@@ -64,12 +65,27 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
       selectedTask.description
     );
     const [taskListId, setTaskListId] = useState<number>(selectedListId);
+    const [taskPriority, setTaskPriority] = useState<number>(
+      selectedTask.priority
+    );
     const [taskDueDate, setTaskDueDate] = useState<Date | null>(
       selectedTask.dueDate
+    );
+    const [taskStartTime, setTaskStartTime] = useState<Time | null>(
+      selectedTask.startTime
+    );
+    const [taskEndTime, setTaskEndTime] = useState<Time | null>(
+      selectedTask.endTime
     );
     const [taskTagIds, setTaskTagIds] = useState<number[]>(selectedTask.tagIds);
     const [dueDateEnabled, setDueDateEnabled] = useState<boolean>(
       selectedTask.dueDate !== null
+    );
+    const [startTimeEnabled, setStartTimeEnabled] = useState<boolean>(
+      selectedTask.startTime !== null
+    );
+    const [endTimeEnabled, setEndTimeEnabled] = useState<boolean>(
+      selectedTask.endTime !== null
     );
     const [isTagModalOpen, setIsTagModalOpen] = useState<boolean>(false);
 
@@ -130,7 +146,10 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
         title: taskTitle,
         description: taskDescription,
         listId: taskListId,
+        priority: taskPriority,
         dueDate: taskDueDate,
+        startTime: taskStartTime,
+        endTime: taskEndTime,
         tagIds: taskTagIds,
       };
       addTask(newTask);
@@ -227,6 +246,29 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
               ))}
             </select>
           </span>
+          <span className="task-form-item">
+            <label htmlFor="priority-select">Priority</label>
+            <select
+              id="priority-select"
+              name="priority"
+              value={String(taskPriority)}
+              onChange={(e) => setTaskPriority(Number(e.target.value))}
+            >
+              {/* {lists.slice(1).map((list) => (
+                <option key={String(list.id)} value={String(list.id)}>
+                  {list.name}
+                </option>
+              ))} */}
+              {Array.from({ length: 3 }, (_, i) => {
+                const h = String(i + 1);
+                return (
+                  <option key={h} value={h}>
+                    {h}
+                  </option>
+                );
+              })}
+            </select>
+          </span>
 
           <span className="task-form-item">
             <label>
@@ -249,6 +291,30 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
               isClearable
               disabled={!dueDateEnabled}
             />
+          </span>
+
+          <span className="task-form-item">
+            <label>
+              Start time?
+              <input
+                className="due-date-checkbox"
+                type="checkbox"
+                checked={startTimeEnabled}
+                onChange={(e) => setStartTimeEnabled(e.target.checked)}
+              />{" "}
+            </label>
+            <TimePicker value={taskStartTime} onChange={setTaskStartTime} />
+
+            <label>
+              End Time?
+              <input
+                className="due-date-checkbox"
+                type="checkbox"
+                checked={endTimeEnabled}
+                onChange={(e) => setEndTimeEnabled(e.target.checked)}
+              />{" "}
+            </label>
+            <TimePicker value={taskEndTime} onChange={setTaskEndTime} />
           </span>
 
           <span className="task-form-item">

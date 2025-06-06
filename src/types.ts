@@ -11,7 +11,10 @@ export interface Task {
   title: string;
   description: string;
   listId: number;
+  priority: number;
   dueDate: Date | null;
+  startTime: Time | null;
+  endTime: Time | null;
   tagIds: number[];
 }
 
@@ -28,10 +31,16 @@ export interface Tag {
   color: string;
 }
 
-export type CalendarEvent = {
+export interface CalendarEvent {
   id: number;
   title: string;
   start: Date;
   end: Date;
   allDay: boolean;
-};
+}
+
+export interface Time {
+  hour: number;
+  minute: number;
+  ampm: string;
+}

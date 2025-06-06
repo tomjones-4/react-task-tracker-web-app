@@ -35,7 +35,7 @@ import ResizableSplitView from "./components/ResizableSplitView";
 import MainView from "./components/MainView.jsx";
 import TaskView from "./components/TaskView.jsx";
 import React, { useState, useEffect, useRef } from "react";
-import { List, Task, Subtask, Tag } from "./types";
+import { List, Task, Subtask, Tag, Time } from "./types";
 
 export const SPECIAL_LIST_ID_ALL_TASKS = -1;
 const SPECIAL_LIST_ID_UNCATEGORIZED_TASKS = 0;
@@ -69,7 +69,10 @@ const DUMMY_TASK: Task = {
   title: "Tend to the garden",
   description: "Water the plants and remove weeds",
   listId: SPECIAL_LIST_ID_UNCATEGORIZED_TASKS,
+  priority: 3,
   dueDate: null,
+  startTime: null,
+  endTime: null,
   tagIds: [],
 };
 
@@ -79,7 +82,10 @@ const EMPTY_TASK: Task = {
   title: "",
   description: "",
   listId: SPECIAL_LIST_ID_UNCATEGORIZED_TASKS,
+  priority: 3,
   dueDate: null,
+  startTime: null,
+  endTime: null,
   tagIds: [],
 };
 
@@ -523,7 +529,9 @@ const App = () => {
 
   const resetTask = (
     newListId: number = selectedList.id,
-    dueDate: Date | null = null
+    dueDate: Date | null = null,
+    startTime: Time | null = null,
+    endTime: Time | null = null
   ) => {
     const newTask: Task = {
       id: -1,
@@ -531,7 +539,10 @@ const App = () => {
       title: "",
       description: "",
       listId: newListId, // Set the listId to the currently selected list
+      priority: 3,
       dueDate: dueDate,
+      startTime: startTime,
+      endTime: endTime,
       tagIds: [],
     };
     setSelectedTask(newTask);
@@ -544,8 +555,12 @@ const App = () => {
     taskFormRef.current?.focusTitleInput(); // Focus the title input
   };
 
-  const onCalendarCreateTask = (startDate: Date) => {
-    resetTask(selectedList.id, startDate);
+  const onCalendarCreateTask = (
+    startDate: Date,
+    startTime?: Time,
+    endTime?: Time
+  ) => {
+    resetTask(selectedList.id, startDate, startTime, endTime);
     taskFormRef.current?.focusTitleInput(); // Focus the title input
   };
 
