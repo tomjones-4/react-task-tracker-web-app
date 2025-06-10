@@ -476,7 +476,6 @@ body.dark .menu-container {
   flex-direction: column;
   justify-content: end;
   margin-top: auto; /* pushes to bottom if space */
-  margin-bottom: 16px;
 }
 
 .menu-footer span {
@@ -553,6 +552,7 @@ body.dark .menu-container {
 
 .debug {
   width: 100%;
+  word-break: break-all;
   overflow: hidden;
 }
 
@@ -918,6 +918,17 @@ textarea {
 
 .time-picker span {
   font-size: 1rem;
+}
+
+.start-time-container,
+.end-time-container {
+  display: flex;
+  align-items: start;
+  gap: 1rem;
+}
+
+.start-time-container {
+  padding-right: 10px;
 }
 
 .task-form-buttons-container {
