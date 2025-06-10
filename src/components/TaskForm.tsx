@@ -32,6 +32,7 @@ type TaskFormProps = {
   editSubtask: (editedSubtask: Subtask) => void;
   deleteSubtask: (subtaskId: number) => void;
   toggleSubtaskCompleted: (subtaskId: number) => void;
+  linkNewSubtasksToTask: (taskId: number) => void; // Optional prop for associating new subtasks with the task
 };
 
 export type TaskFormRef = {
@@ -57,6 +58,7 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
       editSubtask,
       deleteSubtask,
       toggleSubtaskCompleted,
+      linkNewSubtasksToTask,
     },
     ref
   ) => {
@@ -153,6 +155,7 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
         tagIds: taskTagIds,
       };
       addTask(newTask);
+      linkNewSubtasksToTask(newTask.id);
     };
 
     const handleEditTask = (

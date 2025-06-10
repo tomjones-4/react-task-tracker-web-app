@@ -68,6 +68,12 @@ const SubtaskList: React.FC<SubtaskListProps> = ({
 
   const listRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (selectedTaskId !== -1) {
+      setSubtasks((prev) => prev.filter((subtask) => subtask.taskId !== -1));
+    }
+  }, [selectedTaskId]);
+
   return (
     <div className="subtask-list-container">
       <AddSubtaskItem

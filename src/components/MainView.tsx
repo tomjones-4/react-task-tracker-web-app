@@ -88,7 +88,7 @@ const MainView: React.FC<MainViewProps> = ({
         />
       )}
 
-      {/* <div className="debug">
+      <div className="debug">
         <h2>Debug</h2>
         <p>Selected Task: {JSON.stringify(selectedTaskForDebug)}</p>
         <p>Selected List: {JSON.stringify(selectedList.name)}</p>
@@ -101,7 +101,10 @@ const MainView: React.FC<MainViewProps> = ({
         <p>
           Selected List: "{selectedList.name}" (ID: {selectedList.id})
         </p>
-      </div> */}
+        <p>
+          Subtasks: {JSON.stringify(subtasks.filter((s) => s.taskId === -1))}
+        </p>
+      </div>
     </div>
   );
 };

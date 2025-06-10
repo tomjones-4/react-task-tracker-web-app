@@ -2,6 +2,8 @@
 
 /* High Priority */
 // Consider adding priority to tasks, and then sorting tasks by priority in the task list. This could be a simple dropdown on the task form, and then the task list could sort by priority first, then due date, then title.
+// Time picker issues: can't select minutes under 10, time isn't being saved to task correctly, requires being updated again after check and uncheck of box
+// Make it so time picker resets to midnight for new tasks
 /* End High Priority */
 
 /* Medium Priority */
@@ -527,6 +529,19 @@ const App = () => {
     setSubtasks(updatedSubtasks);
   };
 
+  const linkNewSubtasksToTask = (taskId: number) => {
+    const newSubtasks = subtasks
+      .filter((subtask: Subtask) => subtask.taskId === -1)
+      .map((subtask: Subtask) => ({
+        ...subtask,
+        taskId: taskId, // Link the new subtask to the current task
+      }));
+    setSubtasks([
+      ...subtasks.filter((subtask: Subtask) => subtask.taskId !== -1),
+      ...newSubtasks,
+    ]);
+  };
+
   const resetTask = (
     newListId: number = selectedList.id,
     dueDate: Date | null = null,
@@ -783,6 +798,7 @@ const App = () => {
               editSubtask={editSubtask}
               deleteSubtask={deleteSubtask}
               toggleSubtaskCompleted={toggleSubtaskCompleted}
+              linkNewSubtasksToTask={linkNewSubtasksToTask}
               ref={taskFormRef}
             />
           }

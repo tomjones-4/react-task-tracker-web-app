@@ -19,6 +19,7 @@ type TaskViewProps = {
   editSubtask: (editedSubtask: Subtask) => void;
   deleteSubtask: (subtaskId: number) => void;
   toggleSubtaskCompleted: (subtaskId: number) => void;
+  linkNewSubtasksToTask: (taskId: number) => void;
 };
 
 export type TaskFormRef = {
@@ -44,6 +45,7 @@ const TaskView = forwardRef<TaskFormRef, TaskViewProps>(
       editSubtask,
       deleteSubtask,
       toggleSubtaskCompleted,
+      linkNewSubtasksToTask,
     },
     ref
   ) => {
@@ -68,6 +70,7 @@ const TaskView = forwardRef<TaskFormRef, TaskViewProps>(
           editSubtask={editSubtask}
           deleteSubtask={deleteSubtask}
           toggleSubtaskCompleted={toggleSubtaskCompleted}
+          linkNewSubtasksToTask={linkNewSubtasksToTask}
           ref={ref}
         />
       </div>
