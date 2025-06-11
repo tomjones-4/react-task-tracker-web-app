@@ -73,22 +73,34 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
     const [taskDueDate, setTaskDueDate] = useState<Date | null>(
       selectedTask.dueDate
     );
-    const [taskStartTime, setTaskStartTime] = useState<Time | null>(
+    const [taskStartTime, setTaskStartTime] = useState<Time>(
       selectedTask.startTime
+        ? selectedTask.startTime
+        : { hour: 12, minute: 0, ampm: "AM" }
     );
-    const [taskEndTime, setTaskEndTime] = useState<Time | null>(
+    const [taskEndTime, setTaskEndTime] = useState<Time>(
       selectedTask.endTime
+        ? selectedTask.endTime
+        : { hour: 12, minute: 0, ampm: "AM" }
     );
     const [taskTagIds, setTaskTagIds] = useState<number[]>(selectedTask.tagIds);
-    const [dueDateEnabled, setDueDateEnabled] = useState<boolean>(
+    const [dueDateChecked, setdueDateChecked] = useState<boolean>(
       selectedTask.dueDate !== null
     );
-    const [startTimeEnabled, setStartTimeEnabled] = useState<boolean>(
-      selectedTask.startTime !== null
+    const [startTimeChecked, setStartTimeChecked] = useState<boolean>(
+      selectedTask.startTime !== null && selectedTask.startTime !== undefined
     );
-    const [endTimeEnabled, setEndTimeEnabled] = useState<boolean>(
-      selectedTask.endTime !== null
+    const [endTimeChecked, setEndTimeChecked] = useState<boolean>(
+      selectedTask.endTime !== null && selectedTask.endTime !== undefined
     );
+
+    // console.log("selectedTask.startTime", selectedTask.startTime);
+    // console.log("selectedTask.endTime", selectedTask.endTime);
+    // console.log("taskStartTime", taskStartTime);
+    // console.log("taskEndTime", taskEndTime);
+    // console.log("dueDateChecked", dueDateChecked);
+    // console.log("startTimeChecked", startTimeChecked);
+    // console.log("endTimeChecked", endTimeChecked);
     const [isTagModalOpen, setIsTagModalOpen] = useState<boolean>(false);
 
     const [error, setError] = useState<string>("");
@@ -99,17 +111,37 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
         setTaskTitle(selectedTask.title);
         setTaskDescription(selectedTask.description);
         setTaskListId(selectedListId);
+        setTaskPriority(selectedTask.priority);
         setTaskDueDate(selectedTask.dueDate);
+        setTaskStartTime(
+          selectedTask.startTime
+            ? selectedTask.startTime
+            : { hour: 12, minute: 0, ampm: "AM" }
+        );
+        setTaskEndTime(
+          selectedTask.endTime
+            ? selectedTask.endTime
+            : { hour: 12, minute: 0, ampm: "AM" }
+        );
         setTaskTagIds(selectedTask.tagIds);
-        setDueDateEnabled(selectedTask.dueDate !== null);
+        setdueDateChecked(selectedTask.dueDate !== null);
+        setStartTimeChecked(
+          selectedTask.startTime !== null &&
+            selectedTask.startTime !== undefined
+        );
+        setEndTimeChecked(
+          selectedTask.endTime !== null && selectedTask.endTime !== undefined
+        );
       }
-    }, [selectedTask]);
+    }, [selectedTask.id]); // BE CAREFUL OF THIS CHANGE. I HAVEN'T TESTED TO SEE IF IT WORKS AS EXPECTED. THE REASON I DID IT WAS TO SEE IF I COULD JUST HAVE TIMES RESET WHEN TASK IS CHANGED RATHER THAN WHEN SOMETHING ABOUT THE TASK CHANGES.
 
     useEffect(() => {
-      if (!dueDateEnabled) {
+      if (!dueDateChecked) {
         setTaskDueDate(null);
+        setStartTimeChecked(false);
+        setEndTimeChecked(false);
       }
-    }, [dueDateEnabled]);
+    }, [dueDateChecked]);
 
     const showError = (message: string) => {
       setError(message);
@@ -150,8 +182,8 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
         listId: taskListId,
         priority: taskPriority,
         dueDate: taskDueDate,
-        startTime: taskStartTime,
-        endTime: taskEndTime,
+        startTime: startTimeChecked ? taskStartTime : null,
+        endTime: endTimeChecked ? taskEndTime : null,
         tagIds: taskTagIds,
       };
       addTask(newTask);
@@ -175,7 +207,10 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
         title: taskTitle,
         description: taskDescription,
         listId: taskListId,
+        priority: taskPriority,
         dueDate: taskDueDate,
+        startTime: startTimeChecked ? taskStartTime : null,
+        endTime: endTimeChecked ? taskEndTime : null,
         tagIds: taskTagIds,
       };
       editTask(updatedTask);
@@ -280,8 +315,8 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
                 className="due-date-checkbox"
                 type="checkbox"
                 id="enable-due-date"
-                checked={dueDateEnabled}
-                onChange={(e) => setDueDateEnabled(e.target.checked)}
+                checked={dueDateChecked}
+                onChange={(e) => setdueDateChecked(e.target.checked)}
               />{" "}
             </label>
             <DatePicker
@@ -292,32 +327,45 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
               placeholderText="Select a due date"
               dateFormat="MMMM d, yyyy"
               isClearable
-              disabled={!dueDateEnabled}
+              disabled={!dueDateChecked}
             />
           </span>
 
           <span className="task-form-item">
-            <label>
-              Start time?
-              <input
-                className="due-date-checkbox"
-                type="checkbox"
-                checked={startTimeEnabled}
-                onChange={(e) => setStartTimeEnabled(e.target.checked)}
-              />{" "}
-            </label>
-            <TimePicker value={taskStartTime} onChange={setTaskStartTime} />
-
-            <label>
-              End Time?
-              <input
-                className="due-date-checkbox"
-                type="checkbox"
-                checked={endTimeEnabled}
-                onChange={(e) => setEndTimeEnabled(e.target.checked)}
-              />{" "}
-            </label>
-            <TimePicker value={taskEndTime} onChange={setTaskEndTime} />
+            <span className="start-time-container">
+              <label>
+                Start time?
+                <input
+                  className="due-date-checkbox"
+                  type="checkbox"
+                  checked={startTimeChecked}
+                  onChange={(e) => setStartTimeChecked(e.target.checked)}
+                  disabled={!dueDateChecked}
+                />{" "}
+              </label>
+              <TimePicker
+                value={taskStartTime}
+                onChange={setTaskStartTime}
+                disabled={!startTimeChecked}
+              />
+            </span>
+            <span className="end-time-container">
+              <label>
+                End time?
+                <input
+                  className="due-date-checkbox"
+                  type="checkbox"
+                  checked={endTimeChecked}
+                  onChange={(e) => setEndTimeChecked(e.target.checked)}
+                  disabled={!dueDateChecked}
+                />{" "}
+              </label>
+              <TimePicker
+                value={taskEndTime}
+                onChange={setTaskEndTime}
+                disabled={!endTimeChecked}
+              />
+            </span>
           </span>
 
           <span className="task-form-item">

@@ -2,8 +2,9 @@
 
 /* High Priority */
 // Consider adding priority to tasks, and then sorting tasks by priority in the task list. This could be a simple dropdown on the task form, and then the task list could sort by priority first, then due date, then title.
-// Time picker issues: can't select minutes under 10, time isn't being saved to task correctly, requires being updated again after check and uncheck of box
-// Make it so time picker resets to midnight for new tasks
+// Add tags in menu, like image
+// Add tooltip to startTime that says it can only be enabled when due date is enabled
+// Change the task list scrollbar background color for light and dark modes
 /* End High Priority */
 
 /* Medium Priority */
@@ -501,7 +502,10 @@ const App = () => {
           title: editedTask.title,
           description: editedTask.description,
           listId: editedTask.listId,
+          priority: editedTask.priority,
           dueDate: editedTask.dueDate,
+          startTime: editedTask.startTime,
+          endTime: editedTask.endTime,
           tagIds: editedTask.tagIds,
         };
       }
