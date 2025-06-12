@@ -169,7 +169,7 @@ body.dark .menu-container {
   padding: 10px 12px;
   cursor: pointer;
   border-radius: 12px;
-  margin: 4px 0;
+  margin: 4px 4px 4px 0;
   position: relative;
   overflow: hidden;
   transition: background-color 0.3s ease, transform 0.2s ease,
@@ -1253,7 +1253,7 @@ z .tags-label {
 
 .subtasks-container .task-item {
   padding: 2px 16px;
-  margin: 0px;
+  margin: 0 8px 0 0;
 }
 
 .subtasks-container .task-item input[type="checkbox"] {
