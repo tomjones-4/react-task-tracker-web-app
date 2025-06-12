@@ -2,8 +2,6 @@
 
 /* High Priority */
 // Consider adding priority to tasks, and then sorting tasks by priority in the task list. This could be a simple dropdown on the task form, and then the task list could sort by priority first, then due date, then title.
-// Make it so priority shows on the task item as a green L for low, yellow M for medium, red H for high.
-// The above could use the number of priority plus color and use ROYGB as colors from 1-5.
 // Add tags in menu, like image
 // Consider implementing search
 /* End High Priority */

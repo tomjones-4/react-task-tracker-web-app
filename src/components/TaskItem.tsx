@@ -5,6 +5,13 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import ExpandedSubtaskList from "./ExpandedSubtaskList";
 import { AnimatePresence, motion } from "framer-motion";
+import {
+  TASK_VERY_HIGH_PRIORITY,
+  TASK_HIGH_PRIORITY,
+  TASK_MEDIUM_PRIORITY,
+  TASK_LOW_PRIORITY,
+  TASK_VERY_LOW_PRIORITY,
+} from "../App";
 
 const MAX_TAGS_PER_TASK_ITEM = 3;
 
@@ -56,6 +63,23 @@ const TaskItem: React.FC<TaskItemProps> = ({
     transition,
   };
 
+  const getPriorityBadge = (priority: number | null) => {
+    switch (priority) {
+      case TASK_VERY_HIGH_PRIORITY:
+        return { label: "P1", color: "red" };
+      case TASK_HIGH_PRIORITY:
+        return { label: "P2", color: "orange" };
+      case TASK_MEDIUM_PRIORITY:
+        return { label: "P3", color: "#f5e942" }; // yellow color that's a little easier on the eyes
+      case TASK_LOW_PRIORITY:
+        return { label: "P4", color: "green" };
+      case TASK_VERY_LOW_PRIORITY:
+        return { label: "P5", color: "blue" };
+      default:
+        return { label: "P3", color: "#f5e942" };
+    }
+  };
+
   return (
     <div ref={setNodeRef} style={style} {...attributes}>
       <div
@@ -74,6 +98,19 @@ const TaskItem: React.FC<TaskItemProps> = ({
           onChange={handleChange}
         />
         <p>{task.title}</p>
+        <span
+          className="priority-badge"
+          style={{
+            backgroundColor: getPriorityBadge(task.priority).color,
+            color: "white",
+            padding: "2px 6px",
+            borderRadius: "4px",
+            fontSize: "0.75rem",
+            fontWeight: "bold",
+          }}
+        >
+          {getPriorityBadge(task.priority).label}
+        </span>
         <span className="tags">
           {tags.slice(0, 3).map((tag) => (
             <span
