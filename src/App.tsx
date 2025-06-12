@@ -3,8 +3,6 @@
 /* High Priority */
 // Consider adding priority to tasks, and then sorting tasks by priority in the task list. This could be a simple dropdown on the task form, and then the task list could sort by priority first, then due date, then title.
 // Add tags in menu, like image
-// Add tooltip to startTime that says it can only be enabled when due date is enabled
-// Change the task list scrollbar background color for light and dark modes
 /* End High Priority */
 
 /* Medium Priority */
