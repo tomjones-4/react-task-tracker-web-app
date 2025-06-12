@@ -14,6 +14,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { FaTrashAlt } from "react-icons/fa";
 import Subtasks from "./Subtasks";
 import TimePicker from "./TimePicker";
+import Tooltip from "./Tooltip";
 
 type TaskFormProps = {
   lists: List[];
@@ -333,16 +334,19 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
 
           <span className="task-form-item">
             <span className="start-time-container">
-              <label>
-                Start time?
-                <input
-                  className="due-date-checkbox"
-                  type="checkbox"
-                  checked={startTimeChecked}
-                  onChange={(e) => setStartTimeChecked(e.target.checked)}
-                  disabled={!dueDateChecked}
-                />{" "}
-              </label>
+              <span className="start-time-label">
+                <label>
+                  Start time?
+                  <input
+                    className="due-date-checkbox"
+                    type="checkbox"
+                    checked={startTimeChecked}
+                    onChange={(e) => setStartTimeChecked(e.target.checked)}
+                    disabled={!dueDateChecked}
+                  />{" "}
+                </label>
+                <Tooltip text="To set start and end times, due date must be set."></Tooltip>
+              </span>
               <TimePicker
                 value={taskStartTime}
                 onChange={setTaskStartTime}
