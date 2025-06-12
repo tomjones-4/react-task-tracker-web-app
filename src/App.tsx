@@ -2,7 +2,10 @@
 
 /* High Priority */
 // Consider adding priority to tasks, and then sorting tasks by priority in the task list. This could be a simple dropdown on the task form, and then the task list could sort by priority first, then due date, then title.
+// Make it so priority shows on the task item as a green L for low, yellow M for medium, red H for high.
+// The above could use the number of priority plus color and use ROYGB as colors from 1-5.
 // Add tags in menu, like image
+// Consider implementing search
 /* End High Priority */
 
 /* Medium Priority */
@@ -38,8 +41,14 @@ import TaskView from "./components/TaskView.jsx";
 import React, { useState, useEffect, useRef } from "react";
 import { List, Task, Subtask, Tag, Time } from "./types";
 
-export const SPECIAL_LIST_ID_ALL_TASKS = -1;
-const SPECIAL_LIST_ID_UNCATEGORIZED_TASKS = 0;
+export const SPECIAL_LIST_ID_ALL_TASKS: number = -1;
+const SPECIAL_LIST_ID_UNCATEGORIZED_TASKS: number = 0;
+
+export const TASK_VERY_HIGH_PRIORITY: number = 1;
+export const TASK_HIGH_PRIORITY: number = 2;
+export const TASK_MEDIUM_PRIORITY: number = 3;
+export const TASK_LOW_PRIORITY: number = 4;
+export const TASK_VERY_LOW_PRIORITY: number = 5;
 
 const SPECIAL_LISTS: List[] = [
   {
@@ -62,7 +71,6 @@ const LOCAL_STORAGE_KEY_SUBTASKS = "todoApp.subtasks";
 const LOCAL_STORAGE_KEY_TAGS = "todoApp.tags";
 const LOCAL_STORAGE_KEY_DARK_MODE = "todoApp.darkMode";
 // const LOCAL_STORAGE_KEY_SETTINGS = "todoApp.settings";
-// const LOCAL_STORAGE_KEY_THEME = "todoApp.theme";
 
 const DUMMY_TASK: Task = {
   id: -2,
@@ -70,7 +78,7 @@ const DUMMY_TASK: Task = {
   title: "Tend to the garden",
   description: "Water the plants and remove weeds",
   listId: SPECIAL_LIST_ID_UNCATEGORIZED_TASKS,
-  priority: 3,
+  priority: TASK_MEDIUM_PRIORITY,
   dueDate: null,
   startTime: null,
   endTime: null,
@@ -83,7 +91,7 @@ const EMPTY_TASK: Task = {
   title: "",
   description: "",
   listId: SPECIAL_LIST_ID_UNCATEGORIZED_TASKS,
-  priority: 3,
+  priority: TASK_MEDIUM_PRIORITY,
   dueDate: null,
   startTime: null,
   endTime: null,
@@ -140,13 +148,29 @@ const App = () => {
     }
   });
 
+  const [hasLoadedTasks, setHasLoadedTasks] = useState<boolean>(false);
+
   const [tasks, setTasks] = useState<Task[]>(() => {
+    const normalizeTask = (task: Partial<Task>): Task => ({
+      id: task.id!,
+      title: task.title!,
+      description: task.description ?? "",
+      listId: task.listId!,
+      completed: task.completed ?? false,
+      dueDate: task.dueDate ?? null,
+      startTime: task.startTime ?? null,
+      endTime: task.endTime ?? null,
+      priority: task.priority ?? TASK_MEDIUM_PRIORITY,
+      tagIds: task.tagIds ?? [],
+    });
     const stored = localStorage.getItem(LOCAL_STORAGE_KEY_TASKS);
     let storedTasks: Task[] = [];
 
     if (stored) {
       try {
-        storedTasks = JSON.parse(stored) as Task[];
+        const parsed: Partial<Task>[] = JSON.parse(stored);
+        storedTasks = parsed.map(normalizeTask);
+        setHasLoadedTasks(true); // Set to true after tasks are loaded
       } catch (e) {
         console.error("Failed to parse stored tasks:", e);
       }
@@ -278,8 +302,6 @@ const App = () => {
     taskIds: number[],
     changeAllTasksList: boolean = true
   ) => {
-    console.log("listId", listId);
-    console.log("taskIds", taskIds);
     const updatedLists: List[] = lists.map((list: List) => {
       if (list.id === listId || (list.id === -1 && changeAllTasksList)) {
         return {
@@ -370,17 +392,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    // console.log(
-    //   "listSelectedTaskIds when setting the selected task ids in App.tsx",
-    //   listSelectedTasksIds
-    // );
-    // console.log(
-    //   "selectedTask name and id -",
-    //   selectedTask?.title,
-    //   selectedTask?.id
-    // );
-    // console.log("selectedList", selectedList.name);
-
     if (selectedTask && selectedList.id === SPECIAL_LIST_ID_ALL_TASKS) {
       const listIdForTask = tasks.find(
         (task: Task) => task.id === selectedTask.id
@@ -556,7 +567,7 @@ const App = () => {
       title: "",
       description: "",
       listId: newListId, // Set the listId to the currently selected list
-      priority: 3,
+      priority: TASK_MEDIUM_PRIORITY,
       dueDate: dueDate,
       startTime: startTime,
       endTime: endTime,
@@ -675,6 +686,7 @@ const App = () => {
 
   // Save tasks to localStorage whenever the tasks array changes
   useEffect(() => {
+    if (!hasLoadedTasks) return; // Prevent saving if tasks weren't properly loaded
     localStorage.setItem(LOCAL_STORAGE_KEY_TASKS, JSON.stringify(tasks));
   }, [tasks]);
 

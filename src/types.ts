@@ -11,7 +11,7 @@ export interface Task {
   title: string;
   description: string;
   listId: number;
-  priority: number;
+  priority: number | null;
   dueDate: Date | null;
   startTime: Time | null;
   endTime: Time | null;

@@ -15,6 +15,13 @@ import { FaTrashAlt } from "react-icons/fa";
 import Subtasks from "./Subtasks";
 import TimePicker from "./TimePicker";
 import Tooltip from "./Tooltip";
+import {
+  TASK_VERY_HIGH_PRIORITY,
+  TASK_HIGH_PRIORITY,
+  TASK_MEDIUM_PRIORITY,
+  TASK_LOW_PRIORITY,
+  TASK_VERY_LOW_PRIORITY,
+} from "../App";
 
 type TaskFormProps = {
   lists: List[];
@@ -68,8 +75,8 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
       selectedTask.description
     );
     const [taskListId, setTaskListId] = useState<number>(selectedListId);
-    const [taskPriority, setTaskPriority] = useState<number>(
-      selectedTask.priority
+    const [taskPriority, setTaskPriority] = useState<number | null>(
+      selectedTask.priority ?? TASK_MEDIUM_PRIORITY
     );
     const [taskDueDate, setTaskDueDate] = useState<Date | null>(
       selectedTask.dueDate
@@ -112,7 +119,7 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
         setTaskTitle(selectedTask.title);
         setTaskDescription(selectedTask.description);
         setTaskListId(selectedListId);
-        setTaskPriority(selectedTask.priority);
+        setTaskPriority(selectedTask.priority ?? TASK_MEDIUM_PRIORITY); // Default to low priority if not set
         setTaskDueDate(selectedTask.dueDate);
         setTaskStartTime(
           selectedTask.startTime
@@ -134,7 +141,7 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
           selectedTask.endTime !== null && selectedTask.endTime !== undefined
         );
       }
-    }, [selectedTask.id]); // BE CAREFUL OF THIS CHANGE. I HAVEN'T TESTED TO SEE IF IT WORKS AS EXPECTED. THE REASON I DID IT WAS TO SEE IF I COULD JUST HAVE TIMES RESET WHEN TASK IS CHANGED RATHER THAN WHEN SOMETHING ABOUT THE TASK CHANGES.
+    }, [selectedTask.id]); // TODO - BE CAREFUL OF THIS CHANGE. I HAVEN'T TESTED TO SEE IF IT WORKS AS EXPECTED. THE REASON I DID IT WAS TO SEE IF I COULD JUST HAVE TIMES RESET WHEN TASK IS CHANGED RATHER THAN WHEN SOMETHING ABOUT THE TASK CHANGES.
 
     useEffect(() => {
       if (!dueDateChecked) {
@@ -290,22 +297,15 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
             <select
               id="priority-select"
               name="priority"
-              value={String(taskPriority)}
+              //value={String(taskPriority)}
+              value={taskPriority ?? TASK_MEDIUM_PRIORITY} // Use nullish coalescing to default to medium priority if taskPriority is null or undefined
               onChange={(e) => setTaskPriority(Number(e.target.value))}
             >
-              {/* {lists.slice(1).map((list) => (
-                <option key={String(list.id)} value={String(list.id)}>
-                  {list.name}
-                </option>
-              ))} */}
-              {Array.from({ length: 3 }, (_, i) => {
-                const h = String(i + 1);
-                return (
-                  <option key={h} value={h}>
-                    {h}
-                  </option>
-                );
-              })}
+              <option value={TASK_VERY_HIGH_PRIORITY}>Very High - 1</option>
+              <option value={TASK_HIGH_PRIORITY}>High - 2</option>
+              <option value={TASK_MEDIUM_PRIORITY}>Medium - 3</option>
+              <option value={TASK_LOW_PRIORITY}>Low - 4</option>
+              <option value={TASK_VERY_LOW_PRIORITY}>Very Low - 5</option>
             </select>
           </span>
 
