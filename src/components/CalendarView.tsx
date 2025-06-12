@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Task, CalendarEvent } from "../types";
+import { Task, CalendarEvent, Time } from "../types";
 import {
   Calendar,
   dateFnsLocalizer,
@@ -33,7 +33,17 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   onCalendarTaskClick,
   onCalendarCreateTask,
 }) => {
-  //const [date, setDate] = useState<Date | null>(new Date(2025, 5, 20));
+  const combineDateAndTime = (date: Date, time: Time): Date => {
+    let hour = time.hour % 12;
+    if (time.ampm === "PM") hour += 12;
+
+    const result = new Date(date);
+    result.setHours(hour);
+    result.setMinutes(time.minute);
+    result.setSeconds(0);
+    result.setMilliseconds(0);
+    return result;
+  };
 
   const [view, setView] = useState<View>("month");
   const [date, setDate] = useState(new Date());
@@ -43,8 +53,12 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     .map((task) => ({
       id: task.id,
       title: task.title,
-      start: new Date(task.dueDate!), // ISO string or Date
-      end: new Date(task.dueDate!), // or task.dueDateEnd if available
+      start: task.startTime
+        ? combineDateAndTime(task.dueDate!, task.startTime)
+        : new Date(task.dueDate!),
+      end: task.endTime
+        ? combineDateAndTime(task.dueDate!, task.endTime)
+        : new Date(task.dueDate!),
       allDay: false,
     }));
 

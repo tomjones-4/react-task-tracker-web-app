@@ -83,12 +83,15 @@ const MainView: React.FC<MainViewProps> = ({
       {showCalendarView && (
         <CalendarView
           tasks={tasks}
-          onCalendarTaskClick={setSelectedTask}
+          onCalendarTaskClick={(task: Task) => {
+            setSelectedTask(task);
+            setIsAddMode(false);
+          }}
           onCalendarCreateTask={onCalendarCreateTask}
         />
       )}
 
-      <div className="debug">
+      {/* <div className="debug">
         <h2>Debug</h2>
         <p>Selected Task: {JSON.stringify(selectedTaskForDebug)}</p>
         <p>Selected List: {JSON.stringify(selectedList.name)}</p>
@@ -104,7 +107,7 @@ const MainView: React.FC<MainViewProps> = ({
         <p>
           Subtasks: {JSON.stringify(subtasks.filter((s) => s.taskId === -1))}
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };
