@@ -1,14 +1,13 @@
 // TODO
 
 /* High Priority */
-// Add tags in menu, like image
+// I'll probably need to change how the dragging and dropping reordering is done for filtering by tag.
 // Consider implementing search
 // Clean up code
 // Document project on GitHub
 /* End High Priority */
 
 /* Medium Priority */
-// Dark mode improvements
 // Think about actually reordering the tasks when a user marks a task as completed. Currently the tasks are only sorted visually, but if I made that change using setTask I think it would be easier to delete tasks in the right order.
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab, or just be a toggle for the selected list - in that case list UI would probably need more state added to it, possibly in App.tsx)
 // Add a tag filter when "All tasks" is selected in the sidebar
@@ -68,8 +67,8 @@ const LOCAL_STORAGE_KEY_LISTS = "todoApp.lists";
 const LOCAL_STORAGE_KEY_TASKS = "todoApp.tasks";
 const LOCAL_STORAGE_KEY_SUBTASKS = "todoApp.subtasks";
 const LOCAL_STORAGE_KEY_TAGS = "todoApp.tags";
+const LOCAL_STORAGE_KEY_AUTOMATIC_SORTING = "todoApp.automaticSorting";
 const LOCAL_STORAGE_KEY_DARK_MODE = "todoApp.darkMode";
-// const LOCAL_STORAGE_KEY_SETTINGS = "todoApp.settings";
 
 const DUMMY_TASK: Task = {
   id: -2,
@@ -215,12 +214,15 @@ const App = () => {
 
   const [showCalendarView, setShowCalendarView] = useState<boolean>(false);
 
+  const [automaticSorting, setAutomaticSorting] = useState<boolean>(() => {
+    // Load from localStorage on first load
+    return localStorage.getItem(LOCAL_STORAGE_KEY_AUTOMATIC_SORTING) === "auto";
+  });
+
   const [darkMode, setDarkMode] = useState(() => {
     // Load from localStorage on first load
     return localStorage.getItem(LOCAL_STORAGE_KEY_DARK_MODE) === "dark";
   });
-
-  const [automaticSorting, setAutomaticSorting] = useState<boolean>(true);
 
   const [isAddMode, setIsAddMode] = useState<boolean>(true);
 
@@ -624,6 +626,19 @@ const App = () => {
     return tasks.filter((task) => task.listId === listId);
   };
 
+  const filterTasksByTagIds = (tasks: Task[], tagIds: number[]) => {
+    if (tagIds.length === 0) return tasks;
+    const selectedTagIdSet = new Set(selectedTagIds);
+    return tasks.filter((task) =>
+      task.tagIds.some((tagId) => selectedTagIdSet.has(tagId))
+    );
+  };
+
+  const filterTasksByListAndTags = (listId: number, tagIds: number[]) => {
+    const tasksForList = getTasksByListId(listId);
+    return filterTasksByTagIds(tasksForList, tagIds);
+  };
+
   const getSubtasksByTaskId = (taskId: number) => {
     return subtasks.filter((subtask) => subtask.taskId === taskId);
   };
@@ -726,7 +741,13 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    //console.log("dark mode changed:", darkMode);
+    localStorage.setItem(
+      LOCAL_STORAGE_KEY_AUTOMATIC_SORTING,
+      automaticSorting ? "auto" : "manual"
+    );
+  }, [automaticSorting]);
+
+  useEffect(() => {
     const className = "dark";
     if (darkMode) {
       document.body.classList.add(className);
@@ -780,7 +801,7 @@ const App = () => {
           left={
             <MainView
               selectedList={selectedList}
-              tasks={getTasksByListId(selectedList.id)}
+              tasks={filterTasksByListAndTags(selectedList.id, selectedTagIds)}
               setTasks={setTasks}
               subtasks={subtasks}
               setSubtasks={setSubtasks}
@@ -828,7 +849,7 @@ const App = () => {
       ) : (
         <MainView
           selectedList={selectedList}
-          tasks={getTasksByListId(selectedList.id)}
+          tasks={filterTasksByListAndTags(selectedList.id, selectedTagIds)}
           setTasks={setTasks}
           subtasks={subtasks}
           setSubtasks={setSubtasks}

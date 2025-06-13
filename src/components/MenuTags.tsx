@@ -18,11 +18,6 @@ const MenuTags: React.FC<MenuTagsProps> = ({
   selectedTagIds,
   setSelectedTagIds,
 }) => {
-  //   const handleListClick = (e: React.MouseEvent<HTMLDivElement>, list: List) => {
-  //     changeSelectedList(list);
-  //     ripple(e);
-  //   };
-
   const [isTagModalOpen, setIsTagModalOpen] = useState<boolean>(false);
   const closeModal = () => setIsTagModalOpen(false);
   const [wiggle, setWiggle] = useState<boolean>(false);
@@ -34,8 +29,17 @@ const MenuTags: React.FC<MenuTagsProps> = ({
         {tags.map((tag) => (
           <span
             key={tag.id}
-            className="tag"
+            className={`tag ${
+              selectedTagIds.includes(tag.id) ? "selected" : ""
+            }`}
             style={{ backgroundColor: tag.color, fontWeight: "bold" }}
+            onClick={(e) => {
+              setSelectedTagIds((prev) =>
+                !selectedTagIds.includes(tag.id)
+                  ? [...prev, tag.id]
+                  : prev.filter((id) => id !== tag.id)
+              );
+            }}
           >
             {tag.name}
           </span>
