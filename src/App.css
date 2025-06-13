@@ -73,7 +73,7 @@ input[type="text"] {
   left: 12px;
   bottom: 12px;
   min-height: 0;
-  min-width: 200px;
+  min-width: 250px;
   width: 20vw;
   height: calc(100vh - 40px);
   background-color: #f7f7f7;
@@ -539,7 +539,6 @@ body.dark .menu-container {
   padding: 5px;
   border-radius: 20px; /* Rounded edges */
   margin: 1px;
-  color: slategray;
   cursor: pointer;
   transition: background 0.2s ease-in-out;
 }
@@ -592,11 +591,6 @@ body.dark .menu-container {
   color: black;
   font-size: 20px;
   margin-right: 10px;
-}
-
-.menu-footer p {
-  color: black;
-  margin: 8px;
 }
 
 .main-view {
