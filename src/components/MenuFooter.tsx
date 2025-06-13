@@ -32,15 +32,15 @@ const MenuFooter: React.FC<MenuFooterProps> = ({
         label="Hide completed tasks"
       /> */}
       <ToggleSwitch
-        checked={darkMode}
-        onCheckedChange={() => setDarkMode(!darkMode)}
-        label="Dark Mode"
-      />
-      <ToggleSwitch
         checked={automaticSorting}
         onCheckedChange={() => setAutomaticSorting(!automaticSorting)}
         label="Automatic Sorting"
         tooltipText="Automatically sort tasks based on (1) completion, (2) priority, (3) due date."
+      />
+      <ToggleSwitch
+        checked={darkMode}
+        onCheckedChange={() => setDarkMode(!darkMode)}
+        label="Dark Mode"
       />
     </div>
   );
