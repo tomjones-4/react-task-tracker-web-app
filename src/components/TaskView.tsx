@@ -1,5 +1,5 @@
 import TaskForm from "./TaskForm";
-import { useState, useEffect, forwardRef } from "react";
+import { forwardRef } from "react";
 import { List, Task, Subtask, Tag } from "../types";
 
 type TaskViewProps = {

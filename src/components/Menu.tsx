@@ -3,6 +3,7 @@ import MenuLists from "./MenuLists";
 import { List, Tag } from "../types";
 import MenuFooter from "./MenuFooter";
 import MenuTags from "./MenuTags";
+import SearchContainer from "./SearchContainer";
 
 interface MenuProps {
   lists: List[];
@@ -23,13 +24,15 @@ interface MenuProps {
   deleteTag: (tagId: number) => void;
   selectedTagIds: number[];
   setSelectedTagIds: React.Dispatch<React.SetStateAction<number[]>>;
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export type MenuRef = {
+export type SearchContainerRef = {
   focusSearchInput: () => void;
 };
 
-const Menu = forwardRef<MenuRef, MenuProps>(
+const Menu = forwardRef<SearchContainerRef, MenuProps>(
   (
     {
       lists,
@@ -50,44 +53,19 @@ const Menu = forwardRef<MenuRef, MenuProps>(
       deleteTag,
       selectedTagIds,
       setSelectedTagIds,
+      searchQuery,
+      setSearchQuery,
     },
     ref
   ) => {
-    const searchInputRef = useRef<HTMLInputElement>(null);
-    useImperativeHandle(ref, () => ({
-      focusSearchInput() {
-        searchInputRef.current?.focus();
-      },
-    }));
-
     return (
       <div className="menu-container">
         <h1>Menu</h1>
-
-        <div className="search-container">
-          <span className="search-icon">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-          </span>
-          <input
-            ref={searchInputRef}
-            type="text"
-            className="search-input"
-            placeholder="Search - Coming soon..."
-          ></input>
-        </div>
+        <SearchContainer
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          ref={ref}
+        />
         <MenuLists
           lists={lists}
           setLists={setLists}

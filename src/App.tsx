@@ -1,7 +1,7 @@
 // TODO
 
 /* High Priority */
-// Consider implementing search
+// Fix selected tags outline on dark mode.
 // Clean up code
 // Document project on GitHub
 /* End High Priority */
@@ -37,6 +37,7 @@ import MainView from "./components/MainView";
 import TaskView from "./components/TaskView";
 import React, { useState, useEffect, useRef } from "react";
 import { List, Task, Subtask, Tag, Time } from "./types";
+import Fuse from "fuse.js";
 
 export const SPECIAL_LIST_ID_ALL_TASKS: number = -1;
 const SPECIAL_LIST_ID_UNCATEGORIZED_TASKS: number = 0;
@@ -224,6 +225,8 @@ const App = () => {
   });
 
   const [isAddMode, setIsAddMode] = useState<boolean>(true);
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   /* End State Variables */
 
@@ -448,7 +451,7 @@ const App = () => {
 
     // Select new task if selected task is deleted
     if (selectedTask && selectedTask.id === taskId) {
-      const tasksInList = getTasksByListId(taskToDelete.listId);
+      const tasksInList = filterTasksByListId(taskToDelete.listId);
       const indexInList = tasksInList.indexOf(taskToDelete);
 
       if (indexInList === -1) {
@@ -621,7 +624,11 @@ const App = () => {
     );
   };
 
-  const getTasksByListId = (listId: number) => {
+  const getSubtasksByTaskId = (taskId: number) => {
+    return subtasks.filter((subtask) => subtask.taskId === taskId);
+  };
+
+  const filterTasksByListId = (listId: number) => {
     if (listId === SPECIAL_LIST_ID_ALL_TASKS) {
       return tasks; // Return all tasks for "All Tasks" list
     }
@@ -637,12 +644,25 @@ const App = () => {
   };
 
   const filterTasksByListAndTags = (listId: number, tagIds: number[]) => {
-    const tasksForList = getTasksByListId(listId);
+    const tasksForList = filterTasksByListId(listId);
     return filterTasksByTagIds(tasksForList, tagIds);
   };
 
-  const getSubtasksByTaskId = (taskId: number) => {
-    return subtasks.filter((subtask) => subtask.taskId === taskId);
+  const filterTasksBySearch = (searchQuery: string) => {
+    const fuse = new Fuse(tasks, {
+      keys: ["title", "description"],
+      threshold: 0.3, // lower is stricter
+    });
+
+    const results = fuse.search(searchQuery);
+    const matchedTasks = results.map((result) => result.item);
+    return matchedTasks;
+  };
+
+  const filterTasks = (listId: number, tagIds: number[]) => {
+    return searchQuery
+      ? filterTasksBySearch(searchQuery)
+      : filterTasksByListAndTags(listId, tagIds);
   };
 
   /* End Functions */
@@ -760,6 +780,18 @@ const App = () => {
     }
   }, [darkMode]);
 
+  useEffect(() => {
+    if (searchQuery) {
+      const allTasksList = lists.find(
+        (l) => l.id === SPECIAL_LIST_ID_ALL_TASKS
+      );
+      if (allTasksList && selectedList.id !== allTasksList.id) {
+        changeSelectedList(allTasksList);
+      }
+      setSelectedTagIds([]);
+    }
+  }, [searchQuery]);
+
   /* End useEffect Hooks */
 
   /* Begin Debugging */
@@ -794,6 +826,8 @@ const App = () => {
           deleteTag={deleteTag}
           selectedTagIds={selectedTagIds}
           setSelectedTagIds={setSelectedTagIds}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
           ref={searchInputRef}
         />
       </aside>
@@ -803,7 +837,7 @@ const App = () => {
           left={
             <MainView
               selectedList={selectedList}
-              tasks={filterTasksByListAndTags(selectedList.id, selectedTagIds)}
+              tasks={filterTasks(selectedList.id, selectedTagIds)}
               setTasks={setTasks}
               subtasks={subtasks}
               setSubtasks={setSubtasks}
@@ -856,7 +890,7 @@ const App = () => {
       ) : (
         <MainView
           selectedList={selectedList}
-          tasks={filterTasksByListAndTags(selectedList.id, selectedTagIds)}
+          tasks={filterTasks(selectedList.id, selectedTagIds)}
           setTasks={setTasks}
           subtasks={subtasks}
           setSubtasks={setSubtasks}

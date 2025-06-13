@@ -110,7 +110,7 @@ body.dark .menu-container {
   position: relative;
   display: flex;
   align-items: center;
-  padding: 5px;
+  padding: 5px 0;
 }
 
 .search-container:focus-within {
@@ -118,7 +118,7 @@ body.dark .menu-container {
 }
 
 .search-icon {
-  padding-left: 5px;
+  padding-left: 0px;
   padding-right: 5px;
   display: flex;
   align-items: center;
@@ -131,6 +131,21 @@ body.dark .menu-container {
   padding: 10px; /* Adjust left padding for icon */
   border: none;
   font-size: 18px;
+}
+
+.clear-search-button {
+  position: absolute;
+  right: 0.65rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
 }
 
 .menu-lists-container {
