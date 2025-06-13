@@ -40,7 +40,7 @@ const MenuFooter: React.FC<MenuFooterProps> = ({
         checked={automaticSorting}
         onCheckedChange={() => setAutomaticSorting(!automaticSorting)}
         label="Automatic Sorting"
-        tooltipText="Automatically sort tasks based (1) completion, (2) priority, (3) due date."
+        tooltipText="Automatically sort tasks based on (1) completion, (2) priority, (3) due date."
       />
     </div>
   );
