@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { FaInfoCircle } from "react-icons/fa";
 
@@ -11,11 +11,23 @@ export const Tooltip: React.FC<TooltipProps> = ({ text }) => {
   const [show, setShow] = React.useState(false);
   const ref = React.useRef<HTMLSpanElement | null>(null);
   const [position, setPosition] = React.useState({ top: 0, left: 0 });
+  const [tooltipDirection, setTooltipDirection] = React.useState<
+    "left" | "right"
+  >("right");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (show && ref.current) {
       const rect = ref.current.getBoundingClientRect();
-      setPosition({ top: rect.top - 40, left: rect.left + rect.width / 2 });
+      const iconCenterX = rect.left + rect.width / 2;
+      const screenCenterX = window.innerWidth / 2;
+
+      const tooltipToLeft = iconCenterX > screenCenterX;
+
+      const top = rect.top + rect.height / 2;
+      const left = tooltipToLeft ? rect.left - 8 : rect.right + 8;
+
+      setPosition({ top, left });
+      setTooltipDirection(tooltipToLeft ? "left" : "right");
     }
   }, [show]);
 
@@ -35,7 +47,7 @@ export const Tooltip: React.FC<TooltipProps> = ({ text }) => {
         tooltipRoot &&
         ReactDOM.createPortal(
           <div
-            className="tooltip-text-portal"
+            className={`tooltip-text-portal tooltip-${tooltipDirection}`}
             style={{ top: position.top, left: position.left }}
           >
             {text}

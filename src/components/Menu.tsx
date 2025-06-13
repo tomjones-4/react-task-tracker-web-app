@@ -15,6 +15,8 @@ interface MenuProps {
   setShowCalendarView: React.Dispatch<React.SetStateAction<boolean>>;
   darkMode: boolean;
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+  automaticSorting: boolean;
+  setAutomaticSorting: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export type MenuRef = {
@@ -35,6 +37,8 @@ const Menu = forwardRef<MenuRef, MenuProps>(
       setShowCalendarView,
       darkMode,
       setDarkMode,
+      automaticSorting,
+      setAutomaticSorting,
     },
     ref
   ) => {
@@ -87,6 +91,8 @@ const Menu = forwardRef<MenuRef, MenuProps>(
           setShowCalendarView={setShowCalendarView}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
+          automaticSorting={automaticSorting}
+          setAutomaticSorting={setAutomaticSorting}
         />
       </div>
     );

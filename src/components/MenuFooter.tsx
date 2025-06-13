@@ -1,6 +1,4 @@
 import React from "react";
-import { IoSettingsOutline } from "react-icons/io5";
-import { IoIosLogOut } from "react-icons/io";
 import ToggleSwitch from "./ToggleSwitch";
 
 interface MenuFooterProps {
@@ -8,6 +6,8 @@ interface MenuFooterProps {
   setShowCalendarView: React.Dispatch<React.SetStateAction<boolean>>;
   darkMode: boolean;
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+  automaticSorting: boolean;
+  setAutomaticSorting: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const MenuFooter: React.FC<MenuFooterProps> = ({
@@ -15,6 +15,8 @@ const MenuFooter: React.FC<MenuFooterProps> = ({
   setShowCalendarView,
   darkMode,
   setDarkMode,
+  automaticSorting,
+  setAutomaticSorting,
 }) => {
   return (
     <div className="menu-footer">
@@ -32,16 +34,14 @@ const MenuFooter: React.FC<MenuFooterProps> = ({
       <ToggleSwitch
         checked={darkMode}
         onCheckedChange={() => setDarkMode(!darkMode)}
-        label="Dark mode"
+        label="Dark Mode"
       />
-      {/* <span>
-        <IoSettingsOutline className="menu-footer-icon" />
-        <p>Settings - Coming soon...</p>
-      </span>
-      <span>
-        <IoIosLogOut className="menu-footer-icon" />
-        <p>Sign out - Coming soon...</p>
-      </span> */}
+      <ToggleSwitch
+        checked={automaticSorting}
+        onCheckedChange={() => setAutomaticSorting(!automaticSorting)}
+        label="Automatic Sorting"
+        tooltipText="Automatically sort tasks based (1) completion, (2) priority, (3) due date."
+      />
     </div>
   );
 };
