@@ -1156,6 +1156,11 @@ z .tags-label {
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.4);
 }
 
+body.dark .menu-tags .tag.selected {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5),
+    0 0 6px rgba(255, 255, 255, 0.3);
+}
+
 .new-tag-input {
   display: flex;
   align-items: center;

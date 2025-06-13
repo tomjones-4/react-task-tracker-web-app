@@ -1,7 +1,6 @@
 // TODO
 
 /* High Priority */
-// Fix selected tags outline on dark mode.
 // Clean up code
 // Document project on GitHub
 /* End High Priority */
