@@ -1,7 +1,6 @@
 // TODO
 
 /* High Priority */
-// Consider adding priority to tasks, and then sorting tasks by priority in the task list. This could be a simple dropdown on the task form, and then the task list could sort by priority first, then due date, then title.
 // Add tags in menu, like image
 // Consider implementing search
 /* End High Priority */
@@ -217,6 +216,8 @@ const App = () => {
     return localStorage.getItem(LOCAL_STORAGE_KEY_DARK_MODE) === "dark";
   });
 
+  const [automaticSorting, setAutomaticSorting] = useState<boolean>(true);
+
   const [isAddMode, setIsAddMode] = useState<boolean>(true);
 
   /* End State Variables */
@@ -368,8 +369,6 @@ const App = () => {
       if (list.id !== SPECIAL_LIST_ID_ALL_TASKS) {
         const taskIdToSelect = listSelectedTasksIds[list.id];
         if (taskIdToSelect) {
-          // console.log("list.id", list.id);
-          // console.log("taskIdToSelect", taskIdToSelect);
           const taskToSelect = tasks.find((t: Task) => t.id === taskIdToSelect);
           if (taskToSelect) {
             setSelectedTask(taskToSelect);
@@ -761,6 +760,8 @@ const App = () => {
           setShowCalendarView={setShowCalendarView}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
+          automaticSorting={automaticSorting}
+          setAutomaticSorting={setAutomaticSorting}
           ref={searchInputRef}
         />
       </aside>
@@ -784,12 +785,11 @@ const App = () => {
               selectedTaskForDebug={selectedTask}
               setIsAddMode={setIsAddMode}
               ripple={ripple}
-              listSelectedTasksIds={listSelectedTasksIds}
-              setListSelectedTaskIds={setListSelectedTaskIds}
               listScrollPositions={listScrollPositions}
               setListScrollPositions={setListScrollPositions}
               showCalendarView={showCalendarView}
               onCalendarCreateTask={onCalendarCreateTask}
+              automaticSorting={automaticSorting}
             />
           }
           right={
@@ -811,6 +811,7 @@ const App = () => {
               deleteSubtask={deleteSubtask}
               toggleSubtaskCompleted={toggleSubtaskCompleted}
               linkNewSubtasksToTask={linkNewSubtasksToTask}
+              automaticSorting={automaticSorting}
               ref={taskFormRef}
             />
           }
@@ -821,7 +822,6 @@ const App = () => {
           tasks={getTasksByListId(selectedList.id)}
           setTasks={setTasks}
           subtasks={subtasks}
-          // subtasks={selectedTask !== undefined ? getSubtasksByTaskId(selectedTask.id) : subtasks}
           setSubtasks={setSubtasks}
           selectedTaskId={undefined}
           deleteTask={deleteTask}
@@ -833,12 +833,11 @@ const App = () => {
           selectedTaskForDebug={selectedTask}
           setIsAddMode={setIsAddMode}
           ripple={ripple}
-          listSelectedTasksIds={listSelectedTasksIds}
-          setListSelectedTaskIds={setListSelectedTaskIds}
           listScrollPositions={listScrollPositions}
           setListScrollPositions={setListScrollPositions}
           showCalendarView={showCalendarView}
           onCalendarCreateTask={onCalendarCreateTask}
+          automaticSorting={automaticSorting}
         />
       )}
     </div>

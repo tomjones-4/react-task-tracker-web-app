@@ -40,7 +40,8 @@ type TaskFormProps = {
   editSubtask: (editedSubtask: Subtask) => void;
   deleteSubtask: (subtaskId: number) => void;
   toggleSubtaskCompleted: (subtaskId: number) => void;
-  linkNewSubtasksToTask: (taskId: number) => void; // Optional prop for associating new subtasks with the task
+  linkNewSubtasksToTask: (taskId: number) => void;
+  automaticSorting: boolean;
 };
 
 export type TaskFormRef = {
@@ -67,6 +68,7 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
       deleteSubtask,
       toggleSubtaskCompleted,
       linkNewSubtasksToTask,
+      automaticSorting,
     },
     ref
   ) => {
@@ -101,14 +103,6 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
     const [endTimeChecked, setEndTimeChecked] = useState<boolean>(
       selectedTask.endTime !== null && selectedTask.endTime !== undefined
     );
-
-    // console.log("selectedTask.startTime", selectedTask.startTime);
-    // console.log("selectedTask.endTime", selectedTask.endTime);
-    // console.log("taskStartTime", taskStartTime);
-    // console.log("taskEndTime", taskEndTime);
-    // console.log("dueDateChecked", dueDateChecked);
-    // console.log("startTimeChecked", startTimeChecked);
-    // console.log("endTimeChecked", endTimeChecked);
     const [isTagModalOpen, setIsTagModalOpen] = useState<boolean>(false);
 
     const [error, setError] = useState<string>("");
@@ -119,7 +113,7 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
         setTaskTitle(selectedTask.title);
         setTaskDescription(selectedTask.description);
         setTaskListId(selectedListId);
-        setTaskPriority(selectedTask.priority ?? TASK_MEDIUM_PRIORITY); // Default to low priority if not set
+        setTaskPriority(selectedTask.priority ?? TASK_MEDIUM_PRIORITY); // Default to medium priority if not set
         setTaskDueDate(selectedTask.dueDate);
         setTaskStartTime(
           selectedTask.startTime
@@ -380,7 +374,7 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
               {taskTagIds
                 .filter((id) => tags.some((tag) => tag.id === id)) // do this filter to avoid state sync issue where tag still exists in taskTagIds but not in tags, which happens briefly after tag is deleted
                 .map((id) => tags.find((tag) => tag.id === id))
-                .filter((tag): tag is Tag => tag !== undefined) // <-- type guard
+                .filter((tag): tag is Tag => tag !== undefined) // type guard
                 .map((tag) => (
                   <span
                     key={tag.id}
@@ -438,6 +432,7 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
           toggleSubtaskCompleted={toggleSubtaskCompleted}
           showError={showError}
           setError={setError}
+          automaticSorting={automaticSorting}
         />
         <TaskFormButtons
           deleteTask={deleteTask}

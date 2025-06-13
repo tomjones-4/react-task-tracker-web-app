@@ -27,6 +27,7 @@ type TaskItemProps = {
   setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
   expandedTaskIds: Set<number>;
   toggleExpand: (taskId: number) => void;
+  automaticSorting: boolean;
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
 };
 
@@ -42,6 +43,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
   setIsAddMode,
   expandedTaskIds,
   toggleExpand,
+  automaticSorting,
   ripple,
 }) => {
   const handleTaskClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -165,6 +167,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
               setSubtasks={setSubtasks}
               selectedTaskId={selectedTaskId}
               toggleSubtaskCompleted={toggleSubtaskCompleted}
+              automaticSorting={automaticSorting}
             />
           </motion.ul>
         )}

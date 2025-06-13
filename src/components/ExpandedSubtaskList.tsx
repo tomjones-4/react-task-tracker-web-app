@@ -20,6 +20,7 @@ type ExpandedSubtaskListProps = {
   setSubtasks: React.Dispatch<React.SetStateAction<Subtask[]>>;
   selectedTaskId: number | undefined;
   toggleSubtaskCompleted: (subtaskId: number) => void;
+  automaticSorting: boolean;
 };
 
 const ExpandedSubtaskList: React.FC<ExpandedSubtaskListProps> = ({
@@ -27,11 +28,12 @@ const ExpandedSubtaskList: React.FC<ExpandedSubtaskListProps> = ({
   setSubtasks,
   selectedTaskId,
   toggleSubtaskCompleted,
+  automaticSorting,
 }) => {
   // Sort subtasks: incomplete ones first, then completed ones
-  const sortedSubtasks = subtasks.sort(
-    (a, b) => Number(a.completed) - Number(b.completed)
-  );
+  const sortedSubtasks = automaticSorting
+    ? subtasks.sort((a, b) => Number(a.completed) - Number(b.completed))
+    : subtasks;
 
   const sensors = useSensors(useSensor(PointerSensor));
 

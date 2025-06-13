@@ -26,6 +26,7 @@ type SubtaskListProps = {
   deleteSubtask: (subtaskId: number) => void;
   showError: (message: string) => void;
   setError: React.Dispatch<React.SetStateAction<string>>;
+  automaticSorting: boolean;
 };
 
 const SubtaskList: React.FC<SubtaskListProps> = ({
@@ -38,11 +39,12 @@ const SubtaskList: React.FC<SubtaskListProps> = ({
   deleteSubtask,
   showError,
   setError,
+  automaticSorting,
 }) => {
   // Sort subtasks: incomplete ones first, then completed ones
-  const sortedSubtasks = subtasks.sort(
-    (a, b) => Number(a.completed) - Number(b.completed)
-  );
+  const sortedSubtasks = automaticSorting
+    ? subtasks.sort((a, b) => Number(a.completed) - Number(b.completed))
+    : subtasks;
 
   const sensors = useSensors(useSensor(PointerSensor));
 

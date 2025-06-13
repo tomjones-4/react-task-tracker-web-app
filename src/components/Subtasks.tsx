@@ -12,6 +12,7 @@ interface SubtasksProps {
   toggleSubtaskCompleted: (subtaskId: number) => void;
   showError: (message: string) => void;
   setError: React.Dispatch<React.SetStateAction<string>>;
+  automaticSorting: boolean;
 }
 
 const Subtasks: React.FC<SubtasksProps> = ({
@@ -24,6 +25,7 @@ const Subtasks: React.FC<SubtasksProps> = ({
   toggleSubtaskCompleted,
   showError,
   setError,
+  automaticSorting,
 }) => {
   return (
     <div className="subtasks-container">
@@ -38,6 +40,7 @@ const Subtasks: React.FC<SubtasksProps> = ({
         toggleSubtaskCompleted={toggleSubtaskCompleted}
         showError={showError}
         setError={setError}
+        automaticSorting={automaticSorting}
       />
     </div>
   );

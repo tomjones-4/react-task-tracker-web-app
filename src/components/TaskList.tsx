@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import TaskItem from "./TaskItem.jsx";
-import { Task, Subtask, Tag } from "../types";
-import { SPECIAL_LIST_ID_ALL_TASKS } from "../App";
+import TaskItem from "./TaskItem";
+import { Task, Subtask, Tag, Time } from "../types";
+import { SPECIAL_LIST_ID_ALL_TASKS, TASK_MEDIUM_PRIORITY } from "../App";
 import {
   DndContext,
   closestCenter,
@@ -30,10 +30,9 @@ type TaskListProps = {
   tags: Tag[];
   setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
-  listSelectedTasksIds: number[];
-  setListSelectedTaskIds: React.Dispatch<React.SetStateAction<number[]>>;
   listScrollPositions: number[];
   setListScrollPositions: React.Dispatch<React.SetStateAction<number[]>>;
+  automaticSorting: boolean;
 };
 
 const TaskList: React.FC<TaskListProps> = ({
@@ -47,25 +46,64 @@ const TaskList: React.FC<TaskListProps> = ({
   toggleSubtaskCompleted,
   setSelectedTask,
   tags,
-  //handleStartNewTask,
   setIsAddMode,
   ripple,
-  listSelectedTasksIds,
-  setListSelectedTaskIds,
   listScrollPositions,
   setListScrollPositions,
+  automaticSorting,
 }) => {
-  // useEffect(() => {
-  //   console.log("TaskList mounted");
-  //   return () => {
-  //     console.log("TaskList unmounted");
-  //   };
-  // }, []);
+  const compareTasks = (a: Task, b: Task): number => {
+    // 1. Sort by completed
+    if (a.completed !== b.completed) {
+      return Number(a.completed) - Number(b.completed);
+    }
 
-  // Sort tasks: incomplete ones first, then completed ones
-  const sortedTasks = tasks.sort(
-    (a, b) => Number(a.completed) - Number(b.completed)
-  );
+    // 2. Sort by priority (lower number = higher priority)
+    if (a.priority !== b.priority) {
+      return (
+        (a.priority ?? TASK_MEDIUM_PRIORITY) -
+        (b.priority ?? TASK_MEDIUM_PRIORITY)
+      );
+    }
+
+    // 3. Sort by dueDate + startTime
+    const aHasDueDate = a.dueDate !== null;
+    const bHasDueDate = b.dueDate !== null;
+
+    if (aHasDueDate && !bHasDueDate) return -1;
+    if (!aHasDueDate && bHasDueDate) return 1;
+    if (!aHasDueDate && !bHasDueDate) return 0;
+
+    // At this point both have dueDate
+    const dateDiff =
+      new Date(a.dueDate!).getTime() - new Date(b.dueDate!).getTime();
+    if (dateDiff !== 0) return dateDiff;
+
+    // Tie on dueDate: handle startTime
+    const aHasStartTime = a.startTime !== null;
+    const bHasStartTime = b.startTime !== null;
+
+    if (aHasStartTime && !bHasStartTime) return -1;
+    if (!aHasStartTime && bHasStartTime) return 1;
+    if (!aHasStartTime && !bHasStartTime) return 0;
+
+    // Both have startTime — compare hour, minute, and am/pm
+    const aTime = to24HourTime(a.startTime!);
+    const bTime = to24HourTime(b.startTime!);
+
+    return aTime.totalMinutes - bTime.totalMinutes;
+  };
+
+  // Helper to convert AM/PM time to total minutes
+  const to24HourTime = (time: Time): { totalMinutes: number } => {
+    let { hour, minute, ampm } = time;
+    if (hour === 12) hour = 0;
+    const hour24 = ampm === "pm" ? hour + 12 : hour;
+    return { totalMinutes: hour24 * 60 + minute };
+  };
+
+  const sortedTasks = automaticSorting ? tasks.sort(compareTasks) : tasks;
+
   const sensors = useSensors(useSensor(PointerSensor));
 
   const handleDragEnd = (e: DragEndEvent) => {
@@ -147,7 +185,6 @@ const TaskList: React.FC<TaskListProps> = ({
               subtasks={subtasks.filter(
                 (subtask) => subtask.taskId === task.id
               )}
-              // subtasks={subtasks}
               setSubtasks={setSubtasks}
               selectedTaskId={selectedTaskId}
               toggleCompleted={toggleCompleted}
@@ -157,6 +194,7 @@ const TaskList: React.FC<TaskListProps> = ({
               setIsAddMode={setIsAddMode}
               expandedTaskIds={expandedTaskIds}
               toggleExpand={toggleExpand}
+              automaticSorting={automaticSorting}
               ripple={ripple}
             />
           ))}

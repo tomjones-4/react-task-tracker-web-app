@@ -20,12 +20,11 @@ type MainViewProps = {
   selectedTaskForDebug: Task | undefined;
   setIsAddMode: React.Dispatch<React.SetStateAction<boolean>>;
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
-  listSelectedTasksIds: number[];
-  setListSelectedTaskIds: React.Dispatch<React.SetStateAction<number[]>>;
   listScrollPositions: number[];
   setListScrollPositions: React.Dispatch<React.SetStateAction<number[]>>;
   showCalendarView: boolean;
   onCalendarCreateTask: (startDate: Date) => void;
+  automaticSorting: boolean;
 };
 
 const MainView: React.FC<MainViewProps> = ({
@@ -44,12 +43,11 @@ const MainView: React.FC<MainViewProps> = ({
   selectedTaskForDebug,
   setIsAddMode,
   ripple,
-  listSelectedTasksIds,
-  setListSelectedTaskIds,
   listScrollPositions,
   setListScrollPositions,
   showCalendarView,
   onCalendarCreateTask,
+  automaticSorting,
 }) => {
   return (
     <div className="main-view">
@@ -72,10 +70,9 @@ const MainView: React.FC<MainViewProps> = ({
             tags={tags}
             setIsAddMode={setIsAddMode}
             ripple={ripple}
-            listSelectedTasksIds={listSelectedTasksIds}
-            setListSelectedTaskIds={setListSelectedTaskIds}
             listScrollPositions={listScrollPositions}
             setListScrollPositions={setListScrollPositions}
+            automaticSorting={automaticSorting}
           />
         </>
       )}
@@ -90,22 +87,48 @@ const MainView: React.FC<MainViewProps> = ({
           onCalendarCreateTask={onCalendarCreateTask}
         />
       )}
-
-      {/* <div className="debug">
+      {/* 
+      <div className="debug">
         <h2>Debug</h2>
         <p>Selected Task: {JSON.stringify(selectedTaskForDebug)}</p>
-        <p>Selected List: {JSON.stringify(selectedList.name)}</p>
         <p>
-          Selected Task:{" "}
+          Selected List: "{selectedList.name}" (ID: {selectedList.id})
+        </p>
+        <p>
+          Expanded Task:{" "}
           {selectedTaskForDebug
             ? `"${selectedTaskForDebug.title}" (ID: ${selectedTaskForDebug.id}, List ID: ${selectedTaskForDebug.listId})`
             : "No task selected"}
         </p>
         <p>
-          Selected List: "{selectedList.name}" (ID: {selectedList.id})
+          # of tasks with priority set but not to default value:{" "}
+          {JSON.stringify(
+            tasks.filter(
+              (t) =>
+                t.priority !== 3 &&
+                t.priority !== null &&
+                t.priority !== undefined
+            ).length
+          )}
         </p>
         <p>
-          Subtasks: {JSON.stringify(subtasks.filter((s) => s.taskId === -1))}
+          # of tasks with priority set to default value:{" "}
+          {JSON.stringify(
+            tasks.filter(
+              (t) =>
+                t.priority === 3 &&
+                t.priority !== null &&
+                t.priority !== undefined
+            ).length
+          )}
+        </p>
+        <p>
+          # of tasks with priority set to null :{" "}
+          {JSON.stringify(tasks.filter((t) => t.priority === null).length)}
+        </p>
+        <p>
+          # of tasks with priority set to undefined :{" "}
+          {JSON.stringify(tasks.filter((t) => t.priority === undefined).length)}
         </p>
       </div> */}
     </div>
