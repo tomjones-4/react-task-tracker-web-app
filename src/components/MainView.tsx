@@ -25,6 +25,7 @@ type MainViewProps = {
   showCalendarView: boolean;
   onCalendarCreateTask: (startDate: Date) => void;
   automaticSorting: boolean;
+  selectedTagIds: number[];
 };
 
 const MainView: React.FC<MainViewProps> = ({
@@ -48,6 +49,7 @@ const MainView: React.FC<MainViewProps> = ({
   showCalendarView,
   onCalendarCreateTask,
   automaticSorting,
+  selectedTagIds,
 }) => {
   return (
     <div className="main-view">
@@ -73,6 +75,7 @@ const MainView: React.FC<MainViewProps> = ({
             listScrollPositions={listScrollPositions}
             setListScrollPositions={setListScrollPositions}
             automaticSorting={automaticSorting}
+            selectedTagIds={selectedTagIds}
           />
         </>
       )}

@@ -33,6 +33,7 @@ type TaskListProps = {
   listScrollPositions: number[];
   setListScrollPositions: React.Dispatch<React.SetStateAction<number[]>>;
   automaticSorting: boolean;
+  selectedTagIds: number[];
 };
 
 const TaskList: React.FC<TaskListProps> = ({
@@ -51,6 +52,7 @@ const TaskList: React.FC<TaskListProps> = ({
   listScrollPositions,
   setListScrollPositions,
   automaticSorting,
+  selectedTagIds,
 }) => {
   const compareTasks = (a: Task, b: Task): number => {
     // 1. Sort by completed
@@ -112,19 +114,13 @@ const TaskList: React.FC<TaskListProps> = ({
 
     const oldIndex = tasks.findIndex((t) => t.id === active.id);
     const newIndex = tasks.findIndex((t) => t.id === over.id);
-    const reorderedTasks = arrayMove(tasks, oldIndex, newIndex); // `tasks` is the subset (current list only)
+    const reorderedTasks = arrayMove(tasks, oldIndex, newIndex); // tasks is the subset that matches current list + tags only
 
-    setTasks((prev) => {
-      // Filter out tasks that belong to the current list
-      const otherTasks = prev.filter(
-        (t: Task) =>
-          t.listId !== selectedListId &&
-          selectedListId !== SPECIAL_LIST_ID_ALL_TASKS
-      );
-
-      // Combine reordered list-tasks with all other tasks
-      return [...otherTasks, ...reorderedTasks];
-    });
+    const reorderedTaskIds = new Set(reorderedTasks.map((t) => t.id));
+    setTasks((prev) => [
+      ...prev.filter((task) => !reorderedTaskIds.has(task.id)), // this line is very important - without it, tasks array would be set to just the tasks that match current filters with list and tags
+      ...reorderedTasks,
+    ]);
   };
 
   const listRef = useRef<HTMLDivElement>(null);

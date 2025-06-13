@@ -1,7 +1,6 @@
 // TODO
 
 /* High Priority */
-// I'll probably need to change how the dragging and dropping reordering is done for filtering by tag.
 // Consider implementing search
 // Clean up code
 // Document project on GitHub
@@ -308,7 +307,10 @@ const App = () => {
     changeAllTasksList: boolean = true
   ) => {
     const updatedLists: List[] = lists.map((list: List) => {
-      if (list.id === listId || (list.id === -1 && changeAllTasksList)) {
+      if (
+        list.id === listId ||
+        (list.id === SPECIAL_LIST_ID_ALL_TASKS && changeAllTasksList)
+      ) {
         return {
           ...list,
           taskIds: [...list.taskIds, ...taskIds],
@@ -620,7 +622,7 @@ const App = () => {
   };
 
   const getTasksByListId = (listId: number) => {
-    if (listId === -1) {
+    if (listId === SPECIAL_LIST_ID_ALL_TASKS) {
       return tasks; // Return all tasks for "All Tasks" list
     }
     return tasks.filter((task) => task.listId === listId);
@@ -820,11 +822,16 @@ const App = () => {
               showCalendarView={showCalendarView}
               onCalendarCreateTask={onCalendarCreateTask}
               automaticSorting={automaticSorting}
+              selectedTagIds={selectedTagIds}
             />
           }
           right={
             <TaskView
-              selectedListId={selectedList.id === -1 ? 0 : selectedList.id}
+              selectedListId={
+                selectedList.id === SPECIAL_LIST_ID_ALL_TASKS
+                  ? SPECIAL_LIST_ID_UNCATEGORIZED_TASKS
+                  : selectedList.id
+              }
               selectedTask={selectedTask}
               lists={lists}
               tags={tags}
@@ -868,6 +875,7 @@ const App = () => {
           showCalendarView={showCalendarView}
           onCalendarCreateTask={onCalendarCreateTask}
           automaticSorting={automaticSorting}
+          selectedTagIds={selectedTagIds}
         />
       )}
     </div>
