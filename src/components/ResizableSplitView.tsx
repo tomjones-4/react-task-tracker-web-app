@@ -47,7 +47,9 @@ const ResizableSplitView: React.FC<ResizableSplitViewProps> = ({
       <div className="split-pane left-pane" style={{ width: `${leftWidth}%` }}>
         {left}
       </div>
-      <div id="resizer" className="resizer" />
+      <div id="resizer" className="resizer">
+        <div className="resizer-handle" />
+      </div>
       <div
         className="split-pane right-pane"
         style={{ width: `${100 - leftWidth}%` }}
