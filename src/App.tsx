@@ -3,6 +3,8 @@
 /* High Priority */
 // Add tags in menu, like image
 // Consider implementing search
+// Clean up code
+// Document project on GitHub
 /* End High Priority */
 
 /* Medium Priority */
@@ -31,10 +33,10 @@
 /* Begin Constants */
 
 import "./App.css";
-import Menu from "./components/Menu.jsx";
+import Menu from "./components/Menu";
 import ResizableSplitView from "./components/ResizableSplitView";
-import MainView from "./components/MainView.jsx";
-import TaskView from "./components/TaskView.jsx";
+import MainView from "./components/MainView";
+import TaskView from "./components/TaskView";
 import React, { useState, useEffect, useRef } from "react";
 import { List, Task, Subtask, Tag, Time } from "./types";
 
@@ -208,6 +210,8 @@ const App = () => {
   const [selectedTask, setSelectedTask] = useState<Task | undefined>(
     tasks.length > 0 ? tasks[0] : EMPTY_TASK
   );
+
+  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
 
   const [showCalendarView, setShowCalendarView] = useState<boolean>(false);
 
@@ -762,6 +766,11 @@ const App = () => {
           setDarkMode={setDarkMode}
           automaticSorting={automaticSorting}
           setAutomaticSorting={setAutomaticSorting}
+          tags={tags}
+          addTag={addTag}
+          deleteTag={deleteTag}
+          selectedTagIds={selectedTagIds}
+          setSelectedTagIds={setSelectedTagIds}
           ref={searchInputRef}
         />
       </aside>

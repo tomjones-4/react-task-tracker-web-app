@@ -1,7 +1,8 @@
 import React, { useRef, forwardRef, useImperativeHandle } from "react";
 import MenuLists from "./MenuLists";
-import { List } from "../types";
+import { List, Tag } from "../types";
 import MenuFooter from "./MenuFooter";
+import MenuTags from "./MenuTags";
 
 interface MenuProps {
   lists: List[];
@@ -17,6 +18,11 @@ interface MenuProps {
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
   automaticSorting: boolean;
   setAutomaticSorting: React.Dispatch<React.SetStateAction<boolean>>;
+  tags: Tag[];
+  addTag: (newTag: Tag) => void;
+  deleteTag: (tagId: number) => void;
+  selectedTagIds: number[];
+  setSelectedTagIds: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 export type MenuRef = {
@@ -39,6 +45,11 @@ const Menu = forwardRef<MenuRef, MenuProps>(
       setDarkMode,
       automaticSorting,
       setAutomaticSorting,
+      tags,
+      addTag,
+      deleteTag,
+      selectedTagIds,
+      setSelectedTagIds,
     },
     ref
   ) => {
@@ -85,6 +96,13 @@ const Menu = forwardRef<MenuRef, MenuProps>(
           selectedListId={selectedListId}
           changeSelectedList={changeSelectedList}
           ripple={ripple}
+        />
+        <MenuTags
+          tags={tags}
+          addTag={addTag}
+          deleteTag={deleteTag}
+          selectedTagIds={selectedTagIds}
+          setSelectedTagIds={setSelectedTagIds}
         />
         <MenuFooter
           showCalendarView={showCalendarView}

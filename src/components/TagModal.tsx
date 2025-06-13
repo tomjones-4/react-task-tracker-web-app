@@ -20,8 +20,8 @@ interface TagModalProps {
   tags: Tag[];
   addTag: (newTag: Tag) => void;
   deleteTag: (tagId: number) => void;
-  addTaskTag: (newTaskTagId: number) => void;
-  taskTagIds: number[];
+  addTaskTag?: (newTaskTagId: number) => void;
+  taskTagIds?: number[];
   closeModal: () => void;
   setWiggle: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -74,19 +74,22 @@ const TagModal: React.FC<TagModalProps> = ({
     setError(""); // Clear error message
   };
 
-  const handleAddTaskTag = (
-    e: React.MouseEvent<HTMLSpanElement>,
-    tagId: number
-  ) => {
-    e.preventDefault();
-    // Check if tag is already applied
-    if (taskTagIds.some((id) => id === tagId)) {
-      showError("This tag is already applied.");
-      return;
-    }
-    addTaskTag(tagId);
-    setError(""); // Clear error message
-  };
+  const handleAddTaskTag =
+    addTaskTag === null ||
+    addTaskTag === undefined ||
+    taskTagIds === null ||
+    taskTagIds === undefined
+      ? () => {}
+      : (e: React.MouseEvent<HTMLSpanElement>, tagId: number) => {
+          e.preventDefault();
+          // Check if tag is already applied
+          if (taskTagIds.some((id) => id === tagId)) {
+            showError("This tag is already applied.");
+            return;
+          }
+          addTaskTag(tagId);
+          setError(""); // Clear error message
+        };
 
   return (
     <>
@@ -100,7 +103,13 @@ const TagModal: React.FC<TagModalProps> = ({
           tags.map((tag) => (
             <span
               key={tag.id}
-              className={`tag ${taskTagIds.includes(tag.id) ? "selected" : ""}`}
+              className={`tag ${
+                taskTagIds !== null &&
+                taskTagIds !== undefined &&
+                taskTagIds.includes(tag.id)
+                  ? "selected"
+                  : ""
+              }`}
               style={{
                 backgroundColor: tag.color,
               }}
