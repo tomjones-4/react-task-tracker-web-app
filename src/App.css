@@ -137,6 +137,16 @@ body.dark .menu-container {
   flex: 1;
 }
 
+.menu-lists-container h3 {
+  margin-block-end: 0px;
+  margin-block-start: 10px;
+}
+
+.menu-lists-container p {
+  margin-block-end: 0px;
+  margin-block-start: 0px;
+}
+
 .menu-lists {
   overflow-y: auto; /* scrollable when content grows */
   overflow-x: hidden;
@@ -354,7 +364,8 @@ body.dark .menu-container {
 .add-list {
   margin-left: 5px;
   position: relative;
-  padding: 0px 10px; /* Inner spacing */
+  /*padding: 0px 10px; /* Inner spacing */
+  padding: 10px;
   border-radius: 8px; /* Rounded corners */
   display: flex; /* Aligns children (text, buttons) in a row */
   justify-content: left; /* Ensures spacing between text & actions */
@@ -615,8 +626,7 @@ body.dark .menu-container {
   background-color: #f0f0f0; /* Slight hover effect */
 /* } */
 
-.add-task p {
-  /* color: slategray; */
+.add-task b {
   margin: 12px 0;
 }
 
