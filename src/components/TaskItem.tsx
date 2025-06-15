@@ -154,11 +154,8 @@ const TaskItem: React.FC<TaskItemProps> = ({
             transition={{ duration: 0.3 }}
             style={{
               overflow: "hidden",
-              //paddingLeft: "1.5rem",
               paddingLeft: "0rem",
-              //marginTop: "0.3rem",
               marginTop: "0rem",
-              //marginBottom: "0.5rem",
               marginBottom: "0rem",
             }}
           >

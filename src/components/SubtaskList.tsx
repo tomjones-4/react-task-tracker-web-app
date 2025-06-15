@@ -64,7 +64,7 @@ const SubtaskList: React.FC<SubtaskListProps> = ({
       );
 
       // Combine reordered subtasks for selected task with all other subtasks
-      return [...otherSubtasks, ...reorderedSubtasks];
+      return [...otherSubtasks, ...reorderedSubtasks]; // otherSubtasks is very important - without it, subtasks array would be set to just the subtasks that match selectedTaskId
     });
   };
 

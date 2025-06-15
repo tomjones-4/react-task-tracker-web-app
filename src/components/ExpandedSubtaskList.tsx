@@ -53,7 +53,7 @@ const ExpandedSubtaskList: React.FC<ExpandedSubtaskListProps> = ({
       );
 
       // Combine reordered subtasks for selected task with all other subtasks
-      return [...otherSubtasks, ...reorderedSubtasks];
+      return [...otherSubtasks, ...reorderedSubtasks]; // otherSubtasks is very important - without it, subtasks array would be set to just the subtasks that match selectedTaskId
     });
   };
 
@@ -80,7 +80,6 @@ const ExpandedSubtaskList: React.FC<ExpandedSubtaskListProps> = ({
         </SortableContext>
       </DndContext>
     </div>
-    // </div>
   );
 };
 

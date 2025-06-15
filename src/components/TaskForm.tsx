@@ -135,7 +135,7 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
           selectedTask.endTime !== null && selectedTask.endTime !== undefined
         );
       }
-    }, [selectedTask.id]); // TODO - BE CAREFUL OF THIS CHANGE. I HAVEN'T TESTED TO SEE IF IT WORKS AS EXPECTED. THE REASON I DID IT WAS TO SEE IF I COULD JUST HAVE TIMES RESET WHEN TASK IS CHANGED RATHER THAN WHEN SOMETHING ABOUT THE TASK CHANGES.
+    }, [selectedTask.id]);
 
     useEffect(() => {
       if (!dueDateChecked) {
@@ -291,7 +291,6 @@ const TaskForm = forwardRef<TaskFormRef, TaskFormProps>(
             <select
               id="priority-select"
               name="priority"
-              //value={String(taskPriority)}
               value={taskPriority ?? TASK_MEDIUM_PRIORITY} // Use nullish coalescing to default to medium priority if taskPriority is null or undefined
               onChange={(e) => setTaskPriority(Number(e.target.value))}
             >

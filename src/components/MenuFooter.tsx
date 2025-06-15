@@ -25,10 +25,9 @@ const MenuFooter: React.FC<MenuFooterProps> = ({
         onCheckedChange={() => setShowCalendarView(!showCalendarView)}
         label="Show Calendar View"
       />
-      {/* TODO - change the checked and onCheckedChange props to the correct ones */}
       {/* <ToggleSwitch
-        checked={showCalendarView}
-        onCheckedChange={setShowCalendarView}
+        checked={hideCompletedTasks}
+        onCheckedChange={setHideCompletedTasks}
         label="Hide completed tasks"
       /> */}
       <ToggleSwitch

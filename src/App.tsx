@@ -6,6 +6,7 @@
 /* End High Priority */
 
 /* Medium Priority */
+// Implement "Hide Completed Tasks" toggle switch. Or maybe this could be a per-list setting.
 // Think about actually reordering the tasks when a user marks a task as completed. Currently the tasks are only sorted visually, but if I made that change using setTask I think it would be easier to delete tasks in the right order.
 // Add option for user to hide completed tasks instead of showing them crossed out (This could live in the settings tab, or just be a toggle for the selected list - in that case list UI would probably need more state added to it, possibly in App.tsx)
 // Add a tag filter when "All tasks" is selected in the sidebar

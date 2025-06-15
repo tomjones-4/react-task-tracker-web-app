@@ -81,7 +81,6 @@ const ListModal: React.FC<ListModalProps> = ({
     const newList: List = {
       id: Date.now(),
       name: trimmedListName,
-      //color: color,
       color: color,
       taskIds: [],
     };
