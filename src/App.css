@@ -902,6 +902,7 @@ textarea {
 .form-inputs {
   align-self: flex-start;
   width: 98%;
+  padding-left: 2px;
 }
 
 .task-form-item {
@@ -1267,6 +1268,7 @@ body.dark .menu-tags .tag.selected {
 .subtasks-container {
   margin-top: 0px;
   margin-bottom: 10px;
+  padding-left: 2px;
   width: 98%;
   align-self: start;
   display: flex;
