@@ -16,6 +16,14 @@
 ## Important Notes
 * This app was designed and developed for use on desktop. Usage on mobile is discouraged.
 
+## Notes for Me
+* Vercel automatically deploys anything pushed to `deploy` branch but I've been working on `master` branch primarily to avoid automatic deployments for some changes.
+  * Copy changes from `master` to `deploy` by running the following commands:
+     * `git checkout deploy`
+     * `git merge master`
+     * `git push origin deploy`
+     * `git checkout master` (to switch back to `master` branch)
+
 ## Tech Stack
 * React / TypeScript / Vanilla CSS
 
