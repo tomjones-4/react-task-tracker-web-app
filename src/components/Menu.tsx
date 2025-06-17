@@ -15,6 +15,8 @@ interface MenuProps {
   ripple: (e: React.MouseEvent<HTMLDivElement>) => void;
   showCalendarView: boolean;
   setShowCalendarView: React.Dispatch<React.SetStateAction<boolean>>;
+  hideCompletedTasks: boolean;
+  setHideCompletedTasks: React.Dispatch<React.SetStateAction<boolean>>;
   darkMode: boolean;
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
   automaticSorting: boolean;
@@ -44,6 +46,8 @@ const Menu = forwardRef<SearchContainerRef, MenuProps>(
       ripple,
       showCalendarView,
       setShowCalendarView,
+      hideCompletedTasks,
+      setHideCompletedTasks,
       darkMode,
       setDarkMode,
       automaticSorting,
@@ -85,6 +89,8 @@ const Menu = forwardRef<SearchContainerRef, MenuProps>(
         <MenuFooter
           showCalendarView={showCalendarView}
           setShowCalendarView={setShowCalendarView}
+          hideCompletedTasks={hideCompletedTasks}
+          setHideCompletedTasks={setHideCompletedTasks}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
           automaticSorting={automaticSorting}

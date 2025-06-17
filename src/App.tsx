@@ -214,6 +214,8 @@ const App = () => {
 
   const [showCalendarView, setShowCalendarView] = useState<boolean>(false);
 
+  const [hideCompletedTasks, setHideCompletedTasks] = useState<boolean>(false);
+
   const [automaticSorting, setAutomaticSorting] = useState<boolean>(() => {
     // Load from localStorage on first load
     return localStorage.getItem(LOCAL_STORAGE_KEY_AUTOMATIC_SORTING) === "auto";
@@ -451,7 +453,7 @@ const App = () => {
 
     // Select new task if selected task is deleted
     if (selectedTask && selectedTask.id === taskId) {
-      const tasksInList = filterTasksByListId(taskToDelete.listId);
+      const tasksInList = filterTasksByListId(tasks, taskToDelete.listId);
       const indexInList = tasksInList.indexOf(taskToDelete);
 
       if (indexInList === -1) {
@@ -624,31 +626,35 @@ const App = () => {
     );
   };
 
-  const getSubtasksByTaskId = (taskId: number) => {
+  const filterSubtasksByCompleted = () => {
+    return hideCompletedTasks
+      ? subtasks.filter((s: Subtask) => !s.completed)
+      : subtasks;
+  };
+
+  const filterSubtasksByTaskId = (subtasks: Subtask[], taskId: number) => {
     return subtasks.filter((subtask) => subtask.taskId === taskId);
   };
 
-  const filterTasksByListId = (listId: number) => {
-    if (listId === SPECIAL_LIST_ID_ALL_TASKS) {
-      return tasks; // Return all tasks for "All Tasks" list
-    }
-    return tasks.filter((task) => task.listId === listId);
+  const filterTasksByCompleted = () => {
+    return hideCompletedTasks ? tasks.filter((t: Task) => !t.completed) : tasks;
+  };
+
+  const filterTasksByListId = (tasks: Task[], listId: number) => {
+    return listId === SPECIAL_LIST_ID_ALL_TASKS
+      ? tasks // return all tasks for "All Tasks" list
+      : tasks.filter((task: Task) => task.listId === listId);
   };
 
   const filterTasksByTagIds = (tasks: Task[], tagIds: number[]) => {
     if (tagIds.length === 0) return tasks;
-    const selectedTagIdSet = new Set(selectedTagIds);
-    return tasks.filter((task) =>
-      task.tagIds.some((tagId) => selectedTagIdSet.has(tagId))
+    const tagIdSet = new Set(tagIds);
+    return tasks.filter((task: Task) =>
+      task.tagIds.some((tagId) => tagIdSet.has(tagId))
     );
   };
 
-  const filterTasksByListAndTags = (listId: number, tagIds: number[]) => {
-    const tasksForList = filterTasksByListId(listId);
-    return filterTasksByTagIds(tasksForList, tagIds);
-  };
-
-  const filterTasksBySearch = (searchQuery: string) => {
+  const filterTasksBySearch = (tasks: Task[]) => {
     const fuse = new Fuse(tasks, {
       keys: ["title", "description"],
       threshold: 0.3, // lower is stricter
@@ -659,10 +665,13 @@ const App = () => {
     return matchedTasks;
   };
 
-  const filterTasks = (listId: number, tagIds: number[]) => {
+  const filterTasks = () => {
     return searchQuery
-      ? filterTasksBySearch(searchQuery)
-      : filterTasksByListAndTags(listId, tagIds);
+      ? filterTasksBySearch(filterTasksByCompleted())
+      : filterTasksByTagIds(
+          filterTasksByListId(filterTasksByCompleted(), selectedList.id),
+          selectedTagIds
+        );
   };
 
   /* End Functions */
@@ -792,6 +801,10 @@ const App = () => {
     }
   }, [searchQuery]);
 
+  useEffect(() => {
+    setSearchQuery("");
+  }, [selectedList]);
+
   /* End useEffect Hooks */
 
   /* Begin Debugging */
@@ -817,6 +830,8 @@ const App = () => {
           ripple={ripple}
           showCalendarView={showCalendarView}
           setShowCalendarView={setShowCalendarView}
+          hideCompletedTasks={hideCompletedTasks}
+          setHideCompletedTasks={setHideCompletedTasks}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
           automaticSorting={automaticSorting}
@@ -837,9 +852,9 @@ const App = () => {
           left={
             <MainView
               selectedList={selectedList}
-              tasks={filterTasks(selectedList.id, selectedTagIds)}
+              tasks={filterTasks()}
               setTasks={setTasks}
-              subtasks={subtasks}
+              subtasks={filterSubtasksByCompleted()}
               setSubtasks={setSubtasks}
               selectedTaskId={selectedTask?.id}
               deleteTask={deleteTask}
@@ -875,7 +890,10 @@ const App = () => {
               isAddMode={isAddMode}
               addTag={addTag}
               deleteTag={deleteTag}
-              subtasks={getSubtasksByTaskId(selectedTask.id)}
+              subtasks={filterSubtasksByTaskId(
+                filterSubtasksByCompleted(),
+                selectedTask.id
+              )}
               setSubtasks={setSubtasks}
               addSubtask={addSubtask}
               editSubtask={editSubtask}
@@ -890,9 +908,9 @@ const App = () => {
       ) : (
         <MainView
           selectedList={selectedList}
-          tasks={filterTasks(selectedList.id, selectedTagIds)}
+          tasks={filterTasks()}
           setTasks={setTasks}
-          subtasks={subtasks}
+          subtasks={filterSubtasksByCompleted()}
           setSubtasks={setSubtasks}
           selectedTaskId={undefined}
           deleteTask={deleteTask}

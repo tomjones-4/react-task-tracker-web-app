@@ -4,6 +4,8 @@ import ToggleSwitch from "./ToggleSwitch";
 interface MenuFooterProps {
   showCalendarView: boolean;
   setShowCalendarView: React.Dispatch<React.SetStateAction<boolean>>;
+  hideCompletedTasks: boolean;
+  setHideCompletedTasks: React.Dispatch<React.SetStateAction<boolean>>;
   darkMode: boolean;
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
   automaticSorting: boolean;
@@ -13,6 +15,8 @@ interface MenuFooterProps {
 const MenuFooter: React.FC<MenuFooterProps> = ({
   showCalendarView,
   setShowCalendarView,
+  hideCompletedTasks,
+  setHideCompletedTasks,
   darkMode,
   setDarkMode,
   automaticSorting,
@@ -25,11 +29,11 @@ const MenuFooter: React.FC<MenuFooterProps> = ({
         onCheckedChange={() => setShowCalendarView(!showCalendarView)}
         label="Show Calendar View"
       />
-      {/* <ToggleSwitch
+      <ToggleSwitch
         checked={hideCompletedTasks}
-        onCheckedChange={setHideCompletedTasks}
-        label="Hide completed tasks"
-      /> */}
+        onCheckedChange={() => setHideCompletedTasks(!hideCompletedTasks)}
+        label="Hide Completed"
+      />
       <ToggleSwitch
         checked={automaticSorting}
         onCheckedChange={() => setAutomaticSorting(!automaticSorting)}
